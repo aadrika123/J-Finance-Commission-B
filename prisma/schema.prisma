@@ -30,7 +30,7 @@ model ULB {
   latitude  Float  @default(0.0)
   longitude Float  @default(0.0)
 
-  // Relation field
+  // Relation fields
   ulbMaster ULBMaster @relation(fields: [ulb_id], references: [id])
 }
 
