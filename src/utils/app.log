@@ -604,3 +604,18 @@
   level: 'info',
   timestamp: '2024-09-09 13:52:37'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-09 15:48:29'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-09 15:56:06'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-09 16:10:20'
+}
