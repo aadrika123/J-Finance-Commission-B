@@ -7,9 +7,12 @@ const resourceRoutes = require("./routes/resourceRoutes");
 const ulbRoutes = require("./routes/ulbRoutes");
 const schemeInfoRoutes = require("./routes/schemeInfoRoutes");
 const schemeInfoUpdateRoutes = require("./routes/schemeInfoUpdateRoutes");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors());
 
 app.use(requestLogger);
 
