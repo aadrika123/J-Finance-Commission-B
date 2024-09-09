@@ -1,4 +1,8 @@
-const { createSchemeInfo } = require("../dao/schemeInfo/schemeInfoDao");
+const {
+  createSchemeInfo,
+  getSchemeInfo,
+} = require("../dao/schemeInfo/schemeInfoDao");
+
 const moment = require("moment-timezone");
 
 const addSchemeInfo = async (req, res) => {
@@ -43,6 +47,17 @@ const addSchemeInfo = async (req, res) => {
   }
 };
 
+const fetchSchemeInfo = async (req, res) => {
+  try {
+    const schemes = await getSchemeInfo();
+    res.status(200).json(schemes);
+  } catch (error) {
+    console.error("Error fetching scheme info:", error);
+    res.status(500).json({ error: "Failed to fetch scheme info" });
+  }
+};
+
 module.exports = {
   addSchemeInfo,
+  fetchSchemeInfo,
 };

@@ -48,6 +48,11 @@ const createSchemeInfo = async (data) => {
     },
   });
 };
+
+const getSchemeInfo = async () => {
+  return await prisma.scheme_info.findMany();
+};
 module.exports = {
   createSchemeInfo,
+  getSchemeInfo,
 };
