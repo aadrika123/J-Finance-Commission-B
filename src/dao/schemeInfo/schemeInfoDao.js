@@ -6,7 +6,7 @@ const generateSchemeId = async () => {
   // Get the latest scheme_info record
   const lastScheme = await prisma.scheme_info.findFirst({
     orderBy: {
-      scheme_id: "desc",
+      scheme_id: "Asc",
     },
   });
 
