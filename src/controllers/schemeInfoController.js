@@ -40,20 +40,37 @@ const addSchemeInfo = async (req, res) => {
       ulb,
     });
 
-    res.status(201).json(newSchemeInfo);
+    res.status(201).json({
+      status: true,
+      message: "Scheme information created successfully",
+      data: newSchemeInfo,
+    });
   } catch (error) {
     console.error("Error creating scheme info:", error);
-    res.status(500).json({ error: "Failed to create scheme info" });
+    res.status(500).json({
+      status: false,
+      message: "Failed to create scheme information",
+      error: error.message,
+    });
   }
 };
 
 const fetchSchemeInfo = async (req, res) => {
   try {
-    const schemes = await getSchemeInfo();
-    res.status(200).json(schemes);
+    const schemeInfoList = await getSchemeInfo();
+
+    res.status(200).json({
+      status: true,
+      message: "Scheme request list fetched successfully",
+      data: schemeInfoList,
+    });
   } catch (error) {
     console.error("Error fetching scheme info:", error);
-    res.status(500).json({ error: "Failed to fetch scheme info" });
+    res.status(500).json({
+      status: false,
+      message: "Failed to fetch scheme request list",
+      error: error.message,
+    });
   }
 };
 
