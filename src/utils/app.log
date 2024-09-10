@@ -704,3 +704,53 @@
   level: 'info',
   timestamp: '2024-09-09 18:19:58'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-10 10:44:39'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 10:44:44'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-10 11:23:11'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 11:24:50'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 11:24:54'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 11:26:12'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-10 12:24:40'
+}
+{
+  message: 'Method: PUT, HTTP Version: 1.1, URL: /api/scheme-info/sch-03-009, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 12:24:50'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-10 12:26:57'
+}
+{
+  message: 'Method: PUT, HTTP Version: 1.1, URL: /api/scheme-info/sch-03-009, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 12:27:13'
+}
