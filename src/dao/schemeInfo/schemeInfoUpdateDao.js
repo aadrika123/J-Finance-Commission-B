@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+
 const prisma = new PrismaClient();
 
 const updateSchemeInfo = async (scheme_id, data) => {
@@ -15,7 +16,9 @@ const updateSchemeInfo = async (scheme_id, data) => {
   if (data.financial_progress_in_percentage !== undefined)
     updateData.financial_progress_in_percentage =
       data.financial_progress_in_percentage;
-  if (data.status !== undefined) updateData.status = data.status;
+  if (data.project_completion_status_in_percentage !== undefined)
+    updateData.project_completion_status_in_percentage =
+      data.project_completion_status_in_percentage; // Updated field
 
   return await prisma.scheme_info.update({
     where: { scheme_id },

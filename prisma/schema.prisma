@@ -56,10 +56,10 @@ model Scheme_info {
   created_at       DateTime @default(now())
 
   // New fields with default values
-  project_completion_status        String  @default("no")
-  tender_floated                   String  @default("no")
-  financial_progress               Decimal @default(0.0)
-  financial_progress_in_percentage Int     @default(0)
-  status                           Int     @default(0)
-  approved_project_cost            Decimal @default(0.0)
+  project_completion_status               String  @default("no")
+  tender_floated                          String  @default("no")
+  financial_progress                      Decimal @default(0.0)
+  financial_progress_in_percentage        Int     @default(0)
+  project_completion_status_in_percentage Int     @default(0) // Replaced statuswuth this
+  approved_project_cost                   Decimal @default(0.0)
 }
