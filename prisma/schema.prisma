@@ -25,23 +25,10 @@ model Resource {
 }
 
 model ULB {
-  ulb_id    Int    @id @map("id") // Use id from ULBMaster table
-  name      String
-  latitude  Float  @default(0.0)
-  longitude Float  @default(0.0)
-
-  // Relation fields
-  ulbMaster ULBMaster @relation(fields: [ulb_id], references: [id])
-}
-
-model ULBMaster {
   id        Int    @id @default(autoincrement())
-  name      String
-  latitude  Float
+  ulb_name  String
   longitude Float
-
-  // Define the relations
-  ulbs ULB[]
+  latitude  Float
 }
 
 model Scheme_info {

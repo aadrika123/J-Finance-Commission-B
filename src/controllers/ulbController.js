@@ -2,9 +2,15 @@ const ulbDao = require("../dao/ulb/ulbDao");
 
 const getULBs = async (req, res) => {
   try {
-    const ulbs = await ulbDao.getAllULBs();
+    const ulbs = await ulbDao.getULBs();
 
-    if (!ulbs || ulbs.length === 0) {
+    // Convert BigInt values to strings
+    const formattedULBs = ulbs.map((ulb) => ({
+      ...ulb,
+      id: ulb.id.toString(), // Convert id to string
+    }));
+
+    if (!formattedULBs || formattedULBs.length === 0) {
       return res.status(404).json({
         status: false,
         message: "No ULBs found",
@@ -14,7 +20,7 @@ const getULBs = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "ULBs fetched successfully",
-      data: ulbs,
+      data: formattedULBs,
     });
   } catch (error) {
     console.error("Error fetching ULBs:", error);
