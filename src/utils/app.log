@@ -1159,3 +1159,23 @@
   level: 'info',
   timestamp: '2024-09-10 18:16:25'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-10 18:30:23'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 18:30:32'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-10 18:33:55'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-10 18:34:05'
+}

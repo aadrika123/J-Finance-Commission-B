@@ -1,6 +1,9 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { createSchemeInfo, getSchemeInfo } = require("../dao/schemeInfo/schemeInfoDao");
+const {
+  createSchemeInfo,
+  getSchemeInfo,
+} = require("../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 
 const addSchemeInfo = async (req, res) => {
@@ -55,12 +58,36 @@ const addSchemeInfo = async (req, res) => {
 
 const fetchSchemeInfo = async (req, res) => {
   try {
-    const schemeInfoList = await getSchemeInfo();
+    // Get pagination parameters from query
+    const page = parseInt(req.query.page) || 1;
+    const take = parseInt(req.query.take) || 10;
+
+    // Calculate the offset
+    const skip = (page - 1) * take;
+
+    // Fetch paginated data
+    const [schemeInfoList, totalResult] = await Promise.all([
+      prisma.scheme_info.findMany({
+        skip,
+        take,
+      }),
+      prisma.scheme_info.count(),
+    ]);
+
+    const totalPage = Math.ceil(totalResult / take);
+    const nextPage = page < totalPage ? page + 1 : null;
 
     res.status(200).json({
       status: true,
       message: "Scheme request list fetched successfully",
       data: schemeInfoList,
+      pagination: {
+        next: nextPage ? { page: nextPage, take } : null,
+        currentPage: page,
+        currentTake: take,
+        totalPage,
+        totalResult,
+      },
     });
   } catch (error) {
     console.error("Error fetching scheme info:", error);
