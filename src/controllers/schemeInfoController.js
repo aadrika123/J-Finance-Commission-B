@@ -1,8 +1,6 @@
-const {
-  createSchemeInfo,
-  getSchemeInfo,
-} = require("../dao/schemeInfo/schemeInfoDao");
-
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+const { createSchemeInfo, getSchemeInfo } = require("../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 
 const addSchemeInfo = async (req, res) => {
@@ -74,7 +72,27 @@ const fetchSchemeInfo = async (req, res) => {
   }
 };
 
+const getSchemeInfoById = async (req, res) => {
+  const { scheme_id } = req.params;
+
+  try {
+    const schemeInfo = await prisma.scheme_info.findUnique({
+      where: { scheme_id },
+    });
+
+    if (schemeInfo) {
+      res.json(schemeInfo);
+    } else {
+      res.status(404).json({ error: "Scheme info not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching scheme info:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   addSchemeInfo,
   fetchSchemeInfo,
+  getSchemeInfoById,
 };

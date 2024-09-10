@@ -5,12 +5,12 @@ const getULBs = async () => {
   try {
     const ulbs = await prisma.$queryRaw`
       SELECT 
-        "ulb_masters".id AS id,
-        "ulb_masters".ulb_name AS ulb_name,
-        "ulb_masters".longitude,
-        "ulb_masters".latitude
+        "ULB".id AS id,
+        "ULB".ulb_name AS ulb_name,
+        "ULB".longitude,
+        "ULB".latitude
       FROM 
-        "ulb_masters";
+        "ULB";
     `;
 
     return ulbs;
