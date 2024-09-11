@@ -50,3 +50,24 @@ model Scheme_info {
   project_completion_status_in_percentage Int?
   approved_project_cost                   Decimal?
 }
+
+model FinancialSummaryReport {
+  ulb_id                           Int      @id // Primary key
+  ulb_name                         String
+  approved_schemes                 Int
+  fund_release_to_ulbs             Decimal
+  amount                           Decimal
+  project_completed                Int
+  expenditure                      Decimal
+  balance_amount                   Decimal
+  financial_progress_in_percentage Int
+  number_of_tender_floated         Int
+  tender_not_floated               Int
+  work_in_progress                 Int
+  financial_year                   Int?
+  first_instalment                 Decimal?
+  second_instalment                Decimal?
+  interest_amount                  Decimal?
+  grant_type                       String?
+  created_at                       DateTime @default(now())
+}
