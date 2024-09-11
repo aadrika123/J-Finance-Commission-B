@@ -1409,3 +1409,103 @@
   level: 'info',
   timestamp: '2024-09-11 15:17:02'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 15:52:26'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 15:52:30'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 16:17:46'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 16:17:58'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 16:18:35'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 16:18:43'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 16:25:23'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 16:25:34'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 16:26:29'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 16:26:39'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 16:30:18'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 16:39:41'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 17:10:47'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 17:10:58'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 17:11:14'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 17:13:17'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 17:13:28'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 17:15:45'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 17:15:54'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 17:23:59'
+}
