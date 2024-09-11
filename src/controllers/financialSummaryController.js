@@ -4,7 +4,16 @@ const {
 
 const getFinancialSummaryReport = async (req, res) => {
   try {
-    const report = await fetchFinancialSummaryReport();
+    // Extract filter parameters from the request query
+    const { city_type, grant_type, sector, financial_year } = req.query;
+
+    // Pass the filter parameters to the DAO function
+    const report = await fetchFinancialSummaryReport(
+      city_type,
+      grant_type,
+      sector,
+      financial_year
+    );
 
     // Convert BigInt to string in the result
     const result = report.map((row) => {

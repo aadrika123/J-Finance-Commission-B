@@ -6,7 +6,7 @@ const generateSchemeId = async () => {
   // Get the latest scheme_info record
   const lastScheme = await prisma.scheme_info.findFirst({
     orderBy: {
-      scheme_id: "Asc",
+      scheme_id: "desc", // Order by descending to find the latest scheme_id
     },
   });
 
@@ -29,7 +29,7 @@ const createSchemeInfo = async (data) => {
   const scheme_id = await generateSchemeId();
 
   const dateInUTC = moment
-    .tz(data.date_of_approved, "Asia/Kolkata")
+    .tz(data.date_of_approval, "Asia/Kolkata")
     .utc()
     .toDate();
 
@@ -42,7 +42,7 @@ const createSchemeInfo = async (data) => {
       sector: data.sector,
       grant_type: data.grant_type,
       city_type: data.city_type,
-      date_of_approved: dateInUTC,
+      date_of_approval: dateInUTC,
       created_at: new Date(), // Automatically handled by Prisma in UTC
       ulb: data.ulb,
     },
@@ -50,8 +50,13 @@ const createSchemeInfo = async (data) => {
 };
 
 const getSchemeInfo = async () => {
-  return await prisma.scheme_info.findMany();
+  return await prisma.scheme_info.findMany({
+    orderBy: {
+      scheme_id: "asc", // Sort in ascending order
+    },
+  });
 };
+
 module.exports = {
   createSchemeInfo,
   getSchemeInfo,
