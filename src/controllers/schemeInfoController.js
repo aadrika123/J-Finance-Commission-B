@@ -65,11 +65,14 @@ const fetchSchemeInfo = async (req, res) => {
     // Calculate the offset
     const skip = (page - 1) * take;
 
-    // Fetch paginated data
+    // Fetch paginated data sorted by created_at in descending order
     const [schemeInfoList, totalResult] = await Promise.all([
       prisma.scheme_info.findMany({
         skip,
         take,
+        orderBy: {
+          created_at: "desc", // Sort by created_at in descending order
+        },
       }),
       prisma.scheme_info.count(),
     ]);
