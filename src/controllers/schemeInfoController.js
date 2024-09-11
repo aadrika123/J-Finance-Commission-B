@@ -15,13 +15,13 @@ const addSchemeInfo = async (req, res) => {
       sector,
       grant_type,
       city_type,
-      date_of_approved,
+      date_of_approval,
       ulb,
     } = req.body;
 
     // Convert the input date to UTC using the Asia/Kolkata timezone
     const dateOfApprovedUTC = moment
-      .tz(date_of_approved, "Asia/Kolkata")
+      .tz(date_of_approval, "Asia/Kolkata")
       .utc()
       .toDate();
 
@@ -36,7 +36,7 @@ const addSchemeInfo = async (req, res) => {
       sector,
       grant_type,
       city_type,
-      date_of_approved: dateOfApprovedUTC,
+      date_of_approval: dateOfApprovedUTC,
       created_at: createdAtUTC, // Pass the UTC time to the DAO
       ulb,
     });
@@ -108,13 +108,24 @@ const getSchemeInfoById = async (req, res) => {
     });
 
     if (schemeInfo) {
-      res.json(schemeInfo);
+      res.status(200).json({
+        status: true,
+        message: "Scheme information retrieved successfully",
+        data: schemeInfo,
+      });
     } else {
-      res.status(404).json({ error: "Scheme info not found" });
+      res.status(404).json({
+        status: false,
+        message: "Scheme information not found",
+      });
     }
   } catch (error) {
     console.error("Error fetching scheme info:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({
+      status: false,
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 };
 

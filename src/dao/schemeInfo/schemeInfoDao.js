@@ -6,7 +6,7 @@ const generateSchemeId = async () => {
   // Get the latest scheme_info record
   const lastScheme = await prisma.scheme_info.findFirst({
     orderBy: {
-      scheme_id: "asc",
+      scheme_id: "desc", // Order by descending to find the latest scheme_id
     },
   });
 
@@ -50,8 +50,13 @@ const createSchemeInfo = async (data) => {
 };
 
 const getSchemeInfo = async () => {
-  return await prisma.scheme_info.findMany();
+  return await prisma.scheme_info.findMany({
+    orderBy: {
+      scheme_id: "asc", // Sort in ascending order
+    },
+  });
 };
+
 module.exports = {
   createSchemeInfo,
   getSchemeInfo,
