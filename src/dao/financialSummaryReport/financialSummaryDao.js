@@ -9,7 +9,8 @@ const fetchFinancialSummaryReport = async (
 ) => {
   // Build the query conditionally with parameters
   let query = `
-    SELECT ulb.ulb_name, 
+    SELECT ulb.id AS ulb_id, 
+           ulb.ulb_name, 
            COUNT(s.scheme_name) AS approved_schemes, 
            SUM(s.project_cost) AS fund_release_to_ulbs,
            SUM(s.approved_project_cost) AS amount,
@@ -27,21 +28,21 @@ const fetchFinancialSummaryReport = async (
 
   // Add filters conditionally based on the parameters provided
   if (city_type) {
-    query += ` AND s.city_type = ${city_type}`;
+    query += ` AND s.city_type = '${city_type}'`;
   }
   if (grant_type) {
-    query += ` AND s.grant_type = ${grant_type}`;
+    query += ` AND s.grant_type = '${grant_type}'`;
   }
   if (sector) {
-    query += ` AND s.sector = ${sector}`;
+    query += ` AND s.sector = '${sector}'`;
   }
   if (financial_year) {
     query += ` AND EXTRACT(YEAR FROM s.date_of_approval) = ${financial_year}`;
   }
 
-  query += ` GROUP BY ulb.ulb_name`;
+  query += ` GROUP BY ulb.id, ulb.ulb_name ORDER BY ulb.id ASC`;
 
-  // Use $queryRaw to execute the query with template literals
+  // Execute the query
   return await prisma.$queryRawUnsafe(query);
 };
 
