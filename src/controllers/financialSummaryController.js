@@ -4,12 +4,22 @@ const {
 
 const getFinancialSummaryReport = async (req, res) => {
   try {
-    const financialSummary = await fetchFinancialSummaryReport();
+    const report = await fetchFinancialSummaryReport();
+
+    // Convert BigInt to string in the result
+    const result = report.map((row) => {
+      return Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [
+          key,
+          typeof value === "bigint" ? value.toString() : value,
+        ])
+      );
+    });
 
     res.status(200).json({
       status: true,
       message: "Financial summary report fetched successfully",
-      data: financialSummary,
+      data: result,
     });
   } catch (error) {
     console.error("Error fetching financial summary report:", error);
