@@ -32,15 +32,15 @@ model ULB {
 }
 
 model Scheme_info {
-  scheme_id        String   @id @unique
+  scheme_id        String    @id @unique
   project_cost     Decimal
   scheme_name      String
   sector           String
   grant_type       String
   city_type        String
-  date_of_approved DateTime
+  date_of_approval DateTime?
   ulb              String
-  created_at       DateTime @default(now())
+  created_at       DateTime  @default(now())
 
   // New fields with default values
   project_completion_status               String?

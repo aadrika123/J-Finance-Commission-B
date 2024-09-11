@@ -7,6 +7,8 @@ const resourceRoutes = require("./routes/resourceRoutes");
 const ulbRoutes = require("./routes/ulbRoutes");
 const schemeInfoRoutes = require("./routes/schemeInfoRoutes");
 const schemeInfoUpdateRoutes = require("./routes/schemeInfoUpdateRoutes");
+const financialSummaryRoute = require("./routes/financialSummaryRoute");
+
 const cors = require("cors");
 
 const app = express();
@@ -27,6 +29,7 @@ app.use("/api", resourceRoutes);
 app.use("/api", ulbRoutes);
 app.use("/api", schemeInfoRoutes);
 app.use("/api", schemeInfoUpdateRoutes);
+app.use("/api", financialSummaryRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: http://localhost:${PORT}`);
