@@ -1179,3 +1179,33 @@
   level: 'info',
   timestamp: '2024-09-10 18:34:05'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 11:51:27'
+}
+{
+  message: 'Method: PUT, HTTP Version: 1.1, URL: /api/scheme-info/update/sch-03-002, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 11:55:08'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 11:56:44'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-11 11:58:53'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 11:59:05'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-11 11:59:56'
+}
