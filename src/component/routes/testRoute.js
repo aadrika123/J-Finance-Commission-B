@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auditLogger = require("../utils/auditLogger");
+const auditLogger = require("../../utils/auditLog/auditLogger");
 
 // Test route to trigger audit logging
 router.post("/test-audit", async (req, res) => {

@@ -1,5 +1,6 @@
 const {
   fetchFinancialSummaryReport,
+  updateFinancialSummary,
 } = require("../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -103,6 +104,62 @@ const getFinancialSummaryReport = async (req, res) => {
   }
 };
 
+// update the report
+
+const updateFinancialSummaryReport = async (req, res) => {
+  const {
+    ulb_id,
+    financial_year,
+    first_instalment,
+    second_instalment,
+    interest_amount,
+    grant_type,
+  } = req.body;
+
+  try {
+    // Ensure ulb_id is provided
+    if (!ulb_id) {
+      return res.status(400).json({
+        status: false,
+        message: "ULB ID is required",
+      });
+    }
+
+    // Call the DAO function to update the financial summary report
+    const updatedReport = await updateFinancialSummary({
+      ulb_id,
+      financial_year,
+      first_instalment,
+      second_instalment,
+      interest_amount,
+      grant_type,
+    });
+
+    res.status(200).json({
+      status: true,
+      message: "Financial summary updated successfully",
+      data: updatedReport,
+    });
+  } catch (error) {
+    console.error("Error updating financial summary:", error);
+    if (error.code === "P2025") {
+      // Prisma error code for record not found
+      res.status(404).json({
+        status: false,
+        message: "Financial summary report not found",
+        error: error.message,
+      });
+    } else {
+      res.status(500).json({
+        status: false,
+        message: "Failed to update financial summary report",
+        error: error.message,
+      });
+    }
+  }
+};
+
 module.exports = {
   getFinancialSummaryReport,
+  updateFinancialSummaryReport,
 };

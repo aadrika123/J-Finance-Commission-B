@@ -6,6 +6,6 @@ const {
 const router = express.Router();
 
 // Update route for Scheme_info
-router.put("/scheme-info/update/:scheme_id", modifySchemeInfo);
+router.post("/scheme-info/update/:scheme_id", modifySchemeInfo);
 
 module.exports = router;

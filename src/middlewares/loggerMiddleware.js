@@ -1,5 +1,5 @@
-const logger = require("../utils/logger");
-const auditLogger = require("../utils/auditLogger");
+const logger = require("../utils/log/logger");
+const auditLogger = require("../utils/auditLog/auditLogger");
 
 const requestLogger = (req, res, next) => {
   const method = req.method;
