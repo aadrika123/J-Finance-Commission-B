@@ -3,19 +3,13 @@ const {
   updateFinancialSummary,
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
+const logger = require("../../../utils/log/logger");
 const prisma = new PrismaClient();
 
-// Fetch and store financial summary report
 const getFinancialSummaryReport = async (req, res) => {
   try {
+    logger.info("Fetching financial summary report...");
     const { city_type, grant_type, sector, financial_year } = req.query;
-
-    if (!city_type || !grant_type || !sector || !financial_year) {
-      return res.status(400).json({
-        status: false,
-        message: "Missing required query parameters",
-      });
-    }
 
     const report = await fetchFinancialSummaryReport(
       city_type,
@@ -24,12 +18,7 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
-    if (!report || report.length === 0) {
-      return res.status(404).json({
-        status: false,
-        message: "No financial summary report found",
-      });
-    }
+    logger.info("Financial summary report fetched successfully.");
 
     const result = report.map((row) => {
       return Object.fromEntries(
@@ -40,77 +29,75 @@ const getFinancialSummaryReport = async (req, res) => {
       );
     });
 
+    // Update or insert the report in FinancialSummaryReport table
     for (const row of result) {
-      try {
-        const existingRecord = await prisma.financialSummaryReport.findUnique({
-          where: { ulb_id: row.ulb_id },
-        });
+      const existingRecord = await prisma.financialSummaryReport.findUnique({
+        where: { ulb_id: row.ulb_id },
+      });
 
-        if (existingRecord) {
-          await prisma.financialSummaryReport.update({
-            where: { ulb_id: row.ulb_id },
-            data: {
-              ulb_name: row.ulb_name,
-              approved_schemes: parseInt(row.approved_schemes, 10),
-              fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
-              amount: parseFloat(row.amount) || 0,
-              project_completed: parseInt(row.project_completed, 10),
-              expenditure: parseFloat(row.expenditure) || 0,
-              balance_amount: parseFloat(row.balance_amount) || 0,
-              financial_progress_in_percentage:
-                parseInt(row.financial_progress_in_percentage, 10) || 0,
-              number_of_tender_floated: parseInt(
-                row.number_of_tender_floated,
-                10
-              ),
-              tender_not_floated: parseInt(row.tender_not_floated, 10),
-              work_in_progress: parseInt(row.work_in_progress, 10),
-              financial_year: row.financial_year || null,
-              first_instalment: row.first_instalment || null,
-              second_instalment: row.second_instalment || null,
-              interest_amount: row.interest_amount || null,
-              grant_type: row.grant_type || null,
-            },
-          });
-        } else {
-          await prisma.financialSummaryReport.create({
-            data: {
-              ulb_id: row.ulb_id,
-              ulb_name: row.ulb_name,
-              approved_schemes: parseInt(row.approved_schemes, 10),
-              fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
-              amount: parseFloat(row.amount) || 0,
-              project_completed: parseInt(row.project_completed, 10),
-              expenditure: parseFloat(row.expenditure) || 0,
-              balance_amount: parseFloat(row.balance_amount) || 0,
-              financial_progress_in_percentage:
-                parseInt(row.financial_progress_in_percentage, 10) || 0,
-              number_of_tender_floated: parseInt(
-                row.number_of_tender_floated,
-                10
-              ),
-              tender_not_floated: parseInt(row.tender_not_floated, 10),
-              work_in_progress: parseInt(row.work_in_progress, 10),
-              financial_year: row.financial_year || null,
-              first_instalment: row.first_instalment || null,
-              second_instalment: row.second_instalment || null,
-              interest_amount: row.interest_amount || null,
-              grant_type: row.grant_type || null,
-            },
-          });
-        }
-      } catch (dbError) {
-        console.error(`Error processing ULB ID ${row.ulb_id}:`, dbError);
+      if (existingRecord) {
+        await prisma.financialSummaryReport.update({
+          where: { ulb_id: row.ulb_id },
+          data: {
+            ulb_name: row.ulb_name,
+            approved_schemes: parseInt(row.approved_schemes, 10),
+            fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
+            amount: parseFloat(row.amount) || 0,
+            project_completed: parseInt(row.project_completed, 10),
+            expenditure: parseFloat(row.expenditure) || 0,
+            balance_amount: parseFloat(row.balance_amount) || 0,
+            financial_progress_in_percentage:
+              parseInt(row.financial_progress_in_percentage, 10) || 0,
+            number_of_tender_floated: parseInt(
+              row.number_of_tender_floated,
+              10
+            ),
+            tender_not_floated: parseInt(row.tender_not_floated, 10),
+            work_in_progress: parseInt(row.work_in_progress, 10),
+            financial_year: null,
+            first_instalment: null,
+            second_instalment: null,
+            interest_amount: null,
+            grant_type: null,
+          },
+        });
+      } else {
+        await prisma.financialSummaryReport.create({
+          data: {
+            ulb_id: row.ulb_id,
+            ulb_name: row.ulb_name,
+            approved_schemes: parseInt(row.approved_schemes, 10),
+            fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
+            amount: parseFloat(row.amount) || 0,
+            project_completed: parseInt(row.project_completed, 10),
+            expenditure: parseFloat(row.expenditure) || 0,
+            balance_amount: parseFloat(row.balance_amount) || 0,
+            financial_progress_in_percentage:
+              parseInt(row.financial_progress_in_percentage, 10) || 0,
+            number_of_tender_floated: parseInt(
+              row.number_of_tender_floated,
+              10
+            ),
+            tender_not_floated: parseInt(row.tender_not_floated, 10),
+            work_in_progress: parseInt(row.work_in_progress, 10),
+            financial_year: null,
+            first_instalment: null,
+            second_instalment: null,
+            interest_amount: null,
+            grant_type: null,
+          },
+        });
       }
     }
 
+    logger.info("Financial summary report processed successfully.");
     res.status(200).json({
       status: true,
       message: "Financial summary report fetched and stored successfully",
       data: result,
     });
   } catch (error) {
-    console.error("Error fetching financial summary report:", error);
+    logger.info(`Error fetching financial summary report: ${error.message}`);
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
@@ -119,7 +106,7 @@ const getFinancialSummaryReport = async (req, res) => {
   }
 };
 
-// Update financial summary report
+// Update the financial summary report
 const updateFinancialSummaryReport = async (req, res) => {
   const {
     ulb_id,
@@ -132,11 +119,14 @@ const updateFinancialSummaryReport = async (req, res) => {
 
   try {
     if (!ulb_id) {
+      logger.info("ULB ID is missing in the request.");
       return res.status(400).json({
         status: false,
         message: "ULB ID is required",
       });
     }
+
+    logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`);
 
     const updatedReport = await updateFinancialSummary({
       ulb_id,
@@ -147,12 +137,9 @@ const updateFinancialSummaryReport = async (req, res) => {
       grant_type,
     });
 
-    if (!updatedReport) {
-      return res.status(404).json({
-        status: false,
-        message: "Financial summary report not found",
-      });
-    }
+    logger.info(
+      `Financial summary report updated successfully for ULB ID: ${ulb_id}`
+    );
 
     res.status(200).json({
       status: true,
@@ -160,12 +147,20 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: updatedReport,
     });
   } catch (error) {
-    console.error("Error updating financial summary:", error);
-    res.status(500).json({
-      status: false,
-      message: "Failed to update financial summary report",
-      error: error.message,
-    });
+    logger.info(`Error updating financial summary report: ${error.message}`);
+    if (error.code === "P2025") {
+      res.status(404).json({
+        status: false,
+        message: "Financial summary report not found",
+        error: error.message,
+      });
+    } else {
+      res.status(500).json({
+        status: false,
+        message: "Failed to update financial summary report",
+        error: error.message,
+      });
+    }
   }
 };
 

@@ -5,6 +5,7 @@ const {
   getSchemeInfo,
 } = require("../../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
+const logger = require("../../../utils/log/logger");
 
 const addSchemeInfo = async (req, res) => {
   try {
@@ -18,6 +19,8 @@ const addSchemeInfo = async (req, res) => {
       date_of_approval,
       ulb,
     } = req.body;
+
+    logger.info("Attempting to add new scheme information...");
 
     // Convert the input date to UTC using the Asia/Kolkata timezone
     const dateOfApprovedUTC = moment
@@ -41,13 +44,19 @@ const addSchemeInfo = async (req, res) => {
       ulb,
     });
 
+    logger.info("Scheme information created successfully", {
+      scheme_id,
+      scheme_name,
+      ulb,
+    });
+
     res.status(201).json({
       status: true,
       message: "Scheme information created successfully",
       data: newSchemeInfo,
     });
   } catch (error) {
-    console.error("Error creating scheme info:", error);
+    logger.error(`Error creating scheme info: ${error.message}`, { error });
     res.status(500).json({
       status: false,
       message: "Failed to create scheme information",
@@ -58,6 +67,8 @@ const addSchemeInfo = async (req, res) => {
 
 const fetchSchemeInfo = async (req, res) => {
   try {
+    logger.info("Fetching scheme information list...");
+
     // Get pagination parameters from query
     const page = parseInt(req.query.page) || 1;
     const take = parseInt(req.query.take) || 10;
@@ -80,6 +91,12 @@ const fetchSchemeInfo = async (req, res) => {
     const totalPage = Math.ceil(totalResult / take);
     const nextPage = page < totalPage ? page + 1 : null;
 
+    logger.info("Scheme information list fetched successfully", {
+      page,
+      take,
+      totalResult,
+    });
+
     res.status(200).json({
       status: true,
       message: "Scheme request list fetched successfully",
@@ -93,7 +110,9 @@ const fetchSchemeInfo = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Error fetching scheme info:", error);
+    logger.error(`Error fetching scheme info list: ${error.message}`, {
+      error,
+    });
     res.status(500).json({
       status: false,
       message: "Failed to fetch scheme request list",
@@ -106,24 +125,32 @@ const getSchemeInfoById = async (req, res) => {
   const { scheme_id } = req.params;
 
   try {
+    logger.info(`Fetching scheme information for scheme_id: ${scheme_id}`);
+
     const schemeInfo = await prisma.scheme_info.findUnique({
       where: { scheme_id },
     });
 
     if (schemeInfo) {
+      logger.info(`Scheme information found for scheme_id: ${scheme_id}`);
+
       res.status(200).json({
         status: true,
         message: "Scheme information retrieved successfully",
         data: schemeInfo,
       });
     } else {
+      logger.warn(`Scheme information not found for scheme_id: ${scheme_id}`);
+
       res.status(404).json({
         status: false,
         message: "Scheme information not found",
       });
     }
   } catch (error) {
-    console.error("Error fetching scheme info:", error);
+    logger.error(`Error fetching scheme info by ID: ${error.message}`, {
+      error,
+    });
     res.status(500).json({
       status: false,
       message: "Internal server error",

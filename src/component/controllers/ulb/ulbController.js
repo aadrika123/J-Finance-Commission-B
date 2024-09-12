@@ -1,7 +1,10 @@
 const ulbDao = require("../../dao/ulb/ulbDao");
+const logger = require("../../../utils/log/logger"); // Import logger
 
 const getULBs = async (req, res) => {
   try {
+    logger.info("Fetching ULBs from the database...");
+
     const ulbs = await ulbDao.getULBs();
 
     // Convert BigInt values to strings if necessary
@@ -14,12 +17,18 @@ const getULBs = async (req, res) => {
       expenditure: ulb.expenditure?.toString(),
       balance_amount: ulb.balance_amount?.toString(),
     }));
+
     if (!formattedULBs || formattedULBs.length === 0) {
+      logger.warn("No ULBs found");
       return res.status(404).json({
         status: false,
         message: "No ULBs found",
       });
     }
+
+    logger.info("ULBs fetched successfully", {
+      total_ULBs: formattedULBs.length,
+    });
 
     res.status(200).json({
       status: true,
@@ -27,7 +36,7 @@ const getULBs = async (req, res) => {
       data: formattedULBs,
     });
   } catch (error) {
-    console.error("Error fetching ULBs:", error);
+    logger.error("Error fetching ULBs:", { error });
     res.status(500).json({
       status: false,
       message: "Error fetching ULBs",
