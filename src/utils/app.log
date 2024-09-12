@@ -1604,3 +1604,23 @@
   level: 'info',
   timestamp: '2024-09-11 18:53:33'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 10:50:39'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 10:51:31'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 10:54:10'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 10:56:09'
+}

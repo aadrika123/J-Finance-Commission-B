@@ -46,6 +46,37 @@ const fetchFinancialSummaryReport = async (
   return await prisma.$queryRawUnsafe(query);
 };
 
+// update the financal summary report
+
+const updateFinancialSummary = async ({
+  ulb_id,
+  financial_year,
+  first_instalment,
+  second_instalment,
+  interest_amount,
+  grant_type,
+}) => {
+  try {
+    // Update the financial summary report in the database
+    const updatedReport = await prisma.financialSummaryReport.update({
+      where: { ulb_id }, // Identify by ULB ID
+      data: {
+        financial_year: financial_year || null, // Use null if the value is not provided
+        first_instalment: first_instalment || null,
+        second_instalment: second_instalment || null,
+        interest_amount: interest_amount || null,
+        grant_type: grant_type || null,
+      },
+    });
+
+    return updatedReport;
+  } catch (error) {
+    console.error("Error in updateFinancialSummaryDao:", error);
+    throw error; // Propagate the error to be handled in the controller
+  }
+};
+
 module.exports = {
   fetchFinancialSummaryReport,
+  updateFinancialSummary,
 };
