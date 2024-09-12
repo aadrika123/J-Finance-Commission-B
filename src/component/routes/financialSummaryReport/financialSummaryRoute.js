@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
-} = require("../controllers/financialSummaryController");
+} = require("../../controllers/financialSummaryReport/financialSummaryController");
 
 // Define the route for fetching financial summary report
 router.get("/financial-summary", getFinancialSummaryReport);

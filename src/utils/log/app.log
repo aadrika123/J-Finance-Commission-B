@@ -33,3 +33,133 @@
   level: 'info',
   timestamp: '2024-09-12 11:50:33'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 12:21:46'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 12:43:37'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/test-audit, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:46:24'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:13'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:23'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:41'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info/view/sch-03-001, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:49'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:54'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info/update/sch-03-008, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:59'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:48:05'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:48:14'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/test-audit, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:49:48'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:16:07'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:16:40'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:20:09'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:20:21'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:25:14'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:25:22'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:26:49'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:27:25'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:29:30'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:29:42'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:52:24'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:52:32'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:54:12'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:54:17'
+}

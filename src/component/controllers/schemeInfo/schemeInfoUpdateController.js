@@ -1,4 +1,6 @@
-const { updateSchemeInfo } = require("../dao/schemeInfo/schemeInfoUpdateDao");
+const {
+  updateSchemeInfo,
+} = require("../../dao/schemeInfo/schemeInfoUpdateDao");
 
 const modifySchemeInfo = async (req, res) => {
   try {

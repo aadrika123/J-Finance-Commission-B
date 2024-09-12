@@ -1,7 +1,7 @@
 const express = require("express");
 const {
   modifySchemeInfo,
-} = require("../controllers/schemeInfoUpdateController");
+} = require("../../controllers/schemeInfo/schemeInfoUpdateController");
 
 const router = express.Router();
 

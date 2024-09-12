@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const {
   createSchemeInfo,
   getSchemeInfo,
-} = require("../dao/schemeInfo/schemeInfoDao");
+} = require("../../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 
 const addSchemeInfo = async (req, res) => {
