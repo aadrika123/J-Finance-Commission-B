@@ -1,16 +1,16 @@
-const auditLogger = require("../../utils/auditLog/auditLogger");
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const auditLogger = require("../../../utils/auditLog/auditLogger");
+const resourceDao = require("../../dao/resource/resourceDao");
 
 // Create a new resource
 const createResource = async (req, res) => {
   try {
     const { name, description } = req.body;
-    const newResource = await prisma.resource.create({
-      data: { name, description },
-    });
 
-    const userId = typeof req.user?.id === "number" ? req.user.id : 0; // Ensure this is an integer, 0 for anonymous users
+    // Call the DAO to create a new resource
+    const newResource = await resourceDao.createResource(name, description);
+
+    // Audit logging
+    const userId = typeof req.user?.id === "number" ? req.user.id : 0;
     const ipAddress = req.ip || req.connection.remoteAddress;
     await auditLogger.log(
       userId,
@@ -31,12 +31,15 @@ const updateResource = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, description } = req.body;
-    const updatedResource = await prisma.resource.update({
-      where: { id: Number(id) },
-      data: { name, description },
-    });
 
-    // Log the update action
+    // Call the DAO to update the resource
+    const updatedResource = await resourceDao.updateResource(
+      id,
+      name,
+      description
+    );
+
+    // Audit logging
     const userId = typeof req.user?.id === "number" ? req.user.id : 0;
     const ipAddress = req.ip || req.connection.remoteAddress;
     await auditLogger.log(
@@ -48,6 +51,7 @@ const updateResource = async (req, res) => {
 
     res.status(200).json(updatedResource);
   } catch (error) {
+    console.error("Error updating resource:", error);
     res.status(500).json({ error: "Error updating resource" });
   }
 };
@@ -57,7 +61,7 @@ const deleteResource = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Log the delete action before deleting the resource
+    // Audit logging before deletion
     const userId = typeof req.user?.id === "number" ? req.user.id : 0;
     const ipAddress = req.ip || req.connection.remoteAddress;
     await auditLogger.log(
@@ -67,10 +71,8 @@ const deleteResource = async (req, res) => {
       ipAddress
     );
 
-    // Now delete the resource
-    await prisma.resource.delete({
-      where: { id: Number(id) },
-    });
+    // Call the DAO to delete the resource
+    await resourceDao.deleteResource(id);
 
     res.status(204).send();
   } catch (error) {

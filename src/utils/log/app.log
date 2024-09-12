@@ -33,3 +33,1310 @@
   level: 'info',
   timestamp: '2024-09-12 11:50:33'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 12:21:46'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 12:43:37'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/test-audit, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:46:24'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:13'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:23'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:41'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info/view/sch-03-001, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:49'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:54'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info/update/sch-03-008, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:47:59'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:48:05'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:48:14'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/test-audit, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 12:49:48'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:16:07'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:16:40'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:20:09'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:20:21'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:25:14'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:25:22'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:26:49'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:27:25'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:29:30'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:29:42'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:52:24'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:52:32'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 13:54:12'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 13:54:17'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:30:53'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:31:56'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:32:13'
+}
+{
+  message: 'Fetching financial summary report',
+  level: 'info',
+  timestamp: '2024-09-12 16:32:13'
+}
+{
+  message: 'Missing required query parameters',
+  level: 'info',
+  timestamp: '2024-09-12 16:32:13'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:33:14'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:33:24'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:34:07'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:34:14'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:35:23'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:35:33'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:43:19'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:43:26'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:43:59'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:44:05'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:44:21'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:44:27'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:44:56'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:45:03'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:46:15'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:46:26'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:49:29'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:49:38'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:52:34'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 16:53:31'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 16:53:41'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-12 16:53:41'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-12 16:53:41'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-12 16:53:42'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:14:02'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 1,
+    'ULB Name': 'Adityapur Municipal Corporation',
+    'Approved Schemes': '3',
+    'Fund Release to ULBs': 24000000,
+    Amount: 24000000,
+    'Project Completed': '3',
+    Expenditure: 1200000,
+    'Balance Amount': 22800000,
+    'Financial Progress (%)': 25,
+    'Number of Tenders Floated': '3',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 2,
+    'ULB Name': 'Ranchi Municipal Corporation',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 3,
+    'ULB Name': 'Basukinath Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 4,
+    'ULB Name': 'Bishrampur Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 5,
+    'ULB Name': 'Bundu Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 6,
+    'ULB Name': 'Chaibasa Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 7,
+    'ULB Name': 'Chakradharpur Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 8,
+    'ULB Name': 'Chakulia Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 9,
+    'ULB Name': 'Chas Municipal Corporation',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 10,
+    'ULB Name': 'Chatra Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 12,
+    'ULB Name': 'Chirkunda Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 14,
+    'ULB Name': 'Deoghar Municipal Corporation',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 15,
+    'ULB Name': 'Dhanbad Municipal Corporation',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 16,
+    'ULB Name': 'Dumka Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 17,
+    'ULB Name': 'Garhwa Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 18,
+    'ULB Name': 'Giridih Municipal Corporation',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 19,
+    'ULB Name': 'Godda Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 20,
+    'ULB Name': 'Gumla Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:11'
+}
+{
+  data: {
+    'ULB ID': 21,
+    'ULB Name': 'Hazaribagh Municipal Corporation',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 22,
+    'ULB Name': 'Hussainabad Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 23,
+    'ULB Name': 'Jamshedpur NAC',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 24,
+    'ULB Name': 'Jamtara Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 25,
+    'ULB Name': 'Jhumritilaiya Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 26,
+    'ULB Name': 'Jugsalai Municipality',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 27,
+    'ULB Name': 'Khunti Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 28,
+    'ULB Name': 'Koderma Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 29,
+    'ULB Name': 'Latehar Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 30,
+    'ULB Name': 'Lohardaga Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 31,
+    'ULB Name': 'Madhupur Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 32,
+    'ULB Name': 'Mango NAC',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 33,
+    'ULB Name': 'Manjhiaon Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 34,
+    'ULB Name': 'Medininagar Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 35,
+    'ULB Name': 'Mihijham Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 36,
+    'ULB Name': 'Nagar Uttari Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 37,
+    'ULB Name': 'Pakur Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 38,
+    'ULB Name': 'Phusro Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 39,
+    'ULB Name': 'Rajmahal Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 40,
+    'ULB Name': 'Ramgarh Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 42,
+    'ULB Name': 'Sahibganj Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 43,
+    'ULB Name': 'Saraikela Nagar Panchayat',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 44,
+    'ULB Name': 'Simdega Nagar Parishad',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  data: {
+    'ULB ID': 45,
+    'ULB Name': 'West Singbhum',
+    'Approved Schemes': '0',
+    'Fund Release to ULBs': null,
+    Amount: null,
+    'Project Completed': '0',
+    Expenditure: null,
+    'Balance Amount': null,
+    'Financial Progress (%)': null,
+    'Number of Tenders Floated': '0',
+    'Tender Not Floated': '0',
+    'Work in Progress': '0'
+  },
+  level: 'info',
+  message: 'Processed financial summary row',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-12 17:14:12'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:15:22'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:20:32'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:21:00'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-12 17:21:00'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 9,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-12 17:21:01'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info/view/sch-03-001, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:21:43'
+}
+{
+  message: 'Fetching scheme information for scheme_id: sch-03-001',
+  level: 'info',
+  timestamp: '2024-09-12 17:21:43'
+}
+{
+  message: 'Scheme information found for scheme_id: sch-03-001',
+  level: 'info',
+  timestamp: '2024-09-12 17:21:43'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:23:11'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:23:41'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info/update/sch-03-008, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:25:01'
+}
+{
+  data: {
+    project_completion_status: 'yes',
+    project_completion_status_in_percentage: 100,
+    tender_floated: 'yes',
+    financial_progress: 600000,
+    financial_progress_in_percentage: 50
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-008',
+  timestamp: '2024-09-12 17:25:01'
+}
+{
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-008',
+    project_cost: 9500000,
+    scheme_name: 'Infrastructure Development',
+    sector: 'Infrastructure',
+    grant_type: 'Tied',
+    city_type: 'Million Plus Cities',
+    date_of_approval: 2024-02-10T11:00:00.000Z,
+    ulb: 'Chennai Municipal Corporation',
+    created_at: 2024-09-11T09:35:03.120Z,
+    project_completion_status: 'yes',
+    tender_floated: 'yes',
+    financial_progress: 600000,
+    financial_progress_in_percentage: 50,
+    project_completion_status_in_percentage: 100,
+    approved_project_cost: 9500000
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-008',
+  timestamp: '2024-09-12 17:25:01'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:26:55'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-12 17:26:55'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Chennai Municipal Corporation',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-12 17:26:56'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:29:50'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-12 17:29:50'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Chennai Municipal Corporation',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-12 17:29:50'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info/update/sch-03-008, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:32:56'
+}
+{
+  data: {
+    project_completion_status: 'yes',
+    project_completion_status_in_percentage: 100,
+    tender_floated: 'yes',
+    financial_progress: 600000,
+    financial_progress_in_percentage: 50
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-008',
+  timestamp: '2024-09-12 17:32:56'
+}
+{
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-008',
+    project_cost: 9500000,
+    scheme_name: 'Infrastructure Development',
+    sector: 'Infrastructure',
+    grant_type: 'Tied',
+    city_type: 'Million Plus Cities',
+    date_of_approval: 2024-02-10T11:00:00.000Z,
+    ulb: 'Chennai Municipal Corporation',
+    created_at: 2024-09-11T09:35:03.120Z,
+    project_completion_status: 'yes',
+    tender_floated: 'yes',
+    financial_progress: 600000,
+    financial_progress_in_percentage: 50,
+    project_completion_status_in_percentage: 100,
+    approved_project_cost: 9500000
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-008',
+  timestamp: '2024-09-12 17:32:56'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:35:25'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:35:38'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-12 17:35:38'
+}
+{
+  count: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-12 17:35:38'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-12 17:37:32'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/ulbs, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-12 17:37:38'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-12 17:37:38'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-12 17:37:38'
+}

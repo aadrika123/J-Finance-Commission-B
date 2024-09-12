@@ -3,11 +3,11 @@ const logger = require("./utils/log/logger");
 const requestLogger = require("./middlewares/loggerMiddleware");
 const { connectToDatabase } = require("./lib/database/db");
 const testRoute = require("./component/routes/testRoute");
-const resourceRoutes = require("./component/routes/resourceRoutes");
-const ulbRoutes = require("./component/routes/ulbRoutes");
-const schemeInfoRoutes = require("./component/routes/schemeInfoRoutes");
-const schemeInfoUpdateRoutes = require("./component/routes/schemeInfoUpdateRoutes");
-const financialSummaryRoute = require("./component/routes/financialSummaryRoute");
+const resourceRoutes = require("./component/routes/resource/resourceRoutes");
+const ulbRoutes = require("./component/routes/ulb/ulbRoutes");
+const schemeInfoRoutes = require("./component/routes/schemeInfo/schemeInfoRoutes");
+const schemeInfoUpdateRoutes = require("./component/routes/schemeInfo/schemeInfoUpdateRoutes");
+const financialSummaryRoute = require("./component/routes/financialSummaryReport/financialSummaryRoute");
 
 const cors = require("cors");
 

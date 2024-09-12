@@ -1,5 +1,5 @@
 const express = require("express");
-const { getULBs } = require("../controllers/ulbController");
+const { getULBs } = require("../../controllers/ulb/ulbController");
 
 const router = express.Router();
 

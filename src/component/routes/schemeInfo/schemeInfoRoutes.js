@@ -3,7 +3,7 @@ const {
   addSchemeInfo,
   fetchSchemeInfo,
   getSchemeInfoById,
-} = require("../controllers/schemeInfoController");
+} = require("../../controllers/schemeInfo/schemeInfoController");
 
 const router = express.Router();
 

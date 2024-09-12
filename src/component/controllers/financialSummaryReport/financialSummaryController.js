@@ -1,12 +1,14 @@
 const {
   fetchFinancialSummaryReport,
   updateFinancialSummary,
-} = require("../dao/financialSummaryReport/financialSummaryDao");
+} = require("../../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
+const logger = require("../../../utils/log/logger");
 const prisma = new PrismaClient();
 
 const getFinancialSummaryReport = async (req, res) => {
   try {
+    logger.info("Fetching financial summary report...");
     const { city_type, grant_type, sector, financial_year } = req.query;
 
     const report = await fetchFinancialSummaryReport(
@@ -15,6 +17,8 @@ const getFinancialSummaryReport = async (req, res) => {
       sector,
       financial_year
     );
+
+    logger.info("Financial summary report fetched successfully.");
 
     const result = report.map((row) => {
       return Object.fromEntries(
@@ -27,13 +31,11 @@ const getFinancialSummaryReport = async (req, res) => {
 
     // Update or insert the report in FinancialSummaryReport table
     for (const row of result) {
-      // Check if the record already exists
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
 
       if (existingRecord) {
-        // Update existing record
         await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
@@ -52,7 +54,7 @@ const getFinancialSummaryReport = async (req, res) => {
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
-            financial_year: null, // Default value, to be updated later
+            financial_year: null,
             first_instalment: null,
             second_instalment: null,
             interest_amount: null,
@@ -60,7 +62,6 @@ const getFinancialSummaryReport = async (req, res) => {
           },
         });
       } else {
-        // Insert new record
         await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
@@ -79,7 +80,7 @@ const getFinancialSummaryReport = async (req, res) => {
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
-            financial_year: null, // Default value, to be updated later
+            financial_year: null,
             first_instalment: null,
             second_instalment: null,
             interest_amount: null,
@@ -89,13 +90,14 @@ const getFinancialSummaryReport = async (req, res) => {
       }
     }
 
+    logger.info("Financial summary report processed successfully.");
     res.status(200).json({
       status: true,
       message: "Financial summary report fetched and stored successfully",
       data: result,
     });
   } catch (error) {
-    console.error("Error fetching financial summary report:", error);
+    logger.info(`Error fetching financial summary report: ${error.message}`);
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
@@ -104,8 +106,7 @@ const getFinancialSummaryReport = async (req, res) => {
   }
 };
 
-// update the report
-
+// Update the financial summary report
 const updateFinancialSummaryReport = async (req, res) => {
   const {
     ulb_id,
@@ -117,15 +118,16 @@ const updateFinancialSummaryReport = async (req, res) => {
   } = req.body;
 
   try {
-    // Ensure ulb_id is provided
     if (!ulb_id) {
+      logger.info("ULB ID is missing in the request.");
       return res.status(400).json({
         status: false,
         message: "ULB ID is required",
       });
     }
 
-    // Call the DAO function to update the financial summary report
+    logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`);
+
     const updatedReport = await updateFinancialSummary({
       ulb_id,
       financial_year,
@@ -135,15 +137,18 @@ const updateFinancialSummaryReport = async (req, res) => {
       grant_type,
     });
 
+    logger.info(
+      `Financial summary report updated successfully for ULB ID: ${ulb_id}`
+    );
+
     res.status(200).json({
       status: true,
       message: "Financial summary updated successfully",
       data: updatedReport,
     });
   } catch (error) {
-    console.error("Error updating financial summary:", error);
+    logger.info(`Error updating financial summary report: ${error.message}`);
     if (error.code === "P2025") {
-      // Prisma error code for record not found
       res.status(404).json({
         status: false,
         message: "Financial summary report not found",
