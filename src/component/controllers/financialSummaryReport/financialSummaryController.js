@@ -32,12 +32,14 @@ const getFinancialSummaryReport = async (req, res) => {
     // Update or insert the report in FinancialSummaryReport table
     for (const row of result) {
       const existingRecord = await prisma.financialSummaryReport.findUnique({
-        where: { ulb_id: row.ulb_id },
+        where: {
+          ulb_id: parseInt(row.ulb_id, 10), // Ensure ulb_id is an integer
+        },
       });
 
       if (existingRecord) {
         await prisma.financialSummaryReport.update({
-          where: { ulb_id: row.ulb_id },
+          where: { ulb_id: parseInt(row.ulb_id, 10) }, // Ensure ulb_id is an integer
           data: {
             ulb_name: row.ulb_name,
             approved_schemes: parseInt(row.approved_schemes, 10),
@@ -64,7 +66,7 @@ const getFinancialSummaryReport = async (req, res) => {
       } else {
         await prisma.financialSummaryReport.create({
           data: {
-            ulb_id: row.ulb_id,
+            ulb_id: parseInt(row.ulb_id, 10), // Ensure ulb_id is an integer
             ulb_name: row.ulb_name,
             approved_schemes: parseInt(row.approved_schemes, 10),
             fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
