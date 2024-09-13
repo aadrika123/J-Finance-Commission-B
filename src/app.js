@@ -1,6 +1,6 @@
 const express = require("express");
 const logger = require("./utils/log/logger");
-// const requestLogger = require("./middlewares/loggerMiddleware");
+const requestLogger = require("./middlewares/auditLogMiddleware");
 const { connectToDatabase } = require("./lib/database/db");
 const testRoute = require("./component/routes/testRoute");
 const resourceRoutes = require("./component/routes/resource/resourceRoutes");
@@ -12,11 +12,11 @@ const financialSummaryRoute = require("./component/routes/financialSummaryReport
 const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 9000;
 
 app.use(cors());
 
-// app.use(requestLogger);
+app.use(requestLogger);
 
 app.get("/", (req, res) => {
   logger.info("Home route accessed");
