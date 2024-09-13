@@ -128,10 +128,13 @@ const updateFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`);
+    // Ensure ulb_id is an integer
+    const ulbIdInt = parseInt(ulb_id, 10);
+
+    logger.info(`Updating financial summary report for ULB ID: ${ulbIdInt}`);
 
     const updatedReport = await updateFinancialSummary({
-      ulb_id,
+      ulb_id: ulbIdInt, // Pass integer ulb_id
       financial_year,
       first_instalment,
       second_instalment,
@@ -140,7 +143,7 @@ const updateFinancialSummaryReport = async (req, res) => {
     });
 
     logger.info(
-      `Financial summary report updated successfully for ULB ID: ${ulb_id}`
+      `Financial summary report updated successfully for ULB ID: ${ulbIdInt}`
     );
 
     res.status(200).json({

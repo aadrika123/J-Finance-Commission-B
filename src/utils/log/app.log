@@ -1739,3 +1739,328 @@
   level: 'info',
   timestamp: '2024-09-13 12:33:14'
 }
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-13 12:53:13'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /financial-summary?city_type=Urban&grant_type=Central, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 12:53:16'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /financial-summary?city_type=urban&grant_type=central, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 12:55:22'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 12:55:31'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary?city_type=Urban&grant_type=Central, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 12:56:54'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 12:56:54'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 12:56:54'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 12:56:54'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary?city_type=Urban&grant_type=Central, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:10'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:10'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:10'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:10'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:37'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:37'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:37'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 12:59:37'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:00:31'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-13 13:00:31'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 12,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-13 13:00:32'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:01:42'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-13 13:01:42'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-13 13:01:42'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:04:38'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-13 13:04:38'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Ranchi Municipal Corporation',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-13 13:04:38'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary?grant_type=Tied, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:06:32'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 13:06:32'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 13:06:32'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 13:06:32'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-13 13:09:10'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:09:13'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:09:13'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:09:13'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:10:43'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:10:43'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:10:43'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-13 13:16:00'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:16:20'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:16:20'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:16:20'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/scheme-info, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:18:34'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-13 13:18:34'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-13 13:18:34'
+}
+{
+  message: 'Method: GET, HTTP Version: 1.1, URL: /api/financial-summary, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:18:51'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 13:18:51'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 13:18:51'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 13:18:51'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:19:36'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-13 13:19:36'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-13 13:19:36'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:21:06'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:21:06'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 13:21:06'
+}
+{
+  message: 'Method: POST, HTTP Version: 1.1, URL: /api/financial-summary/update, IP: ::ffff:127.0.0.1',
+  level: 'info',
+  timestamp: '2024-09-13 13:21:31'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-13 13:21:31'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-13 13:21:31'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-13 15:15:06'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 15:15:15'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:15:15'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:15:15'
+}
+{
+  message: 'Server started on port: http://localhost:3000',
+  level: 'info',
+  timestamp: '2024-09-13 15:20:44'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 15:21:01'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 15:21:01'
+}
