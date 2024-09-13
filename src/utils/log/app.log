@@ -2391,3 +2391,23 @@
   message: 'ULBs fetched successfully',
   timestamp: '2024-09-13 17:51:43'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 18:00:36'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 18:00:44'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 18:00:45'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 18:00:45'
+}
