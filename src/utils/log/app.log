@@ -2064,3 +2064,330 @@
   message: 'ULBs fetched successfully',
   timestamp: '2024-09-13 15:21:01'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 15:30:43'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 15:36:39'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 15:36:39'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 15:39:17'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:39:17'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:39:17'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 15:39:57'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:39:57'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:39:57'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 15:59:05'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:59:05'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:59:06'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 15:59:16'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:59:16'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 15:59:16'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 16:02:14'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 16:02:14'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 16:03:04'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 16:03:24'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 16:03:24'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 16:03:55'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 16:03:55'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 16:05:45'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 16:05:45'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 16:07:22'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 16:20:33'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 16:20:35'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 16:20:35'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 16:27:26'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-13 16:27:49'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-13 16:27:49'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 16:28:24'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 16:28:25'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 16:28:25'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 16:31:48'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 16:56:52'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 16:57:03'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 16:57:03'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 16:57:03'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 16:57:37'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-13 16:57:37'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-13 16:58:05'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-13 16:58:05'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 16:58:21'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 16:58:21'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 16:58:21'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:01:07'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:34:00'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:39:11'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:41:46'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 17:41:58'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 17:41:58'
+}
+{
+  message: "Error fetching financial summary report: Cannot read properties of undefined (reading 'id')",
+  level: 'info',
+  timestamp: '2024-09-13 17:41:58'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:45:39'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 17:45:47'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 17:45:47'
+}
+{
+  message: "Error fetching financial summary report: Cannot read properties of undefined (reading 'id')",
+  level: 'info',
+  timestamp: '2024-09-13 17:45:47'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:49:24'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-13 17:49:33'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-13 17:49:33'
+}
+{
+  message: "Error fetching financial summary report: Cannot read properties of undefined (reading 'id')",
+  level: 'error',
+  timestamp: '2024-09-13 17:49:33'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-13 17:51:41'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-13 17:51:43'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-13 17:51:43'
+}

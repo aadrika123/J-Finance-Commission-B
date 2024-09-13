@@ -5,12 +5,14 @@ const {
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
 const prisma = new PrismaClient();
+const createAuditLog = require("../../../utils/auditLog/auditLogger");
 
 const getFinancialSummaryReport = async (req, res) => {
   try {
     logger.info("Fetching financial summary report...");
     const { city_type, grant_type, sector, financial_year } = req.query;
 
+    // Fetch the report based on query parameters
     const report = await fetchFinancialSummaryReport(
       city_type,
       grant_type,
@@ -31,15 +33,16 @@ const getFinancialSummaryReport = async (req, res) => {
 
     // Update or insert the report in FinancialSummaryReport table
     for (const row of result) {
+      const ulbId = parseInt(row.ulb_id, 10); // Ensure ulb_id is an integer
+
       const existingRecord = await prisma.financialSummaryReport.findUnique({
-        where: {
-          ulb_id: parseInt(row.ulb_id, 10), // Ensure ulb_id is an integer
-        },
+        where: { ulb_id: ulbId },
       });
 
       if (existingRecord) {
+        // If the record exists, update it
         await prisma.financialSummaryReport.update({
-          where: { ulb_id: parseInt(row.ulb_id, 10) }, // Ensure ulb_id is an integer
+          where: { ulb_id: ulbId },
           data: {
             ulb_name: row.ulb_name,
             approved_schemes: parseInt(row.approved_schemes, 10),
@@ -56,17 +59,31 @@ const getFinancialSummaryReport = async (req, res) => {
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
-            financial_year: null,
-            first_instalment: null,
-            second_instalment: null,
-            interest_amount: null,
-            grant_type: null,
+            financial_year:
+              existingRecord.financial_year || row.financial_year || null,
+            first_instalment:
+              existingRecord.first_instalment || row.first_instalment || null,
+            second_instalment:
+              existingRecord.second_instalment || row.second_instalment || null,
+            interest_amount:
+              existingRecord.interest_amount || row.interest_amount || null,
+            grant_type: existingRecord.grant_type || row.grant_type || null,
           },
         });
+
+        // Create an audit log entry for the update
+        await createAuditLog(
+          req.user.id, // User ID
+          "update", // Action type
+          "FinancialSummaryReport", // Table name
+          ulbId, // Record ID (ulb_id)
+          row // Changed data
+        );
       } else {
+        // If the record does not exist, create a new one
         await prisma.financialSummaryReport.create({
           data: {
-            ulb_id: parseInt(row.ulb_id, 10), // Ensure ulb_id is an integer
+            ulb_id: ulbId,
             ulb_name: row.ulb_name,
             approved_schemes: parseInt(row.approved_schemes, 10),
             fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
@@ -82,13 +99,22 @@ const getFinancialSummaryReport = async (req, res) => {
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
-            financial_year: null,
-            first_instalment: null,
-            second_instalment: null,
-            interest_amount: null,
-            grant_type: null,
+            financial_year: row.financial_year || null,
+            first_instalment: row.first_instalment || null,
+            second_instalment: row.second_instalment || null,
+            interest_amount: row.interest_amount || null,
+            grant_type: row.grant_type || null,
           },
         });
+
+        // Create an audit log entry for the creation
+        await createAuditLog(
+          req.user.id, // User ID
+          "create", // Action type
+          "FinancialSummaryReport", // Table name
+          ulbId, // Record ID (ulb_id)
+          row // Changed data
+        );
       }
     }
 
@@ -99,7 +125,7 @@ const getFinancialSummaryReport = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    logger.info(`Error fetching financial summary report: ${error.message}`);
+    logger.error(`Error fetching financial summary report: ${error.message}`);
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
@@ -128,19 +154,27 @@ const updateFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Ensure ulb_id is an integer
-    const ulbIdInt = parseInt(ulb_id, 10);
+    const ulbIdInt = parseInt(ulb_id, 10); // Ensure ulb_id is an integer
 
     logger.info(`Updating financial summary report for ULB ID: ${ulbIdInt}`);
 
     const updatedReport = await updateFinancialSummary({
-      ulb_id: ulbIdInt, // Pass integer ulb_id
+      ulb_id: ulbIdInt,
       financial_year,
       first_instalment,
       second_instalment,
       interest_amount,
       grant_type,
     });
+
+    // Create an audit log entry for the update
+    await createAuditLog(
+      req.user.id, // User ID
+      "update", // Action type
+      "FinancialSummaryReport", // Table name
+      ulbIdInt, // Record ID (ulb_id)
+      req.body // Changed data
+    );
 
     logger.info(
       `Financial summary report updated successfully for ULB ID: ${ulbIdInt}`
@@ -152,7 +186,7 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: updatedReport,
     });
   } catch (error) {
-    logger.info(`Error updating financial summary report: ${error.message}`);
+    logger.error(`Error updating financial summary report: ${error.message}`);
     if (error.code === "P2025") {
       res.status(404).json({
         status: false,

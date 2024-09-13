@@ -5,6 +5,8 @@ const getULBs = async (req, res) => {
   try {
     logger.info("Fetching ULBs from the database...");
 
+    // console.log(req.body?.auth); to get user data
+
     const ulbs = await ulbDao.getULBs();
 
     // Convert BigInt values to strings if necessary
