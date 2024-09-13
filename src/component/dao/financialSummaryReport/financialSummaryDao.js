@@ -9,9 +9,9 @@ const fetchFinancialSummaryReport = async (
 ) => {
   // Build the query conditionally with parameters
   let query = `
-    SELECT ulb.id AS ulb_id, 
-           ulb.ulb_name, 
-           COUNT(s.scheme_name) AS approved_schemes, 
+    SELECT ulb.id AS ulb_id,
+           ulb.ulb_name,
+           COUNT(s.scheme_name) AS approved_schemes,
            SUM(s.project_cost) AS fund_release_to_ulbs,
            SUM(s.approved_project_cost) AS amount,
            SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
@@ -21,8 +21,8 @@ const fetchFinancialSummaryReport = async (
            SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
            SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
            (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress
-    FROM "ULB" ulb
-    LEFT JOIN "Scheme_info" s ON ulb.ulb_name = s.ulb
+    FROM "Scheme_info" s
+    JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     WHERE 1=1
   `;
 
@@ -46,8 +46,6 @@ const fetchFinancialSummaryReport = async (
   return await prisma.$queryRawUnsafe(query);
 };
 
-// update the financal summary report
-
 const updateFinancialSummary = async ({
   ulb_id,
   financial_year,
@@ -61,7 +59,7 @@ const updateFinancialSummary = async ({
     const updatedReport = await prisma.financialSummaryReport.update({
       where: { ulb_id }, // Identify by ULB ID
       data: {
-        financial_year: financial_year || null, // Use null if the value is not provided
+        financial_year: financial_year || null,
         first_instalment: first_instalment || null,
         second_instalment: second_instalment || null,
         interest_amount: interest_amount || null,

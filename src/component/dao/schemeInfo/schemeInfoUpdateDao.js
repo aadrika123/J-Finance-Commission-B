@@ -18,7 +18,7 @@ const updateSchemeInfo = async (scheme_id, data) => {
       data.financial_progress_in_percentage;
   if (data.project_completion_status_in_percentage !== undefined)
     updateData.project_completion_status_in_percentage =
-      data.project_completion_status_in_percentage; // Updated field
+      data.project_completion_status_in_percentage;
 
   return await prisma.scheme_info.update({
     where: { scheme_id },
