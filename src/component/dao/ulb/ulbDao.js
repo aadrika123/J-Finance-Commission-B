@@ -36,7 +36,7 @@ const getULBs = async () => {
         FSR.financial_progress_in_percentage, FSR.number_of_tender_floated, 
         FSR.tender_not_floated, FSR.work_in_progress
       ORDER BY 
-        "ULB".id ASC;
+        total_financial_progress ASC;
     `;
 
     return ulbs;

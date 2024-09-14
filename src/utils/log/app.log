@@ -3244,3 +3244,87 @@
   message: 'ULBs fetched successfully',
   timestamp: '2024-09-14 13:34:09'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 13:45:10'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 13:45:14'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 13:45:14'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 13:47:42'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 13:47:53'
+}
+{
+  error: Error: Error fetching ULBs with financial data
+      at Object.getULBs (D:\finance-project-b\finance_backend\src\component\dao\ulb\ulbDao.js:45:11)
+      at async getULBs (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:8:18),
+  level: 'error',
+  message: 'Error fetching ULBs:',
+  timestamp: '2024-09-14 13:47:53'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 13:49:29'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 13:49:37'
+}
+{
+  error: Error: Error fetching ULBs with financial data
+      at Object.getULBs (D:\finance-project-b\finance_backend\src\component\dao\ulb\ulbDao.js:45:11)
+      at async getULBs (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:8:18),
+  level: 'error',
+  message: 'Error fetching ULBs:',
+  timestamp: '2024-09-14 13:49:37'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 13:50:48'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 13:50:54'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 13:50:54'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 13:53:40'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 13:53:46'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 13:53:46'
+}
