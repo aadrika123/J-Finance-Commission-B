@@ -2,25 +2,32 @@ const createAuditLog = require("../utils/auditLog/auditLogger"); // Adjust the p
 
 const auditLogMiddleware = async (req, res, next) => {
   const userId = req.user ? req.user.id : null; // User ID from authentication
-  const tableName = req.tableName; // Table name from route/controller
-  const actionType = req.actionType; // Action type from route/controller
+  const tableName = req.tableName || null; // Table name from route/controller, default to null
+  const actionType = req.actionType || null; // Action type from route/controller, default to null
 
-  // Log req.body and req.params to debug the issue
-  console.log("req.body:", req.body);
-  console.log("req.params:", req.params);
-
-  // Ensure that req.params and req.body are defined before accessing 'id'
-  const recordId = (req.params && req.params.id) || (req.body && req.body.id);
-
-  if (!recordId) {
-    console.log("Record ID is missing.");
-  }
+  // Ensure req.params and req.body are defined
+  const recordId =
+    (req.params && req.params.id) || (req.body && req.body.id) || null; // Record ID from params or body, default to null
 
   if (userId && tableName && actionType && recordId) {
-    const changedData = req.body || {}; // Data to be logged, defaults to empty object if req.body is undefined
-    await createAuditLog(userId, actionType, tableName, recordId, changedData);
+    const changedData = req.body || {}; // Data to be logged, default to empty object
+    try {
+      await createAuditLog(
+        userId,
+        actionType,
+        tableName,
+        recordId,
+        changedData
+      );
+      console.log(
+        `Audit log created for userId: ${userId}, tableName: ${tableName}, actionType: ${actionType}, recordId: ${recordId}`
+      );
+    } catch (error) {
+      console.error(`Failed to create audit log: ${error.message}`);
+    }
   } else {
-    console.log(
+    // Log missing data for debugging
+    console.warn(
       `Missing data in audit log middleware: userId: ${userId}, tableName: ${tableName}, actionType: ${actionType}, recordId: ${recordId}`
     );
   }
