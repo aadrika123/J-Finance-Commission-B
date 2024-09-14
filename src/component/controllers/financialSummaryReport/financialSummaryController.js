@@ -40,26 +40,37 @@ const getFinancialSummaryReport = async (req, res) => {
         await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
-            ulb_name: row.ulb_name,
+            ulb_name: row.ulb_name || existingRecord.ulb_name,
             approved_schemes: parseInt(row.approved_schemes, 10),
-            fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
-            amount: parseFloat(row.amount) || 0,
-            project_completed: parseInt(row.project_completed, 10),
-            expenditure: parseFloat(row.expenditure) || 0,
-            balance_amount: parseFloat(row.balance_amount) || 0,
+            fund_release_to_ulbs:
+              parseFloat(row.fund_release_to_ulbs) ||
+              existingRecord.fund_release_to_ulbs,
+            amount: parseFloat(row.amount) || existingRecord.amount,
+            project_completed:
+              parseInt(row.project_completed, 10) ||
+              existingRecord.project_completed,
+            expenditure:
+              parseFloat(row.expenditure) || existingRecord.expenditure,
+            balance_amount:
+              parseFloat(row.balance_amount) || existingRecord.balance_amount,
             financial_progress_in_percentage:
-              parseInt(row.financial_progress_in_percentage, 10) || 0,
-            number_of_tender_floated: parseInt(
-              row.number_of_tender_floated,
-              10
-            ),
-            tender_not_floated: parseInt(row.tender_not_floated, 10),
-            work_in_progress: parseInt(row.work_in_progress, 10),
-            financial_year: null,
-            first_instalment: null,
-            second_instalment: null,
-            interest_amount: null,
-            grant_type: null,
+              parseInt(row.financial_progress_in_percentage, 10) ||
+              existingRecord.financial_progress_in_percentage,
+            number_of_tender_floated:
+              parseInt(row.number_of_tender_floated, 10) ||
+              existingRecord.number_of_tender_floated,
+            tender_not_floated:
+              parseInt(row.tender_not_floated, 10) ||
+              existingRecord.tender_not_floated,
+            work_in_progress:
+              parseInt(row.work_in_progress, 10) ||
+              existingRecord.work_in_progress,
+            // Preserve previous financial data if it exists
+            financial_year: existingRecord.financial_year,
+            first_instalment: existingRecord.first_instalment,
+            second_instalment: existingRecord.second_instalment,
+            interest_amount: existingRecord.interest_amount,
+            grant_type: existingRecord.grant_type,
           },
         });
       } else {
@@ -81,6 +92,7 @@ const getFinancialSummaryReport = async (req, res) => {
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
+            // Set financial data to null for new records
             financial_year: null,
             first_instalment: null,
             second_instalment: null,
