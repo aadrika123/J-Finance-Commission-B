@@ -168,47 +168,33 @@ const updateFinancialSummaryReport = async (req, res) => {
 // get updated financil summary report
 
 const getUpdatedFinancialSummaryReport = async (req, res) => {
-  const { ulb_id } = req.query;
-
   try {
-    if (!ulb_id) {
-      logger.info("ULB ID is missing in the request.");
-      return res.status(400).json({
-        status: false,
-        message: "ULB ID is required",
-      });
-    }
+    logger.info("Fetching updated financial summary reports...");
 
-    logger.info(
-      `Fetching updated financial summary report for ULB ID: ${ulb_id}`
-    );
+    // Fetch updated financial summaries from the database
+    const reports = await fetchUpdatedFinancialSummary();
 
-    // Fetch the financial summary from the database
-    const report = await fetchUpdatedFinancialSummary(ulb_id);
-
-    if (!report) {
+    if (!reports || reports.length === 0) {
       return res.status(404).json({
         status: false,
-        message: "Financial summary report not found",
+        message: "No updated financial summary reports found",
       });
     }
 
-    logger.info(
-      `Financial summary report fetched successfully for ULB ID: ${ulb_id}`
-    );
+    logger.info("Updated financial summary reports fetched successfully.");
 
     res.status(200).json({
       status: true,
-      message: "Financial summary report fetched successfully",
-      data: report,
+      message: "Updated financial summary reports fetched successfully",
+      data: reports,
     });
   } catch (error) {
     logger.info(
-      `Error fetching updated financial summary report: ${error.message}`
+      `Error fetching updated financial summary reports: ${error.message}`
     );
     res.status(500).json({
       status: false,
-      message: "Failed to fetch updated financial summary report",
+      message: "Failed to fetch updated financial summary reports",
       error: error.message,
     });
   }

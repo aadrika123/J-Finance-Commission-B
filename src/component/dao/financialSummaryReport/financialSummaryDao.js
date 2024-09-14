@@ -78,16 +78,22 @@ const updateFinancialSummary = async ({
 
 const fetchUpdatedFinancialSummary = async (ulb_id) => {
   try {
-    // Fetch the financial summary report based on ULB ID
-    const report = await prisma.financialSummaryReport.findUnique({
+    // Fetch only records where any of the fields are updated (not null)
+    const reports = await prisma.financialSummaryReport.findMany({
       where: {
-        ulb_id: parseInt(ulb_id, 10),
+        OR: [
+          { financial_year: { not: null } },
+          { first_instalment: { not: null } },
+          { second_instalment: { not: null } },
+          { interest_amount: { not: null } },
+          { grant_type: { not: null } },
+        ],
       },
     });
 
-    return report;
+    return reports;
   } catch (error) {
-    console.error("Error fetching updated financial summary:", error);
+    console.error("Error fetching updated financial summaries:", error);
     throw error;
   }
 };

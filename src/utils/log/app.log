@@ -2855,3 +2855,123 @@
   level: 'info',
   timestamp: '2024-09-14 11:38:21'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:43:59'
+}
+{
+  message: 'ULB ID is missing in the request.',
+  level: 'info',
+  timestamp: '2024-09-14 11:44:01'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:49:38'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:49:38'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 11:49:44'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 11:49:44'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 11:49:49'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 11:49:49'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 11:50:09'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:50:09'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:50:09'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:54:16'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:54:54'
+}
+{
+  message: 'ULB ID is missing in the request.',
+  level: 'info',
+  timestamp: '2024-09-14 11:55:18'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:55:46'
+}
+{
+  message: 'ULB ID is missing in the request.',
+  level: 'info',
+  timestamp: '2024-09-14 11:56:10'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:57:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:59:21'
+}
+{
+  message: 'Fetching all financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-14 11:59:28'
+}
+{
+  message: 'Financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:59:28'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:02:11'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:03:06'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-14 12:03:14'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 12:03:14'
+}
