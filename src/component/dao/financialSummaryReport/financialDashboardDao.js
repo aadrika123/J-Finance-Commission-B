@@ -19,7 +19,7 @@ const getFilteredFinancialSummary = async (filters) => {
         "Scheme_info".city_type
       FROM 
         "FinancialSummaryReport"
-      LEFT JOIN 
+      INNER JOIN 
         "Scheme_info"
       ON 
         "FinancialSummaryReport".ulb_name = "Scheme_info".ulb
