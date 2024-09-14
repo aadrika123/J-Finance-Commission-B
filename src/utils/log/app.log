@@ -3328,3 +3328,141 @@
   message: 'ULBs fetched successfully',
   timestamp: '2024-09-14 13:53:46'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 14:00:04'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 14:00:07'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 14:00:07'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 14:00:07'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 14:01:58'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 14:09:06'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 14:09:11'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 14:09:11'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 15:21:16'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 15:22:36'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 15:22:36'
+}
+{
+  message: 'Fetching ULBs and Schemes from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 15:22:51'
+}
+{
+  total_records: 44,
+  level: 'info',
+  message: 'Data fetched successfully',
+  timestamp: '2024-09-14 15:22:51'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 15:27:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 15:28:02'
+}
+{
+  message: 'Fetching schemes ordered by financial progress...',
+  level: 'info',
+  timestamp: '2024-09-14 15:28:20'
+}
+{
+  error: ReferenceError: schemeDao is not defined
+      at getULBsAndSchemes (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:53:21)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3)
+      at router (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:47:12),
+  level: 'error',
+  message: 'Error fetching schemes:',
+  timestamp: '2024-09-14 15:28:20'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 15:31:52'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 15:32:14'
+}
+{
+  message: 'Fetching ULBs and Schemes from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 15:32:22'
+}
+{
+  error: Error: Error fetching ULB and scheme data
+      at Object.getULBsAndSchemes (D:\finance-project-b\finance_backend\src\component\dao\ulb\ulbDao.js:68:11)
+      at async getULBsAndSchemes (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:53:18),
+  level: 'error',
+  message: 'Error fetching data:',
+  timestamp: '2024-09-14 15:32:22'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 15:33:58'
+}
+{
+  message: 'Fetching ULBs and Schemes from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 15:34:04'
+}
+{
+  total_records: 3,
+  level: 'info',
+  message: 'Data fetched successfully',
+  timestamp: '2024-09-14 15:34:05'
+}
