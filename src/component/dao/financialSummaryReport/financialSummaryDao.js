@@ -74,7 +74,26 @@ const updateFinancialSummary = async ({
   }
 };
 
+// fetch uppdated financial summary report
+
+const fetchUpdatedFinancialSummary = async (ulb_id) => {
+  try {
+    // Fetch the financial summary report based on ULB ID
+    const report = await prisma.financialSummaryReport.findUnique({
+      where: {
+        ulb_id: parseInt(ulb_id, 10),
+      },
+    });
+
+    return report;
+  } catch (error) {
+    console.error("Error fetching updated financial summary:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   fetchFinancialSummaryReport,
   updateFinancialSummary,
+  fetchUpdatedFinancialSummary,
 };

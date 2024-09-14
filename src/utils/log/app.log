@@ -2506,3 +2506,352 @@
   level: 'info',
   timestamp: '2024-09-13 18:44:44'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 10:17:14'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 10:18:02'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 10:18:03'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 10:18:04'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 10:22:52'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 10:22:52'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 10:23:45'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 10:24:07'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 10:24:07'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 10:28:17'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 10:28:17'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 10:31:16'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 10:31:16'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 10:31:54'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 10:32:00'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 10:32:00'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:14:27'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:14:29'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:14:29'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:20:56'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:22:49'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:23:31'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:26:12'
+}
+{
+  message: 'Error fetching updated financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:82:56\n' +
+    '\n' +
+    '  79 const fetchUpdatedFinancialSummary = async (ulb_id) => {\n' +
+    '  80   try {\n' +
+    '  81     // Fetch the financial summary report based on ULB ID\n' +
+    '→ 82     const report = await prisma.financialSummaryReport.findUnique({\n' +
+    '           where: {\n' +
+    '             ulb_id: "1"\n' +
+    '                     ~~~\n' +
+    '           }\n' +
+    '         })\n' +
+    '\n' +
+    'Argument `ulb_id`: Invalid value provided. Expected Int, provided String.',
+  level: 'info',
+  timestamp: '2024-09-14 11:26:12'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 11:28:36'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 11:28:36'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 11:28:47'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 11:28:47'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:28:53'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:28:53'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 5',
+  level: 'info',
+  timestamp: '2024-09-14 11:29:00'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 5',
+  level: 'info',
+  timestamp: '2024-09-14 11:29:00'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 11:29:08'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:29:08'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:29:08'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 11:32:40'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:32:59'
+}
+{
+  message: 'Financial summary report fetched successfully for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:32:59'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:33:07'
+}
+{
+  message: 'Financial summary report fetched successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:33:07'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 6',
+  level: 'info',
+  timestamp: '2024-09-14 11:33:46'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 6',
+  level: 'info',
+  timestamp: '2024-09-14 11:33:46'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 7',
+  level: 'info',
+  timestamp: '2024-09-14 11:33:53'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 7',
+  level: 'info',
+  timestamp: '2024-09-14 11:33:53'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 7',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:05'
+}
+{
+  message: 'Financial summary report fetched successfully for ULB ID: 7',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:05'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:14'
+}
+{
+  message: 'Financial summary report fetched successfully for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:14'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:28'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:28'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:28'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:49'
+}
+{
+  message: 'Financial summary report fetched successfully for ULB ID: 4',
+  level: 'info',
+  timestamp: '2024-09-14 11:34:49'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:35:27'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 11:35:27'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 11:35:33'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 11:35:33'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 11:35:40'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 11:35:40'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 8',
+  level: 'info',
+  timestamp: '2024-09-14 11:36:11'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 8',
+  level: 'info',
+  timestamp: '2024-09-14 11:36:11'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 11:36:39'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:36:39'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 11:36:39'
+}
+{
+  message: 'Fetching updated financial summary report for ULB ID: 5',
+  level: 'info',
+  timestamp: '2024-09-14 11:38:21'
+}
+{
+  message: 'Financial summary report fetched successfully for ULB ID: 5',
+  level: 'info',
+  timestamp: '2024-09-14 11:38:21'
+}
