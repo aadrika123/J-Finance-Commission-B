@@ -2975,3 +2975,211 @@
   level: 'info',
   timestamp: '2024-09-14 12:03:14'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:11:19'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 12:11:31'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'id')
+      at getULBs (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:8:31)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3)
+      at router (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:47:12),
+  level: 'error',
+  message: 'Error fetching ULBs:',
+  timestamp: '2024-09-14 12:11:31'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-14 12:13:48'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 12:13:48'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-14 12:14:34'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 14,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-14 12:14:35'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:16:43'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 12:16:55'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'id')
+      at getULBs (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:8:31)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3)
+      at router (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:47:12),
+  level: 'error',
+  message: 'Error fetching ULBs:',
+  timestamp: '2024-09-14 12:16:55'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-14 12:17:31'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 12:17:31'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 12:17:43'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 12:17:43'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 12:18:07'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 12:18:07'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 12:19:42'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'id')
+      at getULBs (D:\finance-project-b\finance_backend\src\component\controllers\ulb\ulbController.js:8:31)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3)
+      at router (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:47:12),
+  level: 'error',
+  message: 'Error fetching ULBs:',
+  timestamp: '2024-09-14 12:19:42'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:21:56'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-14 12:22:12'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-14 12:22:12'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:24:10'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:24:17'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:24:32'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:24'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:45'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:45'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:51'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:51'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:56'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-14 12:42:56'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 12:43:17'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 12:43:17'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 12:43:17'
+}
