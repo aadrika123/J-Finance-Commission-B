@@ -59,7 +59,7 @@ const getULBsAndSchemes = async () => {
       WHERE
         "Scheme_info".financial_progress IS NOT NULL
       ORDER BY 
-        "ULB".id ASC;
+        financial_progress_schemeinfo desc;
     `;
 
     return result;

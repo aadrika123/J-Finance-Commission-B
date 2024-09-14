@@ -8,6 +8,7 @@ const ulbRoutes = require("./component/routes/ulb/ulbRoutes");
 const schemeInfoRoutes = require("./component/routes/schemeInfo/schemeInfoRoutes");
 const schemeInfoUpdateRoutes = require("./component/routes/schemeInfo/schemeInfoUpdateRoutes");
 const financialSummaryRoute = require("./component/routes/financialSummaryReport/financialSummaryRoute");
+const financialRoutes = require("./component/routes/financialSummaryReport/financialDashboardRoute");
 
 const cors = require("cors");
 
@@ -30,6 +31,7 @@ app.use("/api/sudafc", ulbRoutes);
 app.use("/api/sudafc", schemeInfoRoutes);
 app.use("/api/sudafc", schemeInfoUpdateRoutes);
 app.use("/api/sudafc", financialSummaryRoute);
+app.use("/api/sudafc", financialRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: http://localhost:${PORT}`);
