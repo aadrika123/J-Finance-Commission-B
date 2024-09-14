@@ -3526,3 +3526,354 @@
   level: 'info',
   timestamp: '2024-09-14 17:08:11'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:23:00'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-14 17:23:31'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 17:23:31'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-14 17:23:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:25:42'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:26:05'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:53:11)
+      at getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:49)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:26:05'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:28:03'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:28:12'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:53:11)
+      at async getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:30),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:28:12'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:28:44'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:28:50'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:47:11)
+      at async getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:30),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:28:50'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:30:25'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:30:32'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:47:11)
+      at async getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:30),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:30:32'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:31:06'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:31:10'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:50:11)
+      at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+      at async getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:30),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:31:10'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:32:19'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:32:25'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:55:11)
+      at async getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:30),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:32:25'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:34:04'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:34:15'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:49:11)
+      at getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:49)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:34:15'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:35:44'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:35:52'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:49:11)
+      at getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:49)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:35:52'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:36:22'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 17:37:49'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 17:37:53'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:47:11)
+      at getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:49)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 17:37:53'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:00:35'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 18:01:33'
+}
+{
+  error: Error: Error fetching financial summary data
+      at Object.getFilteredFinancialSummary (D:\finance-project-b\finance_backend\src\component\dao\financialSummaryReport\financialDashboardDao.js:47:11)
+      at getFinancialSummary (D:\finance-project-b\finance_backend\src\component\controllers\financialSummaryReport\financialDashboardController.js:22:49)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:149:13)
+      at Route.dispatch (D:\finance-project-b\finance_backend\node_modules\express\lib\router\route.js:119:3)
+      at Layer.handle [as handle_request] (D:\finance-project-b\finance_backend\node_modules\express\lib\router\layer.js:95:5)
+      at D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:284:15
+      at Function.process_params (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:346:12)
+      at next (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:280:10)
+      at Function.handle (D:\finance-project-b\finance_backend\node_modules\express\lib\router\index.js:175:3),
+  level: 'error',
+  message: 'Error fetching financial summary:',
+  timestamp: '2024-09-14 18:01:33'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:03:40'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 18:04:04'
+}
+{
+  total_records: 2,
+  level: 'info',
+  message: 'Financial summary fetched successfully',
+  timestamp: '2024-09-14 18:04:04'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:09:44'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:12:38'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:15:19'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:16:07'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-14 18:16:49'
+}
+{
+  total_records: 2,
+  level: 'info',
+  message: 'Financial summary fetched successfully',
+  timestamp: '2024-09-14 18:16:49'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:35:54'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-14 18:36:11'
+}
