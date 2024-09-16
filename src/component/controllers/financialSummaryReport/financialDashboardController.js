@@ -12,6 +12,9 @@ const convertBigIntToString = (obj) => {
 };
 
 const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+  const userId = req.body?.auth?.id || null; // Get user ID from request
+
   try {
     const { ulb_name, grant_type, financial_year, sector } = req.query;
 
@@ -22,10 +25,23 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
       sector,
     };
 
+    logger.info("Fetching financial summary for Million Plus Cities...", {
+      userId,
+      action: "FETCH_FINANCIAL_SUMMARY_MILLION_PLUS",
+      ip: clientIp,
+      filters,
+    });
+
     const financialSummary =
       await financialDao.fetchFinancialSummaryReportMillionPlus(filters);
 
     if (!financialSummary || financialSummary.length === 0) {
+      logger.warn("No financial summary data found for Million Plus Cities.", {
+        userId,
+        action: "FETCH_FINANCIAL_SUMMARY_MILLION_PLUS",
+        ip: clientIp,
+        filters,
+      });
       return res.status(404).json({
         status: false,
         message: "No financial summary data found",
@@ -38,15 +54,19 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
     );
 
     // Audit Log for fetching Million Plus Cities data
-    await createAuditLog(
-      req.body?.auth?.id,
-      "FETCH",
-      "FinancialSummaryReport",
-      null,
+    await createAuditLog(userId, "FETCH", "FinancialSummaryReport", null, {
+      actionDetails: `Fetched financial summary for Million Plus Cities with filters: ${JSON.stringify(
+        filters
+      )}`,
+    });
+
+    logger.info(
+      "Financial summary for Million Plus Cities fetched successfully.",
       {
-        actionDetails: `Fetched financial summary for Million Plus Cities with filters: ${JSON.stringify(
-          filters
-        )}`,
+        userId,
+        action: "FETCH_FINANCIAL_SUMMARY_MILLION_PLUS",
+        ip: clientIp,
+        resultCount: sanitizedData.length,
       }
     );
 
@@ -56,7 +76,15 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
       data: sanitizedData,
     });
   } catch (error) {
-    console.error("Error fetching financial summary data:", error);
+    logger.error(
+      `Error fetching financial summary for Million Plus Cities: ${error.message}`,
+      {
+        userId,
+        action: "FETCH_FINANCIAL_SUMMARY_MILLION_PLUS",
+        ip: clientIp,
+        error: error.message,
+      }
+    );
     res.status(500).json({
       status: false,
       message: "Error fetching financial summary",
@@ -66,9 +94,12 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
 };
 
 const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
-  const { ulb_name, grant_type, financial_year, sector } = req.query;
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+  const userId = req.body?.auth?.id || null; // Get user ID from request
 
   try {
+    const { ulb_name, grant_type, financial_year, sector } = req.query;
+
     const filters = {
       ulb_name,
       grant_type,
@@ -76,10 +107,26 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
       sector,
     };
 
+    logger.info("Fetching financial summary for Non-Million Plus Cities...", {
+      userId,
+      action: "FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS",
+      ip: clientIp,
+      filters,
+    });
+
     const financialSummary =
       await financialDao.fetchFinancialSummaryReportNonMillionPlus(filters);
 
     if (!financialSummary || financialSummary.length === 0) {
+      logger.warn(
+        "No financial summary data found for Non-Million Plus Cities.",
+        {
+          userId,
+          action: "FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS",
+          ip: clientIp,
+          filters,
+        }
+      );
       return res.status(404).json({
         status: false,
         message: "No financial summary data found",
@@ -92,15 +139,19 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
     );
 
     // Audit Log for fetching Non-Million Plus Cities data
-    await createAuditLog(
-      req.body?.auth?.id,
-      "FETCH",
-      "FinancialSummaryReport",
-      null,
+    await createAuditLog(userId, "FETCH", "FinancialSummaryReport", null, {
+      actionDetails: `Fetched financial summary for Non-Million Plus Cities with filters: ${JSON.stringify(
+        filters
+      )}`,
+    });
+
+    logger.info(
+      "Financial summary for Non-Million Plus Cities fetched successfully.",
       {
-        actionDetails: `Fetched financial summary for Non-Million Plus Cities with filters: ${JSON.stringify(
-          filters
-        )}`,
+        userId,
+        action: "FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS",
+        ip: clientIp,
+        resultCount: sanitizedData.length,
       }
     );
 
@@ -110,7 +161,15 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
       data: sanitizedData,
     });
   } catch (error) {
-    console.error("Error fetching financial summary data:", error);
+    logger.error(
+      `Error fetching financial summary for Non-Million Plus Cities: ${error.message}`,
+      {
+        userId,
+        action: "FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS",
+        ip: clientIp,
+        error: error.message,
+      }
+    );
     res.status(500).json({
       status: false,
       message: "Error fetching financial summary data",
