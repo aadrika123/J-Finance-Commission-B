@@ -22,12 +22,25 @@ const getFinancialSummaryReport = async (req, res) => {
     logger.info("Financial summary report fetched successfully.");
 
     const result = report.map((row) => {
-      return Object.fromEntries(
-        Object.entries(row).map(([key, value]) => [
-          key,
-          typeof value === "bigint" ? value.toString() : value,
-        ])
-      );
+      return {
+        ...row,
+        financial_year:
+          row.financial_year !== undefined ? row.financial_year : null,
+        first_instalment:
+          row.first_instalment !== undefined ? row.first_instalment : null,
+        second_instalment:
+          row.second_instalment !== undefined ? row.second_instalment : null,
+        interest_amount:
+          row.interest_amount !== undefined ? row.interest_amount : null,
+        grant_type: row.grant_type !== undefined ? row.grant_type : null,
+        // Convert BigInt to string if needed
+        ...Object.fromEntries(
+          Object.entries(row).map(([key, value]) => [
+            key,
+            typeof value === "bigint" ? value.toString() : value,
+          ])
+        ),
+      };
     });
 
     // Update or insert the report in FinancialSummaryReport table
@@ -65,12 +78,26 @@ const getFinancialSummaryReport = async (req, res) => {
             work_in_progress:
               parseInt(row.work_in_progress, 10) ||
               existingRecord.work_in_progress,
-            // Preserve previous financial data if it exists
-            financial_year: existingRecord.financial_year,
-            first_instalment: existingRecord.first_instalment,
-            second_instalment: existingRecord.second_instalment,
-            interest_amount: existingRecord.interest_amount,
-            grant_type: existingRecord.grant_type,
+            financial_year:
+              row.financial_year !== undefined
+                ? row.financial_year
+                : existingRecord.financial_year,
+            first_instalment:
+              row.first_instalment !== undefined
+                ? row.first_instalment
+                : existingRecord.first_instalment,
+            second_instalment:
+              row.second_instalment !== undefined
+                ? row.second_instalment
+                : existingRecord.second_instalment,
+            interest_amount:
+              row.interest_amount !== undefined
+                ? row.interest_amount
+                : existingRecord.interest_amount,
+            grant_type:
+              row.grant_type !== undefined
+                ? row.grant_type
+                : existingRecord.grant_type,
           },
         });
       } else {
@@ -92,12 +119,17 @@ const getFinancialSummaryReport = async (req, res) => {
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
-            // Set financial data to null for new records
-            financial_year: null,
-            first_instalment: null,
-            second_instalment: null,
-            interest_amount: null,
-            grant_type: null,
+            financial_year:
+              row.financial_year !== undefined ? row.financial_year : null,
+            first_instalment:
+              row.first_instalment !== undefined ? row.first_instalment : null,
+            second_instalment:
+              row.second_instalment !== undefined
+                ? row.second_instalment
+                : null,
+            interest_amount:
+              row.interest_amount !== undefined ? row.interest_amount : null,
+            grant_type: row.grant_type !== undefined ? row.grant_type : null,
           },
         });
       }
@@ -110,7 +142,7 @@ const getFinancialSummaryReport = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    logger.info(`Error fetching financial summary report: ${error.message}`);
+    logger.error(`Error fetching financial summary report: ${error.message}`);
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
