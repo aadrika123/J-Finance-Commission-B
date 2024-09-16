@@ -9,8 +9,17 @@ const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import
 const prisma = new PrismaClient();
 
 const getFinancialSummaryReport = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+  const userId = req.body?.auth?.id || null; // Get user ID from request
+
   try {
-    logger.info("Fetching financial summary report...");
+    logger.info("Fetching financial summary report...", {
+      userId,
+      action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      query: req.query,
+    });
+
     const { city_type, grant_type, sector, financial_year } = req.query;
 
     const report = await fetchFinancialSummaryReport(
@@ -20,7 +29,12 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
-    logger.info("Financial summary report fetched successfully.");
+    logger.info("Financial summary report fetched successfully.", {
+      userId,
+      action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      reportSummary: report.length,
+    });
 
     const result = report.map((row) => {
       return {
@@ -102,7 +116,7 @@ const getFinancialSummaryReport = async (req, res) => {
 
         // Audit Log for Update
         await createAuditLog(
-          req.body?.auth?.id,
+          userId,
           "UPDATE",
           "FinancialSummaryReport",
           row.ulb_id,
@@ -146,7 +160,7 @@ const getFinancialSummaryReport = async (req, res) => {
 
         // Audit Log for Create
         await createAuditLog(
-          req.body?.auth?.id,
+          userId,
           "CREATE",
           "FinancialSummaryReport",
           row.ulb_id,
@@ -157,14 +171,25 @@ const getFinancialSummaryReport = async (req, res) => {
       }
     }
 
-    logger.info("Financial summary report processed successfully.");
+    logger.info("Financial summary report processed successfully.", {
+      userId,
+      action: "PROCESS_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      resultCount: result.length,
+    });
+
     res.status(200).json({
       status: true,
       message: "Financial summary report fetched and stored successfully",
       data: result,
     });
   } catch (error) {
-    logger.error(`Error fetching financial summary report: ${error.message}`);
+    logger.error(`Error fetching financial summary report: ${error.message}`, {
+      userId,
+      action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      error: error.message,
+    });
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
@@ -175,6 +200,9 @@ const getFinancialSummaryReport = async (req, res) => {
 
 // Update the financial summary report
 const updateFinancialSummaryReport = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+  const userId = req.body?.auth?.id || null; // Get user ID from request
+
   const {
     ulb_id,
     financial_year,
@@ -186,14 +214,23 @@ const updateFinancialSummaryReport = async (req, res) => {
 
   try {
     if (!ulb_id) {
-      logger.info("ULB ID is missing in the request.");
+      logger.warn("ULB ID is missing in the request.", {
+        userId,
+        action: "UPDATE_FINANCIAL_SUMMARY",
+        ip: clientIp,
+      });
       return res.status(400).json({
         status: false,
         message: "ULB ID is required",
       });
     }
 
-    logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`);
+    logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`, {
+      userId,
+      action: "UPDATE_FINANCIAL_SUMMARY",
+      ip: clientIp,
+      data: req.body,
+    });
 
     const updatedReport = await updateFinancialSummary({
       ulb_id,
@@ -205,19 +242,19 @@ const updateFinancialSummaryReport = async (req, res) => {
     });
 
     // Audit Log for Update
-    await createAuditLog(
-      req.body?.auth?.id,
-      "UPDATE",
-      "FinancialSummaryReport",
-      ulb_id,
-      {
-        oldData: {}, // Fetch old data if necessary
-        newData: updatedReport,
-      }
-    );
+    await createAuditLog(userId, "UPDATE", "FinancialSummaryReport", ulb_id, {
+      oldData: {}, // Fetch old data if necessary
+      newData: updatedReport,
+    });
 
     logger.info(
-      `Financial summary report updated successfully for ULB ID: ${ulb_id}`
+      `Financial summary report updated successfully for ULB ID: ${ulb_id}`,
+      {
+        userId,
+        action: "UPDATE_FINANCIAL_SUMMARY",
+        ip: clientIp,
+        updatedReport,
+      }
     );
 
     res.status(200).json({
@@ -226,7 +263,15 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: updatedReport,
     });
   } catch (error) {
-    logger.info(`Error updating financial summary report: ${error.message}`);
+    logger.error(
+      `Error updating financial summary report with ULB ID ${ulb_id}: ${error.message}`,
+      {
+        userId,
+        action: "UPDATE_FINANCIAL_SUMMARY",
+        ip: clientIp,
+        error: error.message,
+      }
+    );
     if (error.code === "P2025") {
       res.status(404).json({
         status: false,
@@ -245,21 +290,40 @@ const updateFinancialSummaryReport = async (req, res) => {
 
 // Get updated financial summary report
 const getUpdatedFinancialSummaryReport = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+  const userId = req.body?.auth?.id || null; // Get user ID from request
+
   const { ulb_id } = req.query; // Retrieve ulb_id from query parameters
 
   try {
-    logger.info("Fetching updated financial summary reports...");
+    logger.info("Fetching updated financial summary reports...", {
+      userId,
+      action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      ulb_id,
+    });
 
     const reports = await fetchUpdatedFinancialSummary(ulb_id);
 
     if (!reports || reports.length === 0) {
+      logger.warn("No updated financial summary reports found.", {
+        userId,
+        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+        ip: clientIp,
+        ulb_id,
+      });
       return res.status(404).json({
         status: false,
         message: "No updated financial summary reports found",
       });
     }
 
-    logger.info("Updated financial summary reports fetched successfully.");
+    logger.info("Updated financial summary reports fetched successfully.", {
+      userId,
+      action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      reportCount: reports.length,
+    });
 
     res.status(200).json({
       status: true,
@@ -267,8 +331,14 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       data: reports,
     });
   } catch (error) {
-    logger.info(
-      `Error fetching updated financial summary reports: ${error.message}`
+    logger.error(
+      `Error fetching updated financial summary reports: ${error.message}`,
+      {
+        userId,
+        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+        ip: clientIp,
+        error: error.message,
+      }
     );
     res.status(500).json({
       status: false,

@@ -9,6 +9,8 @@ const logger = require("../../../utils/log/logger");
 const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust the path if needed
 
 const addSchemeInfo = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+
   try {
     const {
       scheme_id,
@@ -21,7 +23,15 @@ const addSchemeInfo = async (req, res) => {
       ulb,
     } = req.body;
 
-    logger.info("Attempting to add new scheme information...");
+    const userId = req.body?.auth?.id || null; // Get user ID from request
+
+    logger.info("Attempting to add new scheme information...", {
+      userId,
+      action: "ADD_SCHEME_INFO",
+      ip: clientIp,
+      scheme_id,
+      scheme_name,
+    });
 
     const dateOfApprovedUTC = moment
       .tz(date_of_approval, "Asia/Kolkata")
@@ -42,19 +52,15 @@ const addSchemeInfo = async (req, res) => {
     });
 
     logger.info("Scheme information created successfully", {
+      userId,
+      action: "ADD_SCHEME_INFO",
+      ip: clientIp,
       scheme_id,
       scheme_name,
-      ulb,
     });
 
     // Audit Log
-    await createAuditLog(
-      req.body?.auth?.id,
-      "CREATE",
-      "Scheme_info",
-      scheme_id,
-      req.body
-    );
+    await createAuditLog(userId, "CREATE", "Scheme_info", scheme_id, req.body);
 
     res.status(201).json({
       status: true,
@@ -62,7 +68,12 @@ const addSchemeInfo = async (req, res) => {
       data: newSchemeInfo,
     });
   } catch (error) {
-    logger.error(`Error creating scheme info: ${error.message}`, { error });
+    logger.error("Error creating scheme info", {
+      userId,
+      action: "ADD_SCHEME_INFO",
+      ip: clientIp,
+      error: error.message,
+    });
     res.status(500).json({
       status: false,
       message: "Failed to create scheme information",
@@ -72,9 +83,10 @@ const addSchemeInfo = async (req, res) => {
 };
 
 const fetchSchemeInfo = async (req, res) => {
-  try {
-    logger.info("Fetching scheme information list...");
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
+  try {
+    const userId = req.body?.auth?.id || null;
     const page = parseInt(req.query.page) || 1;
     const take = parseInt(req.query.take) || 10;
     const skip = (page - 1) * take;
@@ -105,13 +117,16 @@ const fetchSchemeInfo = async (req, res) => {
     const nextPage = page < totalPage ? page + 1 : null;
 
     logger.info("Scheme information list fetched successfully", {
+      userId,
+      action: "FETCH_SCHEME_INFO",
+      ip: clientIp,
       page,
       take,
       totalResult,
     });
 
     // Audit Log (optional, as fetching data isn't always logged)
-    await createAuditLog(req.body?.auth?.id, "FETCH", "Scheme_info", null, {
+    await createAuditLog(userId, "FETCH", "Scheme_info", null, {
       page,
       take,
       totalResult,
@@ -131,8 +146,11 @@ const fetchSchemeInfo = async (req, res) => {
       },
     });
   } catch (error) {
-    logger.error(`Error fetching scheme info list: ${error.message}`, {
-      error,
+    logger.error("Error fetching scheme info list", {
+      userId,
+      action: "FETCH_SCHEME_INFO",
+      ip: clientIp,
+      error: error.message,
     });
     res.status(500).json({
       status: false,
@@ -141,11 +159,18 @@ const fetchSchemeInfo = async (req, res) => {
     });
   }
 };
+
 const getSchemeInfoById = async (req, res) => {
   const { scheme_id } = req.params; // Make sure scheme_id is coming from params
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
   try {
-    logger.info(`Fetching scheme information for scheme_id: ${scheme_id}`);
+    const userId = req.body?.auth?.id || null;
+    logger.info(`Fetching scheme information for scheme_id: ${scheme_id}`, {
+      userId,
+      action: "FETCH_SCHEME_INFO_BY_ID",
+      ip: clientIp,
+    });
 
     // Use findUnique to search for scheme_info by the scheme_id string
     const schemeInfo = await prisma.scheme_info.findUnique({
@@ -153,11 +178,15 @@ const getSchemeInfoById = async (req, res) => {
     });
 
     if (schemeInfo) {
-      logger.info(`Scheme information found for scheme_id: ${scheme_id}`);
+      logger.info(`Scheme information found for scheme_id: ${scheme_id}`, {
+        userId,
+        action: "FETCH_SCHEME_INFO_BY_ID",
+        ip: clientIp,
+      });
 
       // Audit Log
       await createAuditLog(
-        req.body?.auth?.id,
+        userId,
         "FETCH_BY_ID",
         "Scheme_info",
         scheme_id,
@@ -170,7 +199,11 @@ const getSchemeInfoById = async (req, res) => {
         data: schemeInfo,
       });
     } else {
-      logger.warn(`Scheme information not found for scheme_id: ${scheme_id}`);
+      logger.warn(`Scheme information not found for scheme_id: ${scheme_id}`, {
+        userId,
+        action: "FETCH_SCHEME_INFO_BY_ID",
+        ip: clientIp,
+      });
 
       res.status(404).json({
         status: false,
@@ -178,8 +211,11 @@ const getSchemeInfoById = async (req, res) => {
       });
     }
   } catch (error) {
-    logger.error(`Error fetching scheme info by ID: ${error.message}`, {
-      error,
+    logger.error(`Error fetching scheme info by ID`, {
+      userId,
+      action: "FETCH_SCHEME_INFO_BY_ID",
+      ip: clientIp,
+      error: error.message,
     });
     res.status(500).json({
       status: false,

@@ -23,7 +23,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     ON 
       FSR.ulb_name = SI.ulb
     WHERE 
-      SI.city_type = 'Million Plus Cities'
+      SI.city_type = 'million plus'
   `;
 
   const queryParams = [];
@@ -81,7 +81,7 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
       'Non Million Cities' AS city_type
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
-    WHERE s.city_type = 'Non Million Cities'
+    WHERE s.city_type = 'non million'
   `;
 
   const queryParams = [];
