@@ -67,18 +67,18 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
   let query = `
-    SELECT ulb.id AS ulb_id,
-           ulb.ulb_name,
-           COUNT(s.scheme_name) AS approved_schemes,
-           SUM(s.project_cost) AS fund_release_to_ulbs,
-           SUM(s.approved_project_cost) AS amount,
-           SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
-           SUM(s.financial_progress) AS expenditure,
-           SUM(s.project_cost - s.financial_progress) AS balance_amount,
-           AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage,
-           SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
-           SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
-           (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress
+    SELECT 
+      ulb.id AS ulb_id,
+      ulb.ulb_name,
+      (SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) + 
+       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END)) AS approved_project,
+      SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS tender_approved,
+      SUM(s.project_cost) AS approved_amount,
+      SUM(s.financial_progress) AS expenditure,
+      EXTRACT(YEAR FROM MIN(s.date_of_approval)) AS financial_year,
+      s.grant_type,
+      s.sector,
+      'Non Million Cities' AS city_type
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     WHERE s.city_type = 'Non Million Cities'
@@ -109,7 +109,7 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
     paramIndex++;
   }
 
-  query += ` GROUP BY ulb.id, ulb.ulb_name ORDER BY ulb.id ASC`;
+  query += ` GROUP BY ulb.id, ulb.ulb_name, s.grant_type, s.sector ORDER BY ulb.id ASC`;
 
   try {
     return await prisma.$queryRawUnsafe(query, ...queryParams);
