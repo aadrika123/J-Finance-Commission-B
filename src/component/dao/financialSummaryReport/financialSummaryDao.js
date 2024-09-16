@@ -78,15 +78,23 @@ const updateFinancialSummary = async ({
 
 const fetchUpdatedFinancialSummary = async (ulb_id) => {
   try {
+    // Convert ulb_id to an integer if it's provided
+    const ulbIdInt = parseInt(ulb_id, 10);
+
     // Fetch only records where any of the fields are updated (not null)
     const reports = await prisma.financialSummaryReport.findMany({
       where: {
-        OR: [
-          { financial_year: { not: null } },
-          { first_instalment: { not: null } },
-          { second_instalment: { not: null } },
-          { interest_amount: { not: null } },
-          { grant_type: { not: null } },
+        AND: [
+          { ulb_id: ulbIdInt }, // Ensure ulb_id is an integer
+          {
+            OR: [
+              { financial_year: { not: null } },
+              { first_instalment: { not: null } },
+              { second_instalment: { not: null } },
+              { interest_amount: { not: null } },
+              { grant_type: { not: null } },
+            ],
+          },
         ],
       },
     });
@@ -97,7 +105,6 @@ const fetchUpdatedFinancialSummary = async (ulb_id) => {
     throw error;
   }
 };
-
 module.exports = {
   fetchFinancialSummaryReport,
   updateFinancialSummary,

@@ -3952,3 +3952,281 @@
   level: 'info',
   timestamp: '2024-09-16 11:38:57'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:57:51'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 11:57:55'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 11:57:55'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:58:56'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 11:59:09'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 11:59:09'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 11:59:26'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 11:59:26'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 11:59:32'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 11:59:32'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 12:00:11'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 12:00:19'
+}
+{
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:107:57\n' +
+    '\n' +
+    '  104       ],\n' +
+    '  105     };\n' +
+    '  106 \n' +
+    '→ 107 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: "4"\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id`: Invalid value provided. Expected IntFilter or Int, provided String.',
+  level: 'info',
+  timestamp: '2024-09-16 12:00:19'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 12:00:32'
+}
+{
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:107:57\n' +
+    '\n' +
+    '  104       ],\n' +
+    '  105     };\n' +
+    '  106 \n' +
+    '→ 107 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: "1"\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id`: Invalid value provided. Expected IntFilter or Int, provided String.',
+  level: 'info',
+  timestamp: '2024-09-16 12:00:32'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:05'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:11'
+}
+{
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:85:57\n' +
+    '\n' +
+    '  82 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  83 \n' +
+    '  84 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 85 const reports = await prisma.financialSummaryReport.findUnique({\n' +
+    '       where: {\n' +
+    '         AND: [\n' +
+    '           {\n' +
+    '             ulb_id: 1\n' +
+    '           },\n' +
+    '           {\n' +
+    '             OR: [\n' +
+    '               {\n' +
+    '                 financial_year: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 first_instalment: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 second_instalment: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 interest_amount: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 grant_type: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               }\n' +
+    '             ]\n' +
+    '           }\n' +
+    '         ],\n' +
+    '     ?   ulb_id?: Int,\n' +
+    '     ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '     ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '     ?   ulb_name?: StringFilter | String,\n' +
+    '     ?   approved_schemes?: IntFilter | Int,\n' +
+    '     ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '     ?   amount?: DecimalFilter | Decimal,\n' +
+    '     ?   project_completed?: IntFilter | Int,\n' +
+    '     ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '     ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '     ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '     ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '     ?   tender_not_floated?: IntFilter | Int,\n' +
+    '     ?   work_in_progress?: IntFilter | Int,\n' +
+    '     ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '     ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '     ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '     ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '     ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '     ?   created_at?: DateTimeFilter | DateTime\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `ulb_id` arguments. Available options are marked with ?.',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:11'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:27'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:32'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:39'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:39'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:49'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 12:02:49'
+}

@@ -180,11 +180,13 @@ const updateFinancialSummaryReport = async (req, res) => {
 // get updated financil summary report
 
 const getUpdatedFinancialSummaryReport = async (req, res) => {
+  const { ulb_id } = req.query; // Retrieve ulb_id from query parameters
+
   try {
     logger.info("Fetching updated financial summary reports...");
 
     // Fetch updated financial summaries from the database
-    const reports = await fetchUpdatedFinancialSummary();
+    const reports = await fetchUpdatedFinancialSummary(ulb_id);
 
     if (!reports || reports.length === 0) {
       return res.status(404).json({
@@ -211,7 +213,6 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
