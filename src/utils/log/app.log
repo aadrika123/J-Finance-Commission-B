@@ -3877,3 +3877,78 @@
   level: 'info',
   timestamp: '2024-09-14 18:36:11'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 10:36:43'
+}
+{
+  ulb_name: undefined,
+  grant_type: undefined,
+  financial_year: undefined,
+  sector: undefined,
+  level: 'info',
+  message: 'Fetching financial summary with filters:',
+  timestamp: '2024-09-16 10:37:55'
+}
+{
+  total_records: 2,
+  level: 'info',
+  message: 'Financial summary fetched successfully',
+  timestamp: '2024-09-16 10:37:58'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 10:45:03'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 10:47:19'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 10:53:33'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:17:48'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:21:21'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:24:39'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:26:24'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:28:14'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:32:35'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:36:19'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 11:38:57'
+}
