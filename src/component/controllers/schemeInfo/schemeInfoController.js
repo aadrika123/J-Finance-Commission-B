@@ -6,6 +6,7 @@ const {
 } = require("../../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 const logger = require("../../../utils/log/logger");
+const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust the path if needed
 
 const addSchemeInfo = async (req, res) => {
   try {
@@ -22,15 +23,11 @@ const addSchemeInfo = async (req, res) => {
 
     logger.info("Attempting to add new scheme information...");
 
-    // Convert the input date to UTC using the Asia/Kolkata timezone
     const dateOfApprovedUTC = moment
       .tz(date_of_approval, "Asia/Kolkata")
       .utc()
       .toDate();
-
-    // Get the current time in Asia/Kolkata timezone and convert it to UTC
-    const createdAtKolkata = moment.tz("Asia/Kolkata").toDate();
-    const createdAtUTC = moment(createdAtKolkata).utc().toDate();
+    const createdAtUTC = moment.tz("Asia/Kolkata").utc().toDate();
 
     const newSchemeInfo = await createSchemeInfo({
       scheme_id,
@@ -40,7 +37,7 @@ const addSchemeInfo = async (req, res) => {
       grant_type,
       city_type,
       date_of_approval: dateOfApprovedUTC,
-      created_at: createdAtUTC, // Pass the UTC time to the DAO
+      created_at: createdAtUTC,
       ulb,
     });
 
@@ -49,6 +46,15 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
       ulb,
     });
+
+    // Audit Log
+    await createAuditLog(
+      req.body?.auth?.id,
+      "CREATE",
+      "Scheme_info",
+      scheme_id,
+      req.body
+    );
 
     res.status(201).json({
       status: true,
@@ -69,23 +75,30 @@ const fetchSchemeInfo = async (req, res) => {
   try {
     logger.info("Fetching scheme information list...");
 
-    // Get pagination parameters from query
     const page = parseInt(req.query.page) || 1;
     const take = parseInt(req.query.take) || 10;
-
-    // Calculate the offset
     const skip = (page - 1) * take;
+    const { grant_type } = req.query; // Get the grant_type filter from query params
 
-    // Fetch paginated data sorted by created_at in descending order
+    // Prepare the filter condition
+    const filterCondition = {};
+    if (grant_type) {
+      filterCondition.grant_type = grant_type;
+    }
+
+    // Fetch scheme information with optional grant_type filter
     const [schemeInfoList, totalResult] = await Promise.all([
       prisma.scheme_info.findMany({
         skip,
         take,
+        where: filterCondition, // Apply the filter if grant_type is provided
         orderBy: {
-          created_at: "desc", // Sort by created_at in descending order
+          created_at: "desc",
         },
       }),
-      prisma.scheme_info.count(),
+      prisma.scheme_info.count({
+        where: filterCondition, // Count the results considering the filter
+      }),
     ]);
 
     const totalPage = Math.ceil(totalResult / take);
@@ -95,6 +108,14 @@ const fetchSchemeInfo = async (req, res) => {
       page,
       take,
       totalResult,
+    });
+
+    // Audit Log (optional, as fetching data isn't always logged)
+    await createAuditLog(req.body?.auth?.id, "FETCH", "Scheme_info", null, {
+      page,
+      take,
+      totalResult,
+      grant_type,
     });
 
     res.status(200).json({
@@ -120,19 +141,28 @@ const fetchSchemeInfo = async (req, res) => {
     });
   }
 };
-
 const getSchemeInfoById = async (req, res) => {
-  const { scheme_id } = req.params;
+  const { scheme_id } = req.params; // Make sure scheme_id is coming from params
 
   try {
     logger.info(`Fetching scheme information for scheme_id: ${scheme_id}`);
 
+    // Use findUnique to search for scheme_info by the scheme_id string
     const schemeInfo = await prisma.scheme_info.findUnique({
-      where: { scheme_id },
+      where: { scheme_id: scheme_id }, // Make sure to match scheme_id as a string
     });
 
     if (schemeInfo) {
       logger.info(`Scheme information found for scheme_id: ${scheme_id}`);
+
+      // Audit Log
+      await createAuditLog(
+        req.body?.auth?.id,
+        "FETCH_BY_ID",
+        "Scheme_info",
+        scheme_id,
+        schemeInfo
+      );
 
       res.status(200).json({
         status: true,

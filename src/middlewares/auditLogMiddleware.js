@@ -1,7 +1,7 @@
 const createAuditLog = require("../utils/auditLog/auditLogger"); // Adjust the path as needed
 
 const auditLogMiddleware = async (req, res, next) => {
-  const userId = req.user ? req.user.id : null; // User ID from authentication
+  const userId = req.user ? req.body?.auth.id : null; // User ID from authentication
   const tableName = req.tableName || null; // Table name from route/controller, default to null
   const actionType = req.actionType || null; // Action type from route/controller, default to null
 

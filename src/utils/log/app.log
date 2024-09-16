@@ -4521,3 +4521,613 @@
   level: 'info',
   timestamp: '2024-09-16 13:45:31'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:38'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:40'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:40'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:48'
+}
+{
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:88:57\n' +
+    '\n' +
+    '  85 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  86 \n' +
+    '  87 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 88 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '       where: {\n' +
+    '         AND: [\n' +
+    '           {\n' +
+    '             ulb_id: NaN\n' +
+    '           },\n' +
+    '           {\n' +
+    '             OR: [\n' +
+    '               {\n' +
+    '                 financial_year: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 first_instalment: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 second_instalment: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 interest_amount: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               },\n' +
+    '               {\n' +
+    '                 grant_type: {\n' +
+    '                   not: null\n' +
+    '                 }\n' +
+    '               }\n' +
+    '             ]\n' +
+    '           }\n' +
+    '         ]\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:48'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:58'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:52:58'
+}
+{
+  message: 'Fetching ULBs and Schemes from the database...',
+  level: 'info',
+  timestamp: '2024-09-16 14:00:26'
+}
+{
+  total_records: 3,
+  level: 'info',
+  message: 'Data fetched successfully',
+  timestamp: '2024-09-16 14:00:26'
+}
+{
+  message: 'Fetching ULBs and Schemes from the database...',
+  level: 'info',
+  timestamp: '2024-09-16 14:00:44'
+}
+{
+  total_records: 3,
+  level: 'info',
+  message: 'Data fetched successfully',
+  timestamp: '2024-09-16 14:00:44'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 14:10:26'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 14,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 14:10:26'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:30:54'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-16 15:31:39'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-16 15:31:40'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:43:52'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 15:45:13'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 14,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 15:45:13'
+}
+{
+  data: {
+    sector: 'Infrastructure',
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-16T10:17:51.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-16T10:17:51.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-001',
+  timestamp: '2024-09-16 15:47:51'
+}
+{
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-001',
+    project_cost: 8000000,
+    scheme_name: 'Water Supply Improvement',
+    sector: 'Infrastructure',
+    grant_type: 'Central',
+    city_type: 'Urban',
+    date_of_approval: null,
+    ulb: 'Adityapur Municipal Corporation',
+    created_at: 2024-09-10T12:02:52.441Z,
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    approved_project_cost: 8000000
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-001',
+  timestamp: '2024-09-16 15:47:51'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-16 15:49:25'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-16 15:49:25'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:52:10'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-16 15:52:31'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-16 15:52:31'
+}
+{
+  error: ReferenceError: schemeInfo is not defined
+      at addSchemeInfo (D:\finance-project-b\finance_backend\src\component\controllers\schemeInfo\schemeInfoController.js:56:7),
+  level: 'error',
+  message: 'Error creating scheme info: schemeInfo is not defined',
+  timestamp: '2024-09-16 15:52:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:53:22'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-16 15:53:30'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-16 15:53:30'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:56:10'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-16 15:56:18'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-16 15:56:18'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:56:45'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-16 15:56:59'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-16 15:56:59'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 15:58:20'
+}
+{
+  message: 'Attempting to add new scheme information...',
+  level: 'info',
+  timestamp: '2024-09-16 15:58:36'
+}
+{
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  ulb: 'Basukinath Nagar Panchayat',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-16 15:58:36'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:06:52'
+}
+{
+  data: {
+    sector: 'Infrastructure',
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-16T10:37:16.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-16T10:37:16.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-001',
+  timestamp: '2024-09-16 16:07:16'
+}
+{
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-001',
+    project_cost: 8000000,
+    scheme_name: 'Water Supply Improvement',
+    sector: 'Infrastructure',
+    grant_type: 'Central',
+    city_type: 'Urban',
+    date_of_approval: null,
+    ulb: 'Adityapur Municipal Corporation',
+    created_at: 2024-09-10T12:02:52.441Z,
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    approved_project_cost: 8000000
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-001',
+  timestamp: '2024-09-16 16:07:16'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:18:22'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 16:19:25'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 16:19:26'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 16:19:26'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:32:25'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:33:51'
+}
+{
+  message: 'Fetching ULBs and Schemes from the database...',
+  level: 'info',
+  timestamp: '2024-09-16 16:39:21'
+}
+{
+  total_records: 3,
+  level: 'info',
+  message: 'Data fetched successfully',
+  timestamp: '2024-09-16 16:39:21'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-16 16:39:55'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-16 16:39:55'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 16:40:02'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 20,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 16:40:02'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-16 16:40:20'
+}
+{
+  total_ULBs: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-16 16:40:20'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 16:40:36'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 16:40:36'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:45:47'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:48:29'
+}
+{
+  message: 'Fetching scheme information for scheme_id: sch-03-002',
+  level: 'info',
+  timestamp: '2024-09-16 16:50:34'
+}
+{
+  message: 'Scheme information found for scheme_id: sch-03-002',
+  level: 'info',
+  timestamp: '2024-09-16 16:50:34'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 16:53:15'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 20,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 16:53:15'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 16:58:49'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 17:01:17'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 15,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 17:01:17'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 17:01:51'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 1,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 17:01:51'
+}

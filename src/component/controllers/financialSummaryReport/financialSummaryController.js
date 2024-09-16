@@ -5,6 +5,7 @@ const {
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
+const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import audit logger
 const prisma = new PrismaClient();
 
 const getFinancialSummaryReport = async (req, res) => {
@@ -33,7 +34,6 @@ const getFinancialSummaryReport = async (req, res) => {
         interest_amount:
           row.interest_amount !== undefined ? row.interest_amount : null,
         grant_type: row.grant_type !== undefined ? row.grant_type : null,
-        // Convert BigInt to string if needed
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -43,14 +43,13 @@ const getFinancialSummaryReport = async (req, res) => {
       };
     });
 
-    // Update or insert the report in FinancialSummaryReport table
     for (const row of result) {
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
 
       if (existingRecord) {
-        await prisma.financialSummaryReport.update({
+        const updatedRecord = await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
             ulb_name: row.ulb_name || existingRecord.ulb_name,
@@ -100,8 +99,20 @@ const getFinancialSummaryReport = async (req, res) => {
                 : existingRecord.grant_type,
           },
         });
+
+        // Audit Log for Update
+        await createAuditLog(
+          req.body?.auth?.id,
+          "UPDATE",
+          "FinancialSummaryReport",
+          row.ulb_id,
+          {
+            oldData: existingRecord,
+            newData: updatedRecord,
+          }
+        );
       } else {
-        await prisma.financialSummaryReport.create({
+        const newRecord = await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
             ulb_name: row.ulb_name,
@@ -132,6 +143,17 @@ const getFinancialSummaryReport = async (req, res) => {
             grant_type: row.grant_type !== undefined ? row.grant_type : null,
           },
         });
+
+        // Audit Log for Create
+        await createAuditLog(
+          req.body?.auth?.id,
+          "CREATE",
+          "FinancialSummaryReport",
+          row.ulb_id,
+          {
+            newData: newRecord,
+          }
+        );
       }
     }
 
@@ -182,6 +204,18 @@ const updateFinancialSummaryReport = async (req, res) => {
       grant_type,
     });
 
+    // Audit Log for Update
+    await createAuditLog(
+      req.body?.auth?.id,
+      "UPDATE",
+      "FinancialSummaryReport",
+      ulb_id,
+      {
+        oldData: {}, // Fetch old data if necessary
+        newData: updatedReport,
+      }
+    );
+
     logger.info(
       `Financial summary report updated successfully for ULB ID: ${ulb_id}`
     );
@@ -209,15 +243,13 @@ const updateFinancialSummaryReport = async (req, res) => {
   }
 };
 
-// get updated financil summary report
-
+// Get updated financial summary report
 const getUpdatedFinancialSummaryReport = async (req, res) => {
   const { ulb_id } = req.query; // Retrieve ulb_id from query parameters
 
   try {
     logger.info("Fetching updated financial summary reports...");
 
-    // Fetch updated financial summaries from the database
     const reports = await fetchUpdatedFinancialSummary(ulb_id);
 
     if (!reports || reports.length === 0) {
@@ -245,6 +277,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,

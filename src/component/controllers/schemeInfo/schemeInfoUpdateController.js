@@ -2,6 +2,7 @@ const {
   updateSchemeInfo,
 } = require("../../dao/schemeInfo/schemeInfoUpdateDao");
 const logger = require("../../../utils/log/logger");
+const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust the path if needed
 
 const modifySchemeInfo = async (req, res) => {
   try {
@@ -25,6 +26,18 @@ const modifySchemeInfo = async (req, res) => {
     logger.info(`Scheme info updated successfully for ID: ${scheme_id}`, {
       updatedSchemeInfo,
     });
+
+    // Audit Log for update
+    await createAuditLog(
+      req.body?.auth?.id,
+      "UPDATE",
+      "Scheme_info",
+      scheme_id,
+      {
+        oldData: data, // You can customize this part to log the previous data if available
+        newData: updatedSchemeInfo,
+      }
+    );
 
     res.status(200).json({
       status: true,

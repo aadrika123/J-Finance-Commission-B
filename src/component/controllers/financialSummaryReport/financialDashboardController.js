@@ -1,5 +1,6 @@
 const financialDao = require("../../dao/financialSummaryReport/financialDashboardDao");
 const logger = require("../../../utils/log/logger");
+const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import audit logger
 
 const convertBigIntToString = (obj) => {
   for (const key in obj) {
@@ -34,6 +35,19 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
     // Convert BigInt to string in the results
     const sanitizedData = financialSummary.map((item) =>
       convertBigIntToString(item)
+    );
+
+    // Audit Log for fetching Million Plus Cities data
+    await createAuditLog(
+      req.body?.auth?.id,
+      "FETCH",
+      "FinancialSummaryReport",
+      null,
+      {
+        actionDetails: `Fetched financial summary for Million Plus Cities with filters: ${JSON.stringify(
+          filters
+        )}`,
+      }
     );
 
     res.status(200).json({
@@ -77,6 +91,19 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
       convertBigIntToString(item)
     );
 
+    // Audit Log for fetching Non-Million Plus Cities data
+    await createAuditLog(
+      req.body?.auth?.id,
+      "FETCH",
+      "FinancialSummaryReport",
+      null,
+      {
+        actionDetails: `Fetched financial summary for Non-Million Plus Cities with filters: ${JSON.stringify(
+          filters
+        )}`,
+      }
+    );
+
     res.status(200).json({
       status: true,
       message: "Financial summary data fetched successfully",
@@ -91,6 +118,7 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   getFilteredFinancialSummaryMillionPlus,
   getFilteredFinancialSummaryNonMillionPlus,
