@@ -3,7 +3,6 @@ const logger = require("./utils/log/logger");
 const requestLogger = require("./middlewares/auditLogMiddleware");
 const { connectToDatabase } = require("./lib/database/db");
 const testRoute = require("./component/routes/testRoute");
-const resourceRoutes = require("./component/routes/resource/resourceRoutes");
 const ulbRoutes = require("./component/routes/ulb/ulbRoutes");
 const schemeInfoRoutes = require("./component/routes/schemeInfo/schemeInfoRoutes");
 const schemeInfoUpdateRoutes = require("./component/routes/schemeInfo/schemeInfoUpdateRoutes");
@@ -26,7 +25,6 @@ app.get("/", (req, res) => {
 
 app.use(express.json());
 app.use("/api/sudafc", testRoute);
-app.use("/api/sudafc", resourceRoutes);
 app.use("/api/sudafc", ulbRoutes);
 app.use("/api/sudafc", schemeInfoRoutes);
 app.use("/api/sudafc", schemeInfoUpdateRoutes);

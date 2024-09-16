@@ -1,11 +1,10 @@
 const ulbDao = require("../../dao/ulb/ulbDao");
 const logger = require("../../../utils/log/logger"); // Import logger
+const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import audit logger
 
 const getULBs = async (req, res) => {
   try {
     logger.info("Fetching ULBs from the database...");
-
-    // console.log(req.body?.auth.id); //to get user data
 
     const ulbs = await ulbDao.getULBs();
 
@@ -28,6 +27,18 @@ const getULBs = async (req, res) => {
       });
     }
 
+    // Create an audit log for fetching ULBs
+    await createAuditLog(
+      req.body?.auth?.id || null, // User ID (if available)
+      "FETCH", // Action Type
+      "ULB", // Table Name
+      null, // Record ID (not applicable for this fetch operation)
+      {
+        // Changed Data (not applicable for this fetch operation)
+        total_ULBs: formattedULBs.length,
+      }
+    );
+
     logger.info("ULBs fetched successfully", {
       total_ULBs: formattedULBs.length,
     });
@@ -46,6 +57,7 @@ const getULBs = async (req, res) => {
     });
   }
 };
+
 const getULBsAndSchemes = async (req, res) => {
   try {
     logger.info("Fetching ULBs and Schemes from the database...");
@@ -68,6 +80,18 @@ const getULBsAndSchemes = async (req, res) => {
         message: "No data found",
       });
     }
+
+    // Create an audit log for fetching ULBs and Schemes
+    await createAuditLog(
+      req.body?.auth?.id || null, // User ID (if available)
+      "FETCH", // Action Type
+      "ULB_Schemes", // Table Name (custom name for this combined data)
+      null, // Record ID (not applicable for this fetch operation)
+      {
+        // Changed Data (not applicable for this fetch operation)
+        total_records: formattedData.length,
+      }
+    );
 
     logger.info("Data fetched successfully", {
       total_records: formattedData.length,
