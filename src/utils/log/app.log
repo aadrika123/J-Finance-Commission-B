@@ -4306,3 +4306,218 @@
   level: 'info',
   timestamp: '2024-09-16 12:59:50'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 13:09:18'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 13:09:30'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:09:30'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:09:30'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 13:13:19'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 13:14:24'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 13:14:31'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:14:31'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:14:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 13:16:12'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 13:16:30'
+}
+{
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.$queryRawUnsafe()` invocation:\n' +
+    '\n' +
+    '\n' +
+    'Raw query failed. Code: `42P01`. Message: `relation "financialSummaryReport" does not exist`',
+  level: 'error',
+  timestamp: '2024-09-16 13:16:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 13:20:02'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 13:20:09'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:20:09'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:20:09'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-16 13:25:47'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  level: 'info',
+  timestamp: '2024-09-16 13:25:47'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-16 13:25:53'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 1',
+  level: 'info',
+  timestamp: '2024-09-16 13:25:53'
+}
+{
+  message: 'Updating financial summary report for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-16 13:25:58'
+}
+{
+  message: 'Financial summary report updated successfully for ULB ID: 2',
+  level: 'info',
+  timestamp: '2024-09-16 13:25:58'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 13:26:24'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:26:24'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:26:24'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 13:35:49'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 14,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 13:35:49'
+}
+{
+  message: 'Fetching scheme information list...',
+  level: 'info',
+  timestamp: '2024-09-16 13:36:44'
+}
+{
+  page: 1,
+  take: 10,
+  totalResult: 14,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-16 13:36:44'
+}
+{
+  data: {
+    sector: 'Infrastructure',
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1500000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-001',
+  timestamp: '2024-09-16 13:44:57'
+}
+{
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-001',
+    project_cost: 8000000,
+    scheme_name: 'Water Supply Improvement',
+    sector: 'Infrastructure',
+    grant_type: 'Central',
+    city_type: 'Urban',
+    date_of_approval: null,
+    ulb: 'Adityapur Municipal Corporation',
+    created_at: 2024-09-10T12:02:52.441Z,
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1500000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    approved_project_cost: 8000000
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-001',
+  timestamp: '2024-09-16 13:44:57'
+}
+{
+  message: 'Fetching updated financial summary reports...',
+  level: 'info',
+  timestamp: '2024-09-16 13:45:26'
+}
+{
+  message: 'Updated financial summary reports fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:45:26'
+}
+{
+  message: 'Fetching financial summary report...',
+  level: 'info',
+  timestamp: '2024-09-16 13:45:31'
+}
+{
+  message: 'Financial summary report fetched successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:45:31'
+}
+{
+  message: 'Financial summary report processed successfully.',
+  level: 'info',
+  timestamp: '2024-09-16 13:45:31'
+}

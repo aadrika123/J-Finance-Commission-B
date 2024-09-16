@@ -7,26 +7,31 @@ const fetchFinancialSummaryReport = async (
   sector,
   financial_year
 ) => {
-  // Build the query conditionally with parameters
   let query = `
-    SELECT ulb.id AS ulb_id,
-           ulb.ulb_name,
-           COUNT(s.scheme_name) AS approved_schemes,
-           SUM(s.project_cost) AS fund_release_to_ulbs,
-           SUM(s.approved_project_cost) AS amount,
-           SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
-           SUM(s.financial_progress) AS expenditure,
-           SUM(s.project_cost - s.financial_progress) AS balance_amount,
-           AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage,
-           SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
-           SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
-           (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress
+    SELECT 
+      ulb.id AS ulb_id,
+      ulb.ulb_name,
+      COUNT(s.scheme_name) AS approved_schemes,
+      SUM(s.project_cost) AS fund_release_to_ulbs,
+      SUM(s.approved_project_cost) AS amount,
+      SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
+      SUM(s.financial_progress) AS expenditure,
+      SUM(s.project_cost - s.financial_progress) AS balance_amount,
+      AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage,
+      SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
+      SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
+      (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
+      f.financial_year,
+      f.first_instalment,
+      f.second_instalment,
+      f.interest_amount,
+      f.grant_type
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
+    LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
     WHERE 1=1
   `;
 
-  // Add filters conditionally based on the parameters provided
   if (city_type) {
     query += ` AND s.city_type = '${city_type}'`;
   }
@@ -40,12 +45,10 @@ const fetchFinancialSummaryReport = async (
     query += ` AND EXTRACT(YEAR FROM s.date_of_approval) = ${financial_year}`;
   }
 
-  query += ` GROUP BY ulb.id, ulb.ulb_name ORDER BY ulb.id ASC`;
+  query += ` GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.first_instalment, f.second_instalment, f.interest_amount, f.grant_type ORDER BY ulb.id ASC`;
 
-  // Execute the query
   return await prisma.$queryRawUnsafe(query);
 };
-
 const updateFinancialSummary = async ({
   ulb_id,
   financial_year,
