@@ -52,15 +52,18 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
 };
 
 const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
-  const { grant_type, sector, financial_year } = req.query;
+  const { ulb_name, grant_type, financial_year, sector } = req.query;
 
   try {
+    const filters = {
+      ulb_name,
+      grant_type,
+      financial_year: parseInt(financial_year, 10),
+      sector,
+    };
+
     const financialSummary =
-      await financialDao.fetchFinancialSummaryReportNonMillionPlus(
-        grant_type,
-        sector,
-        financial_year
-      );
+      await financialDao.fetchFinancialSummaryReportNonMillionPlus(filters);
 
     if (!financialSummary || financialSummary.length === 0) {
       return res.status(404).json({
@@ -88,7 +91,6 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   getFilteredFinancialSummaryMillionPlus,
   getFilteredFinancialSummaryNonMillionPlus,
