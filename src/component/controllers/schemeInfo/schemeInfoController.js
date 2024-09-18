@@ -8,6 +8,25 @@ const moment = require("moment-timezone");
 const logger = require("../../../utils/log/logger");
 const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust the path if needed
 
+/**
+ * Adds new scheme information to the database.
+ *
+ * This function:
+ * 1. Captures the client's IP address for logging purposes.
+ * 2. Extracts scheme details from the request body.
+ * 3. Logs an attempt to add new scheme information, including the scheme ID and name.
+ * 4. Converts the date of approval to UTC format using moment-timezone.
+ * 5. Creates a new scheme entry using the `createSchemeInfo` function.
+ * 6. Logs the successful creation of the scheme.
+ * 7. Creates an audit log entry for the creation of the scheme information.
+ * 8. Sends a success response with the newly created scheme information.
+ * 9. Catches and handles errors, logging the error details and sending an appropriate error response.
+ *
+ * @param {Object} req - The request object containing the scheme details.
+ * @param {Object} res - The response object used to send the result back to the client.
+ *
+ * @returns {void} - Sends a JSON response to the client with the status and data of the newly created scheme.
+ */
 const addSchemeInfo = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
@@ -25,14 +44,7 @@ const addSchemeInfo = async (req, res) => {
 
     const userId = req.body?.auth?.id || null; // Get user ID from request
 
-    // Validate required fields
-    // if (!scheme_name || !date_of_approval || !ulb) {
-    //   return res.status(400).json({
-    //     status: false,
-    //     message: "Missing required fields",
-    //   });
-    // }
-
+    // Log the attempt to add new scheme information
     logger.info("Attempting to add new scheme information...", {
       userId,
       action: "ADD_SCHEME_INFO",
@@ -41,13 +53,14 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
     });
 
-    // Convert date to UTC
+    // Convert date of approval to UTC format
     const dateOfApprovedUTC = moment
       .tz(date_of_approval, "Asia/Kolkata")
       .utc()
       .toDate();
     const createdAtUTC = moment.tz("Asia/Kolkata").utc().toDate();
 
+    // Create new scheme information
     const newSchemeInfo = await createSchemeInfo({
       scheme_id,
       project_cost,
@@ -60,6 +73,7 @@ const addSchemeInfo = async (req, res) => {
       ulb,
     });
 
+    // Log the successful creation of the scheme
     logger.info("Scheme information created successfully", {
       userId,
       action: "ADD_SCHEME_INFO",
@@ -68,15 +82,17 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
     });
 
-    // Audit Log
+    // Create an audit log entry for the creation action
     await createAuditLog(userId, "CREATE", "Scheme_info", scheme_id, req.body);
 
+    // Send a success response
     res.status(201).json({
       status: true,
       message: "Scheme information created successfully",
       data: newSchemeInfo,
     });
   } catch (error) {
+    // Log error details and send error response
     logger.error("Error creating scheme info", {
       userId,
       action: "ADD_SCHEME_INFO",
@@ -91,16 +107,37 @@ const addSchemeInfo = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves a paginated list of scheme information from the database.
+ *
+ * This function:
+ * 1. Captures the client's IP address for logging purposes.
+ * 2. Extracts pagination parameters (page and take) and the optional `grant_type` filter from query parameters.
+ * 3. Validates pagination parameters to ensure they are positive integers.
+ * 4. Prepares the filter condition based on the provided `grant_type`.
+ * 5. Fetches scheme information and the total count of records using Prisma with optional filtering and pagination.
+ * 6. Calculates pagination details such as total pages and next page.
+ * 7. Logs the successful fetch of scheme information.
+ * 8. Creates an audit log entry for the fetch operation.
+ * 9. Sends a success response with the fetched data and pagination details.
+ * 10. Catches and handles errors, logging the error details and sending an appropriate error response.
+ *
+ * @param {Object} req - The request object containing query parameters for pagination and filtering.
+ * @param {Object} res - The response object used to send the result back to the client.
+ *
+ * @returns {void} - Sends a JSON response to the client with the paginated list of scheme information and pagination details.
+ */
 const fetchSchemeInfo = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
   try {
     const userId = req.body?.auth?.id || null;
-    const page = parseInt(req.query.page, 10) || 1;
-    const take = parseInt(req.query.take, 10) || 10;
-    const skip = (page - 1) * take;
-    const { grant_type } = req.query; // Get the grant_type filter from query params
+    const page = parseInt(req.query.page, 10) || 1; // Current page number
+    const take = parseInt(req.query.take, 10) || 10; // Number of records per page
+    const skip = (page - 1) * take; // Number of records to skip for pagination
+    const { grant_type } = req.query; // Optional filter for grant_type
 
+    // Validate pagination parameters
     if (page < 1 || take < 1) {
       return res.status(400).json({
         status: false,
@@ -108,30 +145,32 @@ const fetchSchemeInfo = async (req, res) => {
       });
     }
 
-    // Prepare the filter condition
+    // Prepare the filter condition for query
     const filterCondition = {};
     if (grant_type) {
       filterCondition.grant_type = grant_type;
     }
 
-    // Fetch scheme information with optional grant_type filter
+    // Fetch scheme information and total count of records
     const [schemeInfoList, totalResult] = await Promise.all([
       prisma.scheme_info.findMany({
         skip,
         take,
         where: filterCondition, // Apply the filter if grant_type is provided
         orderBy: {
-          created_at: "desc",
+          created_at: "desc", // Order by creation date in descending order
         },
       }),
       prisma.scheme_info.count({
-        where: filterCondition, // Count the results considering the filter
+        where: filterCondition, // Count the total records considering the filter
       }),
     ]);
 
+    // Calculate pagination details
     const totalPage = Math.ceil(totalResult / take);
     const nextPage = page < totalPage ? page + 1 : null;
 
+    // Log the successful fetch of scheme information
     logger.info("Scheme information list fetched successfully", {
       userId,
       action: "FETCH_SCHEME_INFO",
@@ -141,7 +180,7 @@ const fetchSchemeInfo = async (req, res) => {
       totalResult,
     });
 
-    // Audit Log (optional, as fetching data isn't always logged)
+    // Create an audit log entry for the fetch operation
     await createAuditLog(userId, "FETCH", "Scheme_info", null, {
       page,
       take,
@@ -149,6 +188,7 @@ const fetchSchemeInfo = async (req, res) => {
       grant_type,
     });
 
+    // Send a success response with paginated data and pagination details
     res.status(200).json({
       status: true,
       message: "Scheme request list fetched successfully",
@@ -162,6 +202,7 @@ const fetchSchemeInfo = async (req, res) => {
       },
     });
   } catch (error) {
+    // Log error details and send error response
     logger.error("Error fetching scheme info list", {
       userId,
       action: "FETCH_SCHEME_INFO",
@@ -175,6 +216,26 @@ const fetchSchemeInfo = async (req, res) => {
     });
   }
 };
+
+/**
+ * Retrieves scheme information by its unique ID.
+ *
+ * This function:
+ * 1. Captures the client's IP address for logging purposes.
+ * 2. Extracts `scheme_id` from request parameters.
+ * 3. Validates that `scheme_id` is provided in the request.
+ * 4. Logs an attempt to fetch scheme information by ID.
+ * 5. Retrieves scheme information using Prisma's `findUnique` method.
+ * 6. Logs the result of the fetch operation, whether successful or not.
+ * 7. Creates an audit log entry for the fetch operation.
+ * 8. Sends a success response if scheme information is found, or a 404 response if not.
+ * 9. Catches and handles errors, logging the error details and sending an appropriate error response.
+ *
+ * @param {Object} req - The request object containing the scheme ID in the URL parameters.
+ * @param {Object} res - The response object used to send the result back to the client.
+ *
+ * @returns {void} - Sends a JSON response to the client with the scheme information or an error message.
+ */
 const getSchemeInfoById = async (req, res) => {
   const { scheme_id } = req.params;
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
@@ -182,6 +243,7 @@ const getSchemeInfoById = async (req, res) => {
   try {
     const userId = req.body?.auth?.id || null;
 
+    // Validate presence of scheme_id
     if (!scheme_id) {
       return res.status(400).json({
         status: false,
@@ -189,25 +251,27 @@ const getSchemeInfoById = async (req, res) => {
       });
     }
 
+    // Log the attempt to fetch scheme information by ID
     logger.info(`Fetching scheme information for scheme_id: ${scheme_id}`, {
       userId,
       action: "FETCH_SCHEME_INFO_BY_ID",
       ip: clientIp,
     });
 
-    // Used findUnique to search for scheme_info by the scheme_id
+    // Retrieve scheme information by scheme_id
     const schemeInfo = await prisma.scheme_info.findUnique({
       where: { scheme_id: scheme_id },
     });
 
     if (schemeInfo) {
+      // Log successful retrieval of scheme information
       logger.info(`Scheme information found for scheme_id: ${scheme_id}`, {
         userId,
         action: "FETCH_SCHEME_INFO_BY_ID",
         ip: clientIp,
       });
 
-      // Audit Log
+      // Create an audit log entry for the fetch operation
       await createAuditLog(
         userId,
         "FETCH_BY_ID",
@@ -216,12 +280,14 @@ const getSchemeInfoById = async (req, res) => {
         schemeInfo
       );
 
+      // Send success response with scheme information
       res.status(200).json({
         status: true,
         message: "Scheme information retrieved successfully",
         data: schemeInfo,
       });
     } else {
+      // Log and respond if scheme information is not found
       logger.warn(`Scheme information not found for scheme_id: ${scheme_id}`, {
         userId,
         action: "FETCH_SCHEME_INFO_BY_ID",
@@ -234,6 +300,7 @@ const getSchemeInfoById = async (req, res) => {
       });
     }
   } catch (error) {
+    // Log error details and send error response
     logger.error(`Error fetching scheme info by ID`, {
       userId,
       action: "FETCH_SCHEME_INFO_BY_ID",
