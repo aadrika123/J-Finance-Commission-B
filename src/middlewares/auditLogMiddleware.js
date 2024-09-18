@@ -25,11 +25,11 @@ const auditLogMiddleware = async (req, res, next) => {
     } catch (error) {
       console.error(`Failed to create audit log: ${error.message}`);
     }
-  } else {
-    // Log missing data for debugging
-    console.warn(
-      `Missing data in audit log middleware: userId: ${userId}, tableName: ${tableName}, actionType: ${actionType}, recordId: ${recordId}`
-    );
+    // } else {
+    //   // Log missing data for debugging
+    //   console.warn(
+    //     `Missing data in audit log middleware: userId: ${userId}, tableName: ${tableName}, actionType: ${actionType}, recordId: ${recordId}`
+    //   );
   }
 
   next(); // Continue to the next middleware or route handler
