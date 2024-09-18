@@ -42,12 +42,13 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
         ip: clientIp,
         filters,
       });
-      return res.status(404).json({
-        status: false,
+
+      return res.status(200).json({
+        status: true,
         message: "No financial summary data found",
+        data: [],
       });
     }
-
     // Convert BigInt to string in the results
     const sanitizedData = financialSummary.map((item) =>
       convertBigIntToString(item)
@@ -119,18 +120,17 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
       await financialDao.fetchFinancialSummaryReportNonMillionPlus(filters);
 
     if (!financialSummary || financialSummary.length === 0) {
-      logger.warn(
-        "No financial summary data found for Non-Million Plus Cities.",
-        {
-          userId,
-          action: "FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS",
-          ip: clientIp,
-          filters,
-        }
-      );
-      return res.status(404).json({
-        status: false,
+      logger.warn("No financial summary data found for Million Plus Cities.", {
+        userId,
+        action: "FETCH_FINANCIAL_SUMMARY_MILLION_PLUS",
+        ip: clientIp,
+        filters,
+      });
+
+      return res.status(200).json({
+        status: true,
         message: "No financial summary data found",
+        data: [], // Return empty array
       });
     }
 
