@@ -19,10 +19,10 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
     const { ulb_name, grant_type, financial_year, sector } = req.query;
 
     const filters = {
-      ulb_name,
-      grant_type,
-      financial_year: parseInt(financial_year, 10),
-      sector,
+      ulb_name: ulb_name || null,
+      grant_type: grant_type || null,
+      financial_year: financial_year ? parseInt(financial_year, 10) : null,
+      sector: sector || null,
     };
 
     logger.info("Fetching financial summary for Million Plus Cities...", {
@@ -100,11 +100,12 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
   try {
     const { ulb_name, grant_type, financial_year, sector } = req.query;
 
+    // Update filters to handle empty values
     const filters = {
-      ulb_name,
-      grant_type,
-      financial_year: parseInt(financial_year, 10),
-      sector,
+      ulb_name: ulb_name || null,
+      grant_type: grant_type || null,
+      financial_year: financial_year ? parseInt(financial_year, 10) : null,
+      sector: sector || null,
     };
 
     logger.info("Fetching financial summary for Non-Million Plus Cities...", {
