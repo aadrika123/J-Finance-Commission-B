@@ -5734,3 +5734,244 @@
   level: 'info',
   timestamp: '2024-09-16 18:01:45'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 18:03:34'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Ranchi Municipal Corporation',
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Million Plus Cities...',
+  timestamp: '2024-09-16 18:44:00'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Ranchi Municipal Corporation',
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Million Plus Cities.',
+  timestamp: '2024-09-16 18:44:01'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-16 18:44:15'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Ranchi Municipal Corporation',
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Million Plus Cities...',
+  timestamp: '2024-09-16 18:44:19'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Ranchi Municipal Corporation',
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Million Plus Cities.',
+  timestamp: '2024-09-16 18:44:20'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Ranchi Municipal Corporation',
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Million Plus Cities...',
+  timestamp: '2024-09-16 18:46:40'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-16 18:46:40'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-16 18:48:35'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-16 18:48:35'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: undefined,
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-16 18:49:39'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-16 18:49:39'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 10:59:05'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: undefined,
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 11:01:45'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 11:01:46'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 11:03:03'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: undefined,
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 11:03:18'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 11:03:18'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: undefined,
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Million Plus Cities...',
+  timestamp: '2024-09-18 11:03:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary for Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 11:03:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-18 11:32:49'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 3,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-18 11:32:49'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 3,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-18 11:32:50'
+}
