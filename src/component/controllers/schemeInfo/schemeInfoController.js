@@ -26,12 +26,12 @@ const addSchemeInfo = async (req, res) => {
     const userId = req.body?.auth?.id || null; // Get user ID from request
 
     // Validate required fields
-    if (!scheme_name || !date_of_approval || !ulb) {
-      return res.status(400).json({
-        status: false,
-        message: "Missing required fields",
-      });
-    }
+    // if (!scheme_name || !date_of_approval || !ulb) {
+    //   return res.status(400).json({
+    //     status: false,
+    //     message: "Missing required fields",
+    //   });
+    // }
 
     logger.info("Attempting to add new scheme information...", {
       userId,
