@@ -5,31 +5,44 @@ const {
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
-const createAuditLog = require("../../../utils/auditLog/auditLogger");
+const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import audit logger
 const prisma = new PrismaClient();
 
+/**
+ * Retrieves and processes the financial summary report based on the provided query parameters.
+ *
+ * This function:
+ * 1. Captures the client's IP address and user ID from the request for logging purposes.
+ * 2. Extracts query parameters such as city_type, grant_type, sector, and financial_year to filter the report data.
+ * 3. Fetches the financial summary report using the `fetchFinancialSummaryReport` function.
+ * 4. Processes the fetched data to ensure compatibility with the database schema, including handling bigint values.
+ * 5. Updates existing records in the database if they match the `ulb_id` or creates new records if no match is found.
+ * 6. Logs actions and errors throughout the process, including audit logs for create and update operations.
+ * 7. Returns a JSON response with the status and data of the processed report, or an error message if the process fails.
+ *
+ * @param {Object} req - The request object containing query parameters and user information.
+ * @param {Object} res - The response object used to send the result back to the client.
+ *
+ * @returns {void} - Sends a JSON response to the client with the status and result of the operation.
+ */
+
 const getFinancialSummaryReport = async (req, res) => {
-  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
-  const userId = req.body?.auth?.id || null; // Get user ID from request
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture client IP address for logging purposes
+  const userId = req.body?.auth?.id || null; // Retrieve user ID from request body if available
 
   try {
+    // Log the initiation of the financial summary report fetching process
     logger.info("Fetching financial summary report...", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      query: req.query,
+      query: req.query, // Log the query parameters for debugging
     });
 
+    // Extract query parameters to use for filtering the financial summary report
     const { city_type, grant_type, sector, financial_year } = req.query;
 
-    // Validate query parameters
-    if (financial_year && isNaN(parseInt(financial_year, 10))) {
-      return res.status(400).json({
-        status: false,
-        message: "Invalid financial year",
-      });
-    }
-
+    // Fetch the financial summary report based on provided query parameters
     const report = await fetchFinancialSummaryReport(
       city_type,
       grant_type,
@@ -37,18 +50,20 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
+    // Log successful fetching of the financial summary report
     logger.info("Financial summary report fetched successfully.", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      reportSummary: report.length,
+      reportSummary: report.length, // Log the number of records fetched
     });
 
+    // Process the report data to ensure compatibility with the database schema
     const result = report.map((row) => {
       return {
         ...row,
         financial_year:
-          row.financial_year !== undefined ? row.financial_year : null,
+          row.financial_year !== undefined ? row.financial_year : null, // Set undefined fields to null
         first_instalment:
           row.first_instalment !== undefined ? row.first_instalment : null,
         second_instalment:
@@ -59,42 +74,26 @@ const getFinancialSummaryReport = async (req, res) => {
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
-            typeof value === "bigint" ? value.toString() : value,
+            typeof value === "bigint" ? value.toString() : value, // Convert bigint values to string
           ])
         ),
       };
     });
 
-    // Check for missing fields in result
+    // Iterate over each row of the processed report
     for (const row of result) {
-      if (row.ulb_id === undefined) {
-        logger.warn("Missing ULB ID in report row.", {
-          userId,
-          action: "FETCH_FINANCIAL_SUMMARY_REPORT",
-          ip: clientIp,
-          row,
-        });
-        return res.status(500).json({
-          status: false,
-          message: "Data inconsistency detected",
-        });
-      }
-    }
-
-    // Existing and new record handling
-    for (const row of result) {
+      // Check if a record with the given ulb_id already exists in the database
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
 
       if (existingRecord) {
+        // Update the existing record with new data
         const updatedRecord = await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
             ulb_name: row.ulb_name || existingRecord.ulb_name,
-            approved_schemes:
-              parseInt(row.approved_schemes, 10) ||
-              existingRecord.approved_schemes,
+            approved_schemes: parseInt(row.approved_schemes, 10),
             fund_release_to_ulbs:
               parseFloat(row.fund_release_to_ulbs) ||
               existingRecord.fund_release_to_ulbs,
@@ -141,7 +140,7 @@ const getFinancialSummaryReport = async (req, res) => {
           },
         });
 
-        // Audit Log for Update
+        // Log the update operation in the audit log
         await createAuditLog(
           userId,
           "UPDATE",
@@ -153,6 +152,7 @@ const getFinancialSummaryReport = async (req, res) => {
           }
         );
       } else {
+        // If no existing record is found, create a new record in the database
         const newRecord = await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
@@ -185,7 +185,7 @@ const getFinancialSummaryReport = async (req, res) => {
           },
         });
 
-        // Audit Log for Create
+        // Log the creation operation in the audit log
         await createAuditLog(
           userId,
           "CREATE",
@@ -198,38 +198,65 @@ const getFinancialSummaryReport = async (req, res) => {
       }
     }
 
+    // Log the successful processing of the financial summary report
     logger.info("Financial summary report processed successfully.", {
       userId,
       action: "PROCESS_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      resultCount: result.length,
+      resultCount: result.length, // Log the number of records processed
     });
 
+    // Respond with the results of the operation
     res.status(200).json({
       status: true,
       message: "Financial summary report fetched and stored successfully",
-      data: result,
+      data: result, // Include the processed report data in the response
     });
   } catch (error) {
+    // Log the error details if the operation fails
     logger.error(`Error fetching financial summary report: ${error.message}`, {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      error: error.message,
+      error: error.message, // Include the error message for debugging
     });
+    // Respond with a 500 Internal Server Error if something goes wrong
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
-      error: error.message,
+      error: error.message, // Include the error message in the response
     });
   }
 };
 
-// Update the financial summary report
+module.exports = {
+  getFinancialSummaryReport,
+};
+
+/**
+ * Updates the financial summary report for a specific ULB (Urban Local Body).
+ *
+ * This function:
+ * 1. Captures the client's IP address and user ID from the request for logging purposes.
+ * 2. Extracts required fields from the request body including `ulb_id`, `financial_year`, `first_instalment`,
+ *    `second_instalment`, `interest_amount`, and `grant_type`.
+ * 3. Validates the presence of `ulb_id`, returning an error response if it's missing.
+ * 4. Logs the update request details including the ULB ID and request data.
+ * 5. Updates the financial summary report using the `updateFinancialSummary` function.
+ * 6. Creates an audit log entry for the update operation.
+ * 7. Logs a success message if the update is successful and returns a success response.
+ * 8. Catches and handles errors, logging the error details and returning an appropriate error response.
+ *
+ * @param {Object} req - The request object containing the data to update.
+ * @param {Object} res - The response object used to send the result back to the client.
+ *
+ * @returns {void} - Sends a JSON response to the client with the status and result of the update operation.
+ */
 const updateFinancialSummaryReport = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
   const userId = req.body?.auth?.id || null; // Get user ID from request
 
+  // Extract relevant data from request body
   const {
     ulb_id,
     financial_year,
@@ -240,7 +267,7 @@ const updateFinancialSummaryReport = async (req, res) => {
   } = req.body;
 
   try {
-    // Validate required parameters
+    // Validate that ulb_id is provided
     if (!ulb_id) {
       logger.warn("ULB ID is missing in the request.", {
         userId,
@@ -253,14 +280,7 @@ const updateFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Optional validations
-    if (financial_year && isNaN(parseInt(financial_year, 10))) {
-      return res.status(400).json({
-        status: false,
-        message: "Invalid financial year",
-      });
-    }
-
+    // Log request details
     logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`, {
       userId,
       action: "UPDATE_FINANCIAL_SUMMARY",
@@ -268,6 +288,7 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: req.body,
     });
 
+    // Perform the update operation
     const updatedReport = await updateFinancialSummary({
       ulb_id,
       financial_year,
@@ -277,12 +298,13 @@ const updateFinancialSummaryReport = async (req, res) => {
       grant_type,
     });
 
-    // Audit Log for Update
+    // Audit Log for the update
     await createAuditLog(userId, "UPDATE", "FinancialSummaryReport", ulb_id, {
-      oldData: {}, // Fetch old data if necessary
+      oldData: {}, // Fetch old data if necessary for detailed audit logs
       newData: updatedReport,
     });
 
+    // Log success and send response
     logger.info(
       `Financial summary report updated successfully for ULB ID: ${ulb_id}`,
       {
@@ -299,6 +321,7 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: updatedReport,
     });
   } catch (error) {
+    // Log error and send error response
     logger.error(
       `Error updating financial summary report with ULB ID ${ulb_id}: ${error.message}`,
       {
@@ -323,27 +346,33 @@ const updateFinancialSummaryReport = async (req, res) => {
     }
   }
 };
-// Get updated financial summary report
+
+/**
+ * Retrieves the updated financial summary report for a specific ULB (Urban Local Body).
+ *
+ * This function:
+ * 1. Captures the client's IP address and user ID from the request for logging purposes.
+ * 2. Extracts `ulb_id` from query parameters to identify which ULB's report to fetch.
+ * 3. Logs the fetch request details including the ULB ID.
+ * 4. Fetches the updated financial summary reports using the `fetchUpdatedFinancialSummary` function.
+ * 5. Checks if reports are found and returns a 404 response if no reports are found.
+ * 6. Logs a success message if reports are successfully fetched and returns the reports in the response.
+ * 7. Catches and handles errors, logging the error details and returning an appropriate error response.
+ *
+ * @param {Object} req - The request object containing query parameters.
+ * @param {Object} res - The response object used to send the result back to the client.
+ *
+ * @returns {void} - Sends a JSON response to the client with the status and data of the fetched reports.
+ */
 const getUpdatedFinancialSummaryReport = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
   const userId = req.body?.auth?.id || null; // Get user ID from request
 
-  const { ulb_id } = req.query; // Retrieve ulb_id from query parameters
+  // Retrieve ulb_id from query parameters
+  const { ulb_id } = req.query;
 
   try {
-    // Validate query parameters
-    if (!ulb_id) {
-      logger.warn("ULB ID is missing in the request.", {
-        userId,
-        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
-        ip: clientIp,
-      });
-      return res.status(400).json({
-        status: false,
-        message: "ULB ID is required",
-      });
-    }
-
+    // Log request details
     logger.info("Fetching updated financial summary reports...", {
       userId,
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
@@ -351,8 +380,10 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       ulb_id,
     });
 
+    // Fetch updated financial summary reports
     const reports = await fetchUpdatedFinancialSummary(ulb_id);
 
+    // Handle case where no reports are found
     if (!reports || reports.length === 0) {
       logger.warn("No updated financial summary reports found.", {
         userId,
@@ -366,6 +397,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       });
     }
 
+    // Log success and send response with fetched reports
     logger.info("Updated financial summary reports fetched successfully.", {
       userId,
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
@@ -379,6 +411,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       data: reports,
     });
   } catch (error) {
+    // Log error and send error response
     logger.error(
       `Error fetching updated financial summary reports: ${error.message}`,
       {

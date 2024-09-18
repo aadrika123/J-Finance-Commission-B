@@ -1,6 +1,14 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+/**
+ * Fetches the financial summary report based on various filters.
+ * @param {string} city_type - The type of city (e.g., 'Million Plus', 'Non Million Plus').
+ * @param {string} grant_type - The type of grant (e.g., 'ambient', 'tied', 'untied').
+ * @param {string} sector - The sector for filtering.
+ * @param {number} financial_year - The financial year for filtering.
+ * @returns {Promise<Object[]>} - The financial summary report.
+ */
 const fetchFinancialSummaryReport = async (
   city_type,
   grant_type,
@@ -32,6 +40,7 @@ const fetchFinancialSummaryReport = async (
     WHERE 1=1
   `;
 
+  // Apply filters to the query based on provided parameters
   if (city_type) {
     query += ` AND s.city_type = '${city_type}'`;
   }
@@ -49,6 +58,18 @@ const fetchFinancialSummaryReport = async (
 
   return await prisma.$queryRawUnsafe(query);
 };
+
+/**
+ * Updates the financial summary report for a given ULB.
+ * @param {Object} params - Parameters to update the financial summary.
+ * @param {number} params.ulb_id - The ULB ID to identify the record.
+ * @param {number} [params.financial_year] - The financial year (optional).
+ * @param {number} [params.first_instalment] - The first installment amount (optional).
+ * @param {number} [params.second_instalment] - The second installment amount (optional).
+ * @param {number} [params.interest_amount] - The interest amount (optional).
+ * @param {string} [params.grant_type] - The grant type (optional).
+ * @returns {Promise<Object>} - The updated financial summary report.
+ */
 const updateFinancialSummary = async ({
   ulb_id,
   financial_year,
@@ -77,8 +98,12 @@ const updateFinancialSummary = async ({
   }
 };
 
-// fetch uppdated financial summary report
-
+/**
+ * Fetches the updated financial summary report for a given ULB ID.
+ * Only returns records where any of the fields have been updated (not null).
+ * @param {number|string} ulb_id - The ULB ID to fetch the report.
+ * @returns {Promise<Object[]>} - The list of updated financial summary reports.
+ */
 const fetchUpdatedFinancialSummary = async (ulb_id) => {
   try {
     // Convert ulb_id to an integer if it's provided
@@ -108,6 +133,7 @@ const fetchUpdatedFinancialSummary = async (ulb_id) => {
     throw error;
   }
 };
+
 module.exports = {
   fetchFinancialSummaryReport,
   updateFinancialSummary,
