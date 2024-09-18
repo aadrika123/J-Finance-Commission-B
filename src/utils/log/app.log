@@ -5975,3 +5975,82 @@
   message: 'Financial summary report processed successfully.',
   timestamp: '2024-09-18 11:32:50'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 11:34:49'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: undefined,
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Million Plus Cities...',
+  timestamp: '2024-09-18 11:34:51'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary for Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 11:34:51'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: undefined,
+    grant_type: undefined,
+    financial_year: NaN,
+    sector: undefined
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 11:35:08'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 11:35:08'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: 'Untied',
+    financial_year: 2024,
+    sector: 'Infrastructure'
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 11:37:31'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 11:37:31'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 11:38:57'
+}
