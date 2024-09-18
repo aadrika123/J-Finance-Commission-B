@@ -6810,3 +6810,444 @@
   message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
   timestamp: '2024-09-18 12:41:49'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 13:08:04'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Bundu Nagar Panchayat',
+    grant_type: 'Tied',
+    financial_year: 2024,
+    sector: 'Infrastructure'
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:10:11'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:10:11'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:10:22'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:10:22'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:10:39'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:10:39'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:10:46'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:10:46'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporatio',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:11:03'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporatio',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Non-Million Plus Cities.',
+  timestamp: '2024-09-18 13:11:03'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:11:13'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:11:13'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 13:12:00'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:12:15'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:12:16'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporatio',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:12:23'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporatio',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Non-Million Plus Cities.',
+  timestamp: '2024-09-18 13:12:23'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:31:02'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:31:02'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-18 13:34:20'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 4,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-18 13:34:20'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 4,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-18 13:34:20'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: { grant_type: 'Tied', city_type: 'Million Plus Cities' },
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-18 13:35:25'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-18 13:35:25'
+}
+{
+  userId: 72,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-18 13:35:25'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: { grant_type: 'Tied', city_type: 'Million Plus Cities' },
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-18 13:36:06'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-18 13:36:06'
+}
+{
+  userId: 72,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-18 13:36:06'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {
+    grant_type: 'Tied',
+    city_type: 'Million Plus Cities',
+    financial_year: '2024'
+  },
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-18 13:37:01'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-18 13:37:01'
+}
+{
+  userId: 72,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-18 13:37:01'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {
+    grant_type: 'Tied',
+    city_type: 'Million Plus Cities',
+    financial_year: '2023'
+  },
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-18 13:37:05'
+}
+{
+  userId: 72,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 0,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-18 13:37:05'
+}
+{
+  userId: 72,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 0,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-18 13:37:05'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 13:39:03'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 13:42:22'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 13:42:47'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-18 13:47:06'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:47:37'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-18 13:47:37'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporatio',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-18 13:47:43'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporatio',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Million Plus Cities.',
+  timestamp: '2024-09-18 13:47:43'
+}
