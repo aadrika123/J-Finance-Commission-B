@@ -18,12 +18,20 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
   try {
     const { ulb_name, grant_type, financial_year, sector } = req.query;
 
+    // Validate and sanitize query parameters
     const filters = {
       ulb_name: ulb_name || null,
       grant_type: grant_type || null,
       financial_year: financial_year ? parseInt(financial_year, 10) : null,
       sector: sector || null,
     };
+
+    if (filters.financial_year && isNaN(filters.financial_year)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid financial year",
+      });
+    }
 
     logger.info("Fetching financial summary for Million Plus Cities...", {
       userId,
@@ -49,6 +57,7 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
         data: [],
       });
     }
+
     // Convert BigInt to string in the results
     const sanitizedData = financialSummary.map((item) =>
       convertBigIntToString(item)
@@ -101,13 +110,20 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
   try {
     const { ulb_name, grant_type, financial_year, sector } = req.query;
 
-    // Update filters to handle empty values
+    // Validate and sanitize query parameters
     const filters = {
       ulb_name: ulb_name || null,
       grant_type: grant_type || null,
       financial_year: financial_year ? parseInt(financial_year, 10) : null,
       sector: sector || null,
     };
+
+    if (filters.financial_year && isNaN(filters.financial_year)) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid financial year",
+      });
+    }
 
     logger.info("Fetching financial summary for Non-Million Plus Cities...", {
       userId,
@@ -120,17 +136,20 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
       await financialDao.fetchFinancialSummaryReportNonMillionPlus(filters);
 
     if (!financialSummary || financialSummary.length === 0) {
-      logger.warn("No financial summary data found for Million Plus Cities.", {
-        userId,
-        action: "FETCH_FINANCIAL_SUMMARY_MILLION_PLUS",
-        ip: clientIp,
-        filters,
-      });
+      logger.warn(
+        "No financial summary data found for Non-Million Plus Cities.",
+        {
+          userId,
+          action: "FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS",
+          ip: clientIp,
+          filters,
+        }
+      );
 
       return res.status(200).json({
         status: true,
         message: "No financial summary data found",
-        data: [], // Return empty array
+        data: [],
       });
     }
 
@@ -178,7 +197,6 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   getFilteredFinancialSummaryMillionPlus,
   getFilteredFinancialSummaryNonMillionPlus,

@@ -25,6 +25,14 @@ const addSchemeInfo = async (req, res) => {
 
     const userId = req.body?.auth?.id || null; // Get user ID from request
 
+    // Validate required fields
+    if (!scheme_name || !date_of_approval || !ulb) {
+      return res.status(400).json({
+        status: false,
+        message: "Missing required fields",
+      });
+    }
+
     logger.info("Attempting to add new scheme information...", {
       userId,
       action: "ADD_SCHEME_INFO",
@@ -33,6 +41,7 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
     });
 
+    // Convert date to UTC
     const dateOfApprovedUTC = moment
       .tz(date_of_approval, "Asia/Kolkata")
       .utc()
@@ -87,10 +96,17 @@ const fetchSchemeInfo = async (req, res) => {
 
   try {
     const userId = req.body?.auth?.id || null;
-    const page = parseInt(req.query.page) || 1;
-    const take = parseInt(req.query.take) || 10;
+    const page = parseInt(req.query.page, 10) || 1;
+    const take = parseInt(req.query.take, 10) || 10;
     const skip = (page - 1) * take;
     const { grant_type } = req.query; // Get the grant_type filter from query params
+
+    if (page < 1 || take < 1) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid pagination parameters",
+      });
+    }
 
     // Prepare the filter condition
     const filterCondition = {};
@@ -159,22 +175,29 @@ const fetchSchemeInfo = async (req, res) => {
     });
   }
 };
-
 const getSchemeInfoById = async (req, res) => {
-  const { scheme_id } = req.params; // Make sure scheme_id is coming from params
+  const { scheme_id } = req.params;
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
   try {
     const userId = req.body?.auth?.id || null;
+
+    if (!scheme_id) {
+      return res.status(400).json({
+        status: false,
+        message: "Missing scheme_id",
+      });
+    }
+
     logger.info(`Fetching scheme information for scheme_id: ${scheme_id}`, {
       userId,
       action: "FETCH_SCHEME_INFO_BY_ID",
       ip: clientIp,
     });
 
-    // Use findUnique to search for scheme_info by the scheme_id string
+    // Used findUnique to search for scheme_info by the scheme_id
     const schemeInfo = await prisma.scheme_info.findUnique({
-      where: { scheme_id: scheme_id }, // Make sure to match scheme_id as a string
+      where: { scheme_id: scheme_id },
     });
 
     if (schemeInfo) {

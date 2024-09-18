@@ -5,7 +5,7 @@ const {
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
-const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import audit logger
+const createAuditLog = require("../../../utils/auditLog/auditLogger");
 const prisma = new PrismaClient();
 
 const getFinancialSummaryReport = async (req, res) => {
@@ -21,6 +21,14 @@ const getFinancialSummaryReport = async (req, res) => {
     });
 
     const { city_type, grant_type, sector, financial_year } = req.query;
+
+    // Validate query parameters
+    if (financial_year && isNaN(parseInt(financial_year, 10))) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid financial year",
+      });
+    }
 
     const report = await fetchFinancialSummaryReport(
       city_type,
@@ -57,6 +65,23 @@ const getFinancialSummaryReport = async (req, res) => {
       };
     });
 
+    // Check for missing fields in result
+    for (const row of result) {
+      if (row.ulb_id === undefined) {
+        logger.warn("Missing ULB ID in report row.", {
+          userId,
+          action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+          ip: clientIp,
+          row,
+        });
+        return res.status(500).json({
+          status: false,
+          message: "Data inconsistency detected",
+        });
+      }
+    }
+
+    // Existing and new record handling
     for (const row of result) {
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
@@ -67,7 +92,9 @@ const getFinancialSummaryReport = async (req, res) => {
           where: { ulb_id: row.ulb_id },
           data: {
             ulb_name: row.ulb_name || existingRecord.ulb_name,
-            approved_schemes: parseInt(row.approved_schemes, 10),
+            approved_schemes:
+              parseInt(row.approved_schemes, 10) ||
+              existingRecord.approved_schemes,
             fund_release_to_ulbs:
               parseFloat(row.fund_release_to_ulbs) ||
               existingRecord.fund_release_to_ulbs,
@@ -213,6 +240,7 @@ const updateFinancialSummaryReport = async (req, res) => {
   } = req.body;
 
   try {
+    // Validate required parameters
     if (!ulb_id) {
       logger.warn("ULB ID is missing in the request.", {
         userId,
@@ -222,6 +250,14 @@ const updateFinancialSummaryReport = async (req, res) => {
       return res.status(400).json({
         status: false,
         message: "ULB ID is required",
+      });
+    }
+
+    // Optional validations
+    if (financial_year && isNaN(parseInt(financial_year, 10))) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid financial year",
       });
     }
 
@@ -287,7 +323,6 @@ const updateFinancialSummaryReport = async (req, res) => {
     }
   }
 };
-
 // Get updated financial summary report
 const getUpdatedFinancialSummaryReport = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
@@ -296,6 +331,19 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
   const { ulb_id } = req.query; // Retrieve ulb_id from query parameters
 
   try {
+    // Validate query parameters
+    if (!ulb_id) {
+      logger.warn("ULB ID is missing in the request.", {
+        userId,
+        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+        ip: clientIp,
+      });
+      return res.status(400).json({
+        status: false,
+        message: "ULB ID is required",
+      });
+    }
+
     logger.info("Fetching updated financial summary reports...", {
       userId,
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
