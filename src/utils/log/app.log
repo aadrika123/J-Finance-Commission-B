@@ -14910,3 +14910,1444 @@
   message: 'Scheme information list fetched successfully',
   timestamp: '2024-09-20 13:21:30'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:24:05'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 13:24:12'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 13:24:17'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 1,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 13:24:20'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:52:45'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '3',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 13:52:54'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 13:52:54'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 1,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 13:52:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 13:53:02'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 13:53:02'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 13:53:05'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 13:53:05'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: 'sch-03-002',
+  data: {
+    sector: 'Infrastructure',
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-20T08:23:13.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-20T08:23:13.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-002',
+  timestamp: '2024-09-20 13:53:13'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: 'sch-03-002',
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-002',
+    project_cost: 8000000,
+    scheme_name: 'Water Supply Improvement',
+    sector: 'Infrastructure',
+    grant_type: 'Central',
+    city_type: 'Urban',
+    date_of_approval: null,
+    ulb: null,
+    created_at: 2024-09-10T12:46:25.547Z,
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    approved_project_cost: 8000000,
+    ulb_id: null
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-002',
+  timestamp: '2024-09-20 13:53:13'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_FINANCIAL_SUMMARY',
+  ip: '::1',
+  data: {
+    ulb_id: 3,
+    financial_year: 2024,
+    first_instalment: 1000000,
+    second_instalment: 2000000,
+    interest_amount: 50000,
+    grant_type: 'Tied',
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-20T08:23:20.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-20T08:23:20.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Updating financial summary report for ULB ID: 3',
+  timestamp: '2024-09-20 13:53:20'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_FINANCIAL_SUMMARY',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.update()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:83:63\n' +
+    '\n' +
+    '  80 }) => {\n' +
+    '  81   try {\n' +
+    '  82     // Update the financial summary report in the database\n' +
+    '→ 83     const updatedReport = await prisma.financialSummaryReport.update({\n' +
+    '           where: {\n' +
+    '             ulb_id: 3,\n' +
+    '         ?   id?: Int,\n' +
+    '         ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '         ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '         ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '         ?   ulb_name?: StringFilter | String,\n' +
+    '         ?   approved_schemes?: IntFilter | Int,\n' +
+    '         ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '         ?   amount?: DecimalFilter | Decimal,\n' +
+    '         ?   project_completed?: IntFilter | Int,\n' +
+    '         ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '         ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '         ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '         ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '         ?   tender_not_floated?: IntFilter | Int,\n' +
+    '         ?   work_in_progress?: IntFilter | Int,\n' +
+    '         ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '         ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '         ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '         ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '         ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '         ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '         ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '           },\n' +
+    '           data: {\n' +
+    '             financial_year: 2024,\n' +
+    '             first_instalment: 1000000,\n' +
+    '             second_instalment: 2000000,\n' +
+    '             interest_amount: 50000,\n' +
+    '             grant_type: "Tied"\n' +
+    '           }\n' +
+    '         })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error updating financial summary report with ULB ID 3: \n' +
+    'Invalid `prisma.financialSummaryReport.update()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:83:63\n' +
+    '\n' +
+    '  80 }) => {\n' +
+    '  81   try {\n' +
+    '  82     // Update the financial summary report in the database\n' +
+    '→ 83     const updatedReport = await prisma.financialSummaryReport.update({\n' +
+    '           where: {\n' +
+    '             ulb_id: 3,\n' +
+    '         ?   id?: Int,\n' +
+    '         ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '         ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '         ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '         ?   ulb_name?: StringFilter | String,\n' +
+    '         ?   approved_schemes?: IntFilter | Int,\n' +
+    '         ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '         ?   amount?: DecimalFilter | Decimal,\n' +
+    '         ?   project_completed?: IntFilter | Int,\n' +
+    '         ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '         ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '         ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '         ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '         ?   tender_not_floated?: IntFilter | Int,\n' +
+    '         ?   work_in_progress?: IntFilter | Int,\n' +
+    '         ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '         ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '         ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '         ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '         ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '         ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '         ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '           },\n' +
+    '           data: {\n' +
+    '             financial_year: 2024,\n' +
+    '             first_instalment: 1000000,\n' +
+    '             second_instalment: 2000000,\n' +
+    '             interest_amount: 50000,\n' +
+    '             grant_type: "Tied"\n' +
+    '           }\n' +
+    '         })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  timestamp: '2024-09-20 13:53:20'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 13:53:54'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 13:53:54'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 5,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 5,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  timestamp: '2024-09-20 13:53:54'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '3',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 13:54:17'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 13:54:17'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 13:54:22'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:113:57\n' +
+    '\n' +
+    '  110 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  111 \n' +
+    '  112 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 113 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  level: 'error',
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:113:57\n' +
+    '\n' +
+    '  110 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  111 \n' +
+    '  112 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 113 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  timestamp: '2024-09-20 13:54:22'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '3',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 13:54:26'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 13:54:26'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 13:54:33'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 13:54:33'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 13:54:44'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 13:54:44'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 5,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 5,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  timestamp: '2024-09-20 13:54:44'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 13:55:13'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 13:55:13'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 5,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 5,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  timestamp: '2024-09-20 13:55:13'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 14:02:43'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 14:02:51'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 14:02:51'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 3,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 3,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  timestamp: '2024-09-20 14:02:51'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 14:49:30'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 14:49:35'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 14:49:35'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 3,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.findUnique()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:86:66\n' +
+    '\n' +
+    '  83 // Iterate over each row of the processed report\n' +
+    '  84 for (const row of result) {\n' +
+    '  85   // Check if a record with the given ulb_id already exists in the database\n' +
+    '→ 86   const existingRecord = await prisma.financialSummaryReport.findUnique({\n' +
+    '         where: {\n' +
+    '           ulb_id: 3,\n' +
+    '       ?   id?: Int,\n' +
+    '       ?   AND?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   OR?: FinancialSummaryReportWhereInput[],\n' +
+    '       ?   NOT?: FinancialSummaryReportWhereInput | FinancialSummaryReportWhereInput[],\n' +
+    '       ?   ulb_name?: StringFilter | String,\n' +
+    '       ?   approved_schemes?: IntFilter | Int,\n' +
+    '       ?   fund_release_to_ulbs?: DecimalFilter | Decimal,\n' +
+    '       ?   amount?: DecimalFilter | Decimal,\n' +
+    '       ?   project_completed?: IntFilter | Int,\n' +
+    '       ?   expenditure?: DecimalFilter | Decimal,\n' +
+    '       ?   balance_amount?: DecimalFilter | Decimal,\n' +
+    '       ?   financial_progress_in_percentage?: IntFilter | Int,\n' +
+    '       ?   number_of_tender_floated?: IntFilter | Int,\n' +
+    '       ?   tender_not_floated?: IntFilter | Int,\n' +
+    '       ?   work_in_progress?: IntFilter | Int,\n' +
+    '       ?   financial_year?: IntNullableFilter | Int | Null,\n' +
+    '       ?   first_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   second_instalment?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   interest_amount?: DecimalNullableFilter | Decimal | Null,\n' +
+    '       ?   grant_type?: StringNullableFilter | String | Null,\n' +
+    '       ?   created_at?: DateTimeFilter | DateTime,\n' +
+    '       ?   ULB?: ULBRelationFilter | ULBWhereInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type FinancialSummaryReportWhereUniqueInput needs at least one of `id` arguments. Available options are marked with ?.',
+  timestamp: '2024-09-20 14:49:35'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 14:53:46'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 14:53:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 14:53:58'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 14:53:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 14:54:13'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 14:54:13'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 14:54:23'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 14:54:23'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 14:54:23'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {
+    grant_type: 'Tied',
+    city_type: 'Million Plus Cities',
+    financial_year: '2024',
+    sector: 'Infrastructure'
+  },
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 14:54:29'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 14:54:29'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 14:54:29'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: 'sch-03-002',
+  data: {
+    sector: 'Infrastructure',
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-20T09:24:39.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-20T09:24:39.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-002',
+  timestamp: '2024-09-20 14:54:39'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: 'sch-03-002',
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-002',
+    project_cost: 8000000,
+    scheme_name: 'Water Supply Improvement',
+    sector: 'Infrastructure',
+    grant_type: 'Central',
+    city_type: 'Urban',
+    date_of_approval: null,
+    ulb: 'Basukinath Nagar Panchayat',
+    created_at: 2024-09-10T12:46:25.547Z,
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    approved_project_cost: 8000000,
+    ulb_id: 3
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-002',
+  timestamp: '2024-09-20 14:54:39'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_FINANCIAL_SUMMARY',
+  ip: '::1',
+  data: {
+    ulb_id: 3,
+    financial_year: 2024,
+    first_instalment: 1000000,
+    second_instalment: 2000000,
+    interest_amount: 50000,
+    grant_type: 'Tied',
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-20T09:24:43.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-20T09:24:43.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Updating financial summary report for ULB ID: 3',
+  timestamp: '2024-09-20 14:54:43'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_FINANCIAL_SUMMARY',
+  ip: '::1',
+  updatedReport: {
+    id: 41,
+    ulb_id: 3,
+    ulb_name: 'Basukinath Nagar Panchayat',
+    approved_schemes: 14,
+    fund_release_to_ulbs: 150000000,
+    amount: 150000000,
+    project_completed: 1,
+    expenditure: 1800000,
+    balance_amount: 22700000,
+    financial_progress_in_percentage: 50,
+    number_of_tender_floated: 2,
+    tender_not_floated: 1,
+    work_in_progress: 13,
+    financial_year: 2024,
+    first_instalment: 1000000,
+    second_instalment: 2000000,
+    interest_amount: 50000,
+    grant_type: 'Tied',
+    created_at: 2024-09-11T13:13:01.059Z
+  },
+  level: 'info',
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  timestamp: '2024-09-20 14:54:43'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-20 14:54:51'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 5,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-20 14:54:51'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-20 14:54:56'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: 'Adityapur Municipal Corporation',
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Non-Million Plus Cities.',
+  timestamp: '2024-09-20 14:54:56'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 14:55:52'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 1,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 14:56:14'
+}
