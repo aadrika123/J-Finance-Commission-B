@@ -14829,3 +14829,84 @@
   message: 'Scheme information list fetched successfully',
   timestamp: '2024-09-20 12:34:58'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:05:53'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-20 13:05:59'
+}
+{
+  total_ULBs: 43,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 13:06:00'
+}
+{
+  message: 'Fetching ULBs from the database...',
+  level: 'info',
+  timestamp: '2024-09-20 13:06:06'
+}
+{
+  total_ULBs: 43,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 13:06:06'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:07:04'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:19:49'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:20:15'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:20:42'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 13:21:05'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '3',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 13:21:27'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 13:21:27'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 13:21:30'
+}

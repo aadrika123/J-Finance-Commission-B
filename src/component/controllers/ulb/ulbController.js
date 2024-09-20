@@ -42,7 +42,6 @@ const getULBs = async (req, res) => {
       amount: ulb.amount?.toString(),
       expenditure: ulb.expenditure?.toString(),
       balance_amount: ulb.balance_amount?.toString(),
-      city_type: ulb.city_type, // Add city_type field
     }));
 
     // Check if no ULBs were found
@@ -138,7 +137,6 @@ const getULBsAndSchemes = async (req, res) => {
       scheme_id: item.scheme_id,
       financial_progress_schemeinfo:
         item.financial_progress_schemeinfo?.toString(),
-      city_type: item.city_type, // Add city_type field
     }));
 
     // Check if no data was found
