@@ -148,7 +148,16 @@ const fetchSchemeInfo = async (req, res) => {
     // Prepare the filter condition for query
     const filterCondition = {};
     if (grant_type) {
-      filterCondition.grant_type = grant_type;
+      const grantTypes = grant_type.split(",").map((type) => type.trim());
+
+      // Check if the grant_type array contains specific values
+      if (grantTypes.length === 1) {
+        // Exact match for a single value
+        filterCondition.grant_type = grantTypes[0];
+      } else {
+        // Use the 'in' condition for multiple values
+        filterCondition.grant_type = { in: grantTypes };
+      }
     }
 
     // Fetch scheme information and total count of records
@@ -216,7 +225,6 @@ const fetchSchemeInfo = async (req, res) => {
     });
   }
 };
-
 /**
  * Retrieves scheme information by its unique ID.
  *
