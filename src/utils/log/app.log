@@ -16454,3 +16454,68 @@
   level: 'info',
   timestamp: '2024-09-20 15:41:07'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 15:42:18'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 21,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 15:42:19'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 15:45:30'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 15:46:06'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 15:51:18'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 15:51:29'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 2,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 15:51:34'
+}

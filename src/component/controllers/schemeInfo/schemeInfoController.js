@@ -135,7 +135,7 @@ const fetchSchemeInfo = async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // Current page number
     const take = parseInt(req.query.take, 10) || 10; // Number of records per page
     const skip = (page - 1) * take; // Number of records to skip for pagination
-    const { grant_type } = req.query; // Optional filter for grant_type
+    const { grant_type, ulb } = req.query; // Optional filter for grant_type
 
     // Validate pagination parameters
     if (page < 1 || take < 1) {
@@ -158,6 +158,9 @@ const fetchSchemeInfo = async (req, res) => {
         // Use the 'in' condition for multiple values
         filterCondition.grant_type = { in: grantTypes };
       }
+    }
+    if (ulb) {
+      filterCondition.ulb = ulb; // Filter by ulb
     }
 
     // Fetch scheme information and total count of records
