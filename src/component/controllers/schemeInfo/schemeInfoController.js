@@ -135,7 +135,7 @@ const fetchSchemeInfo = async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // Current page number
     const take = parseInt(req.query.take, 10) || 10; // Number of records per page
     const skip = (page - 1) * take; // Number of records to skip for pagination
-    const { grant_type } = req.query; // Optional filter for grant_type
+    const { ulb, grant_type, financial_year } = req.query; // Filters
 
     // Validate pagination parameters
     if (page < 1 || take < 1) {
@@ -147,28 +147,40 @@ const fetchSchemeInfo = async (req, res) => {
 
     // Prepare the filter condition for query
     const filterCondition = {};
+    if (ulb) {
+      filterCondition.ulb = ulb;
+    }
     if (grant_type) {
       filterCondition.grant_type = grant_type;
     }
 
-    // Fetch scheme information and total count of records
-    const [schemeInfoList, totalResult] = await Promise.all([
+    // Filter by financial year (April 1st to March 31st)
+    if (financial_year) {
+      const startOfFinancialYear = new Date(`${financial_year}-04-01`);
+      const endOfFinancialYear = new Date(
+        `${parseInt(financial_year) + 1}-03-31`
+      );
+
+      filterCondition.created_at = {
+        gte: startOfFinancialYear,
+        lte: endOfFinancialYear,
+      };
+    }
+
+    // Fetch scheme information and total count of schemes
+    const [schemeInfoList, totalschemes] = await Promise.all([
       prisma.scheme_info.findMany({
         skip,
         take,
-        where: filterCondition, // Apply the filter if grant_type is provided
+        where: filterCondition, // Apply the filters
         orderBy: {
           created_at: "desc", // Order by creation date in descending order
         },
       }),
       prisma.scheme_info.count({
-        where: filterCondition, // Count the total records considering the filter
+        where: filterCondition, // Count the total number of schemes with filters
       }),
     ]);
-
-    // Calculate pagination details
-    const totalPage = Math.ceil(totalResult / take);
-    const nextPage = page < totalPage ? page + 1 : null;
 
     // Log the successful fetch of scheme information
     logger.info("Scheme information list fetched successfully", {
@@ -177,22 +189,30 @@ const fetchSchemeInfo = async (req, res) => {
       ip: clientIp,
       page,
       take,
-      totalResult,
+      totalschemes,
     });
 
     // Create an audit log entry for the fetch operation
     await createAuditLog(userId, "FETCH", "Scheme_info", null, {
       page,
       take,
-      totalResult,
+      totalschemes,
+      ulb,
       grant_type,
+      financial_year,
     });
+
+    // Calculate pagination details
+    const totalResult = totalschemes; // Total schemes count for pagination
+    const totalPage = Math.ceil(totalResult / take);
+    const nextPage = page < totalPage ? page + 1 : null;
 
     // Send a success response with paginated data and pagination details
     res.status(200).json({
       status: true,
       message: "Scheme request list fetched successfully",
       data: schemeInfoList,
+      totalschemes, // Total schemes in response
       pagination: {
         next: nextPage ? { page: nextPage, take } : null,
         currentPage: page,

@@ -30,13 +30,18 @@ const getULBs = async () => {
         FSR.financial_progress_in_percentage,
         FSR.number_of_tender_floated,
         FSR.tender_not_floated,
-        FSR.work_in_progress
+        FSR.work_in_progress,
+        SI.city_type -- Add city_type field
       FROM 
         "ULB" 
       LEFT JOIN 
         "FinancialSummaryReport" AS FSR
       ON 
         "ULB".id = FSR.ulb_id
+      LEFT JOIN
+        "Scheme_info" AS SI
+      ON 
+        "ULB".ulb_name = SI.ulb
       ORDER BY 
         "ULB".id ASC;
     `;
@@ -47,7 +52,6 @@ const getULBs = async () => {
     throw new Error("Error fetching ULBs with financial data");
   }
 };
-
 /**
  * Fetches ULBs along with their schemes and financial progress data.
  *
@@ -69,7 +73,8 @@ const getULBsAndSchemes = async () => {
         "ULB".ulb_name,
         FSR.approved_schemes AS total_schemes,
         FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
-        "Scheme_info".financial_progress AS financial_progress_schemeinfo
+        "Scheme_info".financial_progress AS financial_progress_schemeinfo,
+        "Scheme_info".city_type -- Add city_type field
       FROM 
         "ULB"
       LEFT JOIN 
