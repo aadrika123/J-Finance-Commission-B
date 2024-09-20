@@ -187,7 +187,39 @@ const getULBsAndSchemes = async (req, res) => {
   }
 };
 
+async function fetchULBInfoByCityType(req, res) {
+  const { city_type } = req.query; // Get city_type from query parameters
+
+  // if (!city_type) {
+  //   return res.status(400).json({
+  //     error: "city_type is required",
+  //   });
+  // }
+
+  try {
+    const ulbInfo = await ulbDao.getULBInfoByCityType(city_type);
+
+    if (ulbInfo.length === 0) {
+      return res.status(404).json({
+        message: "No ULB data found for the given city_type",
+      });
+    }
+    // Ensure unique ULB entries by using a Set or filter method
+    const uniqueUlbInfo = Array.from(
+      new Set(ulbInfo.map((ulb) => ulb.ulb_id))
+    ).map((id) => ulbInfo.find((ulb) => ulb.ulb_id === id));
+
+    return res.status(200).json(uniqueUlbInfo);
+  } catch (error) {
+    console.error("Error in controller: ", error);
+    return res.status(500).json({
+      error: "Internal Server Error",
+    });
+  }
+}
+
 module.exports = {
   getULBs,
   getULBsAndSchemes,
+  fetchULBInfoByCityType,
 };

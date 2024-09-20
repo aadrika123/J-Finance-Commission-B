@@ -16842,3 +16842,982 @@
   message: 'Financial summary report processed successfully.',
   timestamp: '2024-09-20 16:53:39'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 16:56:12'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 16:56:55'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 16:56:55'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 16:56:55'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs and Schemes from the database...',
+  timestamp: '2024-09-20 16:57:00'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  resultCount: 8,
+  level: 'info',
+  message: 'Data fetched successfully',
+  timestamp: '2024-09-20 16:57:00'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO_BY_ID',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching scheme information for scheme_id: sch-03-002',
+  timestamp: '2024-09-20 16:57:03'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO_BY_ID',
+  ip: '::1',
+  level: 'info',
+  message: 'Scheme information found for scheme_id: sch-03-002',
+  timestamp: '2024-09-20 16:57:03'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-20 16:57:06'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-20 16:57:06'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-20 16:57:10'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 7,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-20 16:57:10'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_FINANCIAL_SUMMARY',
+  ip: '::1',
+  data: {
+    ulb_id: 3,
+    financial_year: 2024,
+    first_instalment: 1000000,
+    second_instalment: 2000000,
+    interest_amount: 50000,
+    grant_type: 'Tied',
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-20T11:27:13.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-20T11:27:13.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Updating financial summary report for ULB ID: 3',
+  timestamp: '2024-09-20 16:57:13'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_FINANCIAL_SUMMARY',
+  ip: '::1',
+  updatedReport: {
+    id: 41,
+    ulb_id: 3,
+    ulb_name: 'Basukinath Nagar Panchayat',
+    approved_schemes: 23,
+    fund_release_to_ulbs: 240000000,
+    amount: 240000000,
+    project_completed: 5,
+    expenditure: 6700000,
+    balance_amount: 58800000,
+    financial_progress_in_percentage: 46,
+    number_of_tender_floated: 3,
+    tender_not_floated: 5,
+    work_in_progress: 18,
+    financial_year: 2024,
+    first_instalment: 1000000,
+    second_instalment: 2000000,
+    interest_amount: 50000,
+    grant_type: 'Tied',
+    not_allocated_fund: -3700000,
+    created_at: 2024-09-11T13:13:01.059Z
+  },
+  level: 'info',
+  message: 'Financial summary report updated successfully for ULB ID: 3',
+  timestamp: '2024-09-20 16:57:13'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: 'sch-03-002',
+  data: {
+    sector: 'Infrastructure',
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    authRequired: true,
+    auth: {
+      id: 6972,
+      user_name: 'testemp3',
+      mobile: '9456824537',
+      email: 'testemp3@gmail.com',
+      email_verified_at: null,
+      user_type: 'Employee',
+      ulb_id: 2,
+      suspended: false,
+      super_user: null,
+      description: null,
+      workflow_participant: false,
+      photo_relative_path: 'Uploads/User/Photo',
+      photo: '1723612792-test2.jpg',
+      sign_relative_path: null,
+      signature: null,
+      old_ids: null,
+      name: 'PMS Test Employee 3',
+      old_password: null,
+      user_code: null,
+      alternate_mobile: '9756485216',
+      address: 'Ranchi',
+      emp_id: 'EMP912e71'
+    },
+    token: '42531|UEkYI3LtSZ7L5iOJl9CnCghATJFMcKAARcq6vl1h6077c23b',
+    currentAccessToken: {
+      id: 42531,
+      tokenable_type: 'App\\Models\\Auth\\User',
+      tokenable_id: 6972,
+      name: 'my-app-token',
+      abilities: [ '*' ],
+      last_used_at: '2024-09-20T11:27:16.000000Z',
+      created_at: '2024-09-16T08:29:42.000000Z',
+      updated_at: '2024-09-20T11:27:16.000000Z',
+      expires_at: null,
+      tokenable: {
+        id: 6972,
+        user_name: 'testemp3',
+        mobile: '9456824537',
+        email: 'testemp3@gmail.com',
+        email_verified_at: null,
+        user_type: 'Employee',
+        ulb_id: 2,
+        suspended: false,
+        super_user: null,
+        description: null,
+        workflow_participant: false,
+        photo_relative_path: 'Uploads/User/Photo',
+        photo: '1723612792-test2.jpg',
+        sign_relative_path: null,
+        signature: null,
+        old_ids: null,
+        name: 'PMS Test Employee 3',
+        old_password: null,
+        user_code: null,
+        alternate_mobile: '9756485216',
+        address: 'Ranchi',
+        emp_id: 'EMP912e71'
+      }
+    },
+    apiToken: 'c94b1096069479694921d2c6a7da5fa6e8ac7b70df9a407f115d9baa10d8f55a',
+    ipAddress: '127.0.0.1'
+  },
+  level: 'info',
+  message: 'Attempting to update scheme info with ID: sch-03-002',
+  timestamp: '2024-09-20 16:57:16'
+}
+{
+  userId: 6972,
+  action: 'UPDATE_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: 'sch-03-002',
+  updatedSchemeInfo: {
+    scheme_id: 'sch-03-002',
+    project_cost: 8000000,
+    scheme_name: 'Water Supply Improvement',
+    sector: 'Infrastructure',
+    grant_type: 'Central',
+    city_type: 'Urban',
+    date_of_approval: null,
+    ulb: 'Basukinath Nagar Panchayat',
+    created_at: 2024-09-10T12:46:25.547Z,
+    project_completion_status: 'yes',
+    tender_floated: 'no',
+    financial_progress: 1800000,
+    financial_progress_in_percentage: 75,
+    project_completion_status_in_percentage: 50,
+    approved_project_cost: 8000000,
+    ulb_id: 3
+  },
+  level: 'info',
+  message: 'Scheme info updated successfully for ID: sch-03-002',
+  timestamp: '2024-09-20 16:57:16'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 16:57:19'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 16:57:19'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 16:57:23'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 16:57:23'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 16:57:26'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 16:57:26'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 16:57:26'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 0,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 16:57:30'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 0,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 16:57:37'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 0,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 16:57:45'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 23,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 16:57:50'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 16:57:54'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 16:57:54'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:14:29'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:15:33'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:17:13'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:31:32'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 17:32:48'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 17:32:49'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:35:02'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:35:45'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:37:43'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:38:17'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:46:32'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-20 17:46:51'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:50:11'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-20 17:50:19'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-20 17:50:19'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 17:53:21'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:135:57\n' +
+    '\n' +
+    '  132 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  133 \n' +
+    '  134 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 135 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  level: 'error',
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:135:57\n' +
+    '\n' +
+    '  132 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  133 \n' +
+    '  134 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 135 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  timestamp: '2024-09-20 17:53:21'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 17:53:37'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 17:53:40'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 17:53:40'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 17:53:52'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 17:53:52'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 17:53:52'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 18:06:40'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:135:57\n' +
+    '\n' +
+    '  132 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  133 \n' +
+    '  134 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 135 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  level: 'error',
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:135:57\n' +
+    '\n' +
+    '  132 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  133 \n' +
+    '  134 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 135 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  timestamp: '2024-09-20 18:06:40'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 18:12:08'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 18:12:08'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 18:12:08'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 18:28:24'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:135:57\n' +
+    '\n' +
+    '  132 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  133 \n' +
+    '  134 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 135 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  level: 'error',
+  message: 'Error fetching updated financial summary reports: \n' +
+    'Invalid `prisma.financialSummaryReport.findMany()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\dao\\financialSummaryReport\\financialSummaryDao.js:135:57\n' +
+    '\n' +
+    '  132 const ulbIdInt = parseInt(ulb_id, 10);\n' +
+    '  133 \n' +
+    '  134 // Fetch only records where any of the fields are updated (not null)\n' +
+    '→ 135 const reports = await prisma.financialSummaryReport.findMany({\n' +
+    '        where: {\n' +
+    '          AND: [\n' +
+    '            {\n' +
+    '              ulb_id: NaN\n' +
+    '            },\n' +
+    '            {\n' +
+    '              OR: [\n' +
+    '                {\n' +
+    '                  financial_year: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  first_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  second_instalment: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  interest_amount: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                },\n' +
+    '                {\n' +
+    '                  grant_type: {\n' +
+    '                    not: null\n' +
+    '                  }\n' +
+    '                }\n' +
+    '              ]\n' +
+    '            }\n' +
+    '          ]\n' +
+    '        }\n' +
+    '      })\n' +
+    '\n' +
+    'Argument `ulb_id` is missing.',
+  timestamp: '2024-09-20 18:28:24'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 18:29:14'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 18:30:00'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 18:30:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 18:30:58'
+}

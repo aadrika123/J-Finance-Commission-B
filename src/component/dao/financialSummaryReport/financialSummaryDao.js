@@ -128,7 +128,12 @@ const updateFinancialSummary = async ({
  */
 const fetchUpdatedFinancialSummary = async (ulb_id) => {
   try {
-    // Convert ulb_id to an integer if it's provided
+    // Ensure ulb_id is a valid number
+    if (!ulb_id || isNaN(ulb_id)) {
+      throw new Error("Invalid ulb_id provided.");
+    }
+
+    // Convert ulb_id to an integer
     const ulbIdInt = parseInt(ulb_id, 10);
 
     // Fetch only records where any of the fields are updated (not null)
