@@ -135,7 +135,7 @@ const fetchSchemeInfo = async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // Current page number
     const take = parseInt(req.query.take, 10) || 10; // Number of records per page
     const skip = (page - 1) * take; // Number of records to skip for pagination
-    const { grant_type, ulb } = req.query; // Optional filter for grant_type
+    const { grant_type, ulb, financial_year } = req.query; // Optional filter for grant_type
 
     // Validate pagination parameters
     if (page < 1 || take < 1) {
@@ -161,6 +161,14 @@ const fetchSchemeInfo = async (req, res) => {
     }
     if (ulb) {
       filterCondition.ulb = ulb; // Filter by ulb
+    }
+    if (financial_year) {
+      const startOfYear = new Date(financial_year, 0, 1); // January 1st of the year
+      const endOfYear = new Date(financial_year, 11, 31, 23, 59, 59); // December 31st of the year
+      filterCondition.created_at = {
+        gte: startOfYear,
+        lte: endOfYear,
+      }; // Filter by created_at range
     }
 
     // Fetch scheme information and total count of records
