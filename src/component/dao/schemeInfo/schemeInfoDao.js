@@ -8,7 +8,7 @@ const moment = require("moment-timezone");
  * This function:
  * 1. Fetches the latest scheme record from the database.
  * 2. Extracts and increments the scheme number from the latest scheme ID.
- * 3. Formats the new scheme ID as sch-03-xxx.
+ * 3. Formats the new scheme ID as `sch-03-xxx`.
  *
  * @returns {Promise<string>} - Returns a promise that resolves to the newly generated scheme ID.
  */
