@@ -14813,3 +14813,19 @@
   message: 'Scheme information list fetched successfully',
   timestamp: '2024-09-20 12:24:20'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 12:34:42'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 12:34:58'
+}
