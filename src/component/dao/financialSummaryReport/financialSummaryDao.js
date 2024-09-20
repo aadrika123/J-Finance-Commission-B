@@ -33,7 +33,14 @@ const fetchFinancialSummaryReport = async (
       f.first_instalment,
       f.second_instalment,
       f.interest_amount,
-      f.grant_type
+      f.grant_type,
+      CASE 
+        WHEN f.first_instalment IS NOT NULL AND f.second_instalment IS NULL THEN 
+          (f.first_instalment - SUM(s.financial_progress)) 
+        WHEN f.first_instalment IS NOT NULL AND f.second_instalment IS NOT NULL THEN 
+          ((f.first_instalment + f.second_instalment) - SUM(s.financial_progress)) 
+        ELSE 0 
+      END AS not_allocated_fund
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -79,6 +86,20 @@ const updateFinancialSummary = async ({
   grant_type,
 }) => {
   try {
+    // Fetch the current expenditure for calculating not_allocated_fund
+    const currentSummary = await prisma.financialSummaryReport.findUnique({
+      where: { ulb_id },
+      select: {
+        expenditure: true,
+      },
+    });
+
+    const expenditure = currentSummary?.expenditure || 0;
+
+    // Calculate not_allocated_fund
+    const not_allocated_fund =
+      (first_instalment || 0) + (second_instalment || 0) - expenditure;
+
     // Update the financial summary report in the database
     const updatedReport = await prisma.financialSummaryReport.update({
       where: { ulb_id }, // Identify by ULB ID
@@ -88,6 +109,7 @@ const updateFinancialSummary = async ({
         second_instalment: second_instalment || null,
         interest_amount: interest_amount || null,
         grant_type: grant_type || null,
+        not_allocated_fund, // Add this field
       },
     });
 

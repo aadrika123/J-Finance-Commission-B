@@ -70,6 +70,7 @@ model FinancialSummaryReport {
   second_instalment                Decimal?
   interest_amount                  Decimal?
   grant_type                       String?
+  not_allocated_fund               Decimal?
   created_at                       DateTime @default(now())
 
   // Add the foreign key relation to ULB

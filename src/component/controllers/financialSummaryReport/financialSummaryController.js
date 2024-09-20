@@ -60,21 +60,24 @@ const getFinancialSummaryReport = async (req, res) => {
 
     // Process the report data to ensure compatibility with the database schema
     const result = report.map((row) => {
+      const first_instalment = row.first_instalment || 0;
+      const second_instalment = row.second_instalment || 0;
+      const expenditure = row.expenditure || 0;
+
       return {
         ...row,
         financial_year:
-          row.financial_year !== undefined ? row.financial_year : null, // Set undefined fields to null
-        first_instalment:
-          row.first_instalment !== undefined ? row.first_instalment : null,
-        second_instalment:
-          row.second_instalment !== undefined ? row.second_instalment : null,
+          row.financial_year !== undefined ? row.financial_year : null,
+        first_instalment,
+        second_instalment,
         interest_amount:
           row.interest_amount !== undefined ? row.interest_amount : null,
         grant_type: row.grant_type !== undefined ? row.grant_type : null,
+        not_allocated_fund: first_instalment + second_instalment - expenditure, // Calculate not_allocated_fund
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
-            typeof value === "bigint" ? value.toString() : value, // Convert bigint values to string
+            typeof value === "bigint" ? value.toString() : value,
           ])
         ),
       };
@@ -82,7 +85,6 @@ const getFinancialSummaryReport = async (req, res) => {
 
     // Iterate over each row of the processed report
     for (const row of result) {
-      // Check if a record with the given ulb_id already exists in the database
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
@@ -137,6 +139,10 @@ const getFinancialSummaryReport = async (req, res) => {
               row.grant_type !== undefined
                 ? row.grant_type
                 : existingRecord.grant_type,
+            not_allocated_fund:
+              (row.first_instalment || 0) +
+              (row.second_instalment || 0) -
+              (existingRecord.expenditure || 0), // Update not_allocated_fund
           },
         });
 
@@ -152,7 +158,7 @@ const getFinancialSummaryReport = async (req, res) => {
           }
         );
       } else {
-        // If no existing record is found, create a new record in the database
+        // Create a new record in the database
         const newRecord = await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
@@ -182,6 +188,10 @@ const getFinancialSummaryReport = async (req, res) => {
             interest_amount:
               row.interest_amount !== undefined ? row.interest_amount : null,
             grant_type: row.grant_type !== undefined ? row.grant_type : null,
+            not_allocated_fund:
+              (row.first_instalment || 0) +
+              (row.second_instalment || 0) -
+              (row.expenditure || 0), // Calculate for new record
           },
         });
 
@@ -288,19 +298,50 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: req.body,
     });
 
+    // Fetch existing report data to calculate not_allocated_fund
+    const existingReport = await prisma.financialSummaryReport.findUnique({
+      where: { ulb_id },
+    });
+
+    if (!existingReport) {
+      return res.status(404).json({
+        status: false,
+        message: "Financial summary report not found",
+      });
+    }
+
+    // Calculate not_allocated_fund
+    const updatedFirstInstalment =
+      first_instalment !== undefined
+        ? first_instalment
+        : existingReport.first_instalment;
+    const updatedSecondInstalment =
+      second_instalment !== undefined
+        ? second_instalment
+        : existingReport.second_instalment;
+    const updatedExpenditure = existingReport.expenditure || 0; // Use existing expenditure if not provided in the update
+
+    const not_allocated_fund =
+      (updatedFirstInstalment || 0) +
+      (updatedSecondInstalment || 0) -
+      updatedExpenditure;
+
     // Perform the update operation
-    const updatedReport = await updateFinancialSummary({
-      ulb_id,
-      financial_year,
-      first_instalment,
-      second_instalment,
-      interest_amount,
-      grant_type,
+    const updatedReport = await prisma.financialSummaryReport.update({
+      where: { ulb_id },
+      data: {
+        financial_year,
+        first_instalment: updatedFirstInstalment,
+        second_instalment: updatedSecondInstalment,
+        interest_amount,
+        grant_type,
+        not_allocated_fund, // Include the calculated field
+      },
     });
 
     // Audit Log for the update
     await createAuditLog(userId, "UPDATE", "FinancialSummaryReport", ulb_id, {
-      oldData: {}, // Fetch old data if necessary for detailed audit logs
+      oldData: existingReport, // Fetch old data for detailed audit logs
       newData: updatedReport,
     });
 
@@ -397,18 +438,27 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       });
     }
 
+    // Process the reports if needed (e.g., ensure compatibility with frontend)
+    const processedReports = reports.map((report) => ({
+      ...report,
+      not_allocated_fund:
+        report.not_allocated_fund !== undefined
+          ? report.not_allocated_fund
+          : null, // Ensure field is present
+    }));
+
     // Log success and send response with fetched reports
     logger.info("Updated financial summary reports fetched successfully.", {
       userId,
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      reportCount: reports.length,
+      reportCount: processedReports.length,
     });
 
     res.status(200).json({
       status: true,
       message: "Updated financial summary reports fetched successfully",
-      data: reports,
+      data: processedReports,
     });
   } catch (error) {
     // Log error and send error response
