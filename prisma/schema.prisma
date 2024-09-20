@@ -18,10 +18,14 @@ model AuditLog {
 }
 
 model ULB {
-  id        Int    @id @default(autoincrement())
-  ulb_name  String
-  longitude Float
-  latitude  Float
+  id                Int                      @id @default(autoincrement())
+  ulb_name          String
+  longitude         Float
+  latitude          Float
+  // Define the relationship to Scheme_info
+  schemes           Scheme_info[]
+  // Define the relationship to FinancialSummaryReport
+  financial_reports FinancialSummaryReport[]
 }
 
 model Scheme_info {
@@ -42,10 +46,14 @@ model Scheme_info {
   financial_progress_in_percentage        Int?
   project_completion_status_in_percentage Int?
   approved_project_cost                   Decimal?
+  // Add the new ulb_id foreign key
+  ulb_id                                  Int?
+  ULB                                     ULB?     @relation(fields: [ulb_id], references: [id])
 }
 
 model FinancialSummaryReport {
-  ulb_id                           Int      @id // Primary key
+  id                               Int      @id @default(autoincrement()) // New primary key
+  ulb_id                           Int      @unique // Foreign key
   ulb_name                         String
   approved_schemes                 Int
   fund_release_to_ulbs             Decimal
@@ -63,4 +71,7 @@ model FinancialSummaryReport {
   interest_amount                  Decimal?
   grant_type                       String?
   created_at                       DateTime @default(now())
+
+  // Add the foreign key relation to ULB
+  ULB ULB @relation(fields: [ulb_id], references: [id])
 }
