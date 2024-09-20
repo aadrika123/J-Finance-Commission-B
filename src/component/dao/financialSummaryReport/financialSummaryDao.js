@@ -33,9 +33,7 @@ const fetchFinancialSummaryReport = async (
       f.first_instalment,
       f.second_instalment,
       f.interest_amount,
-      f.grant_type,
-      -- Calculating not_allocated_fund
-      COALESCE((f.first_instalment + f.second_instalment - SUM(s.financial_progress)), 0) AS not_allocated_fund
+      f.grant_type
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -70,7 +68,6 @@ const fetchFinancialSummaryReport = async (
  * @param {number} [params.second_instalment] - The second installment amount (optional).
  * @param {number} [params.interest_amount] - The interest amount (optional).
  * @param {string} [params.grant_type] - The grant type (optional).
- * @param {number} [params.not_allocated_fund] - The not allocated fund amount (optional).
  * @returns {Promise<Object>} - The updated financial summary report.
  */
 const updateFinancialSummary = async ({
@@ -80,7 +77,6 @@ const updateFinancialSummary = async ({
   second_instalment,
   interest_amount,
   grant_type,
-  not_allocated_fund, // New field
 }) => {
   try {
     // Update the financial summary report in the database
@@ -92,7 +88,6 @@ const updateFinancialSummary = async ({
         second_instalment: second_instalment || null,
         interest_amount: interest_amount || null,
         grant_type: grant_type || null,
-        not_allocated_fund: not_allocated_fund || null, // Update the new field
       },
     });
 
@@ -126,7 +121,6 @@ const fetchUpdatedFinancialSummary = async (ulb_id) => {
               { second_instalment: { not: null } },
               { interest_amount: { not: null } },
               { grant_type: { not: null } },
-              { not_allocated_fund: { not: null } }, // Include new field
             ],
           },
         ],
