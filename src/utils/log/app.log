@@ -16708,3 +16708,137 @@
   message: 'Scheme information list fetched successfully',
   timestamp: '2024-09-20 16:11:26'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 16:48:28'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 16:48:53'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 16:48:53'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  error: '\n' +
+    'Invalid `prisma.financialSummaryReport.update()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:94:67\n' +
+    '\n' +
+    '  91 \n' +
+    '  92 if (existingRecord) {\n' +
+    '  93   // Update the existing record with new data\n' +
+    '→ 94   const updatedRecord = await prisma.financialSummaryReport.update({\n' +
+    '         where: {\n' +
+    '           ulb_id: 3\n' +
+    '         },\n' +
+    '         data: {\n' +
+    '           ulb_name: "Basukinath Nagar Panchayat",\n' +
+    '           approved_schemes: 23,\n' +
+    '           fund_release_to_ulbs: 240000000,\n' +
+    '           amount: 240000000,\n' +
+    '           project_completed: 5,\n' +
+    '           expenditure: 6700000,\n' +
+    '           balance_amount: 58800000,\n' +
+    '           financial_progress_in_percentage: 46,\n' +
+    '           number_of_tender_floated: 3,\n' +
+    '           tender_not_floated: 5,\n' +
+    '           work_in_progress: 18,\n' +
+    '           financial_year: 2024,\n' +
+    '           first_instalment: new Prisma.Decimal("1000000"),\n' +
+    '           second_instalment: new Prisma.Decimal("2000000"),\n' +
+    '           interest_amount: new Prisma.Decimal("50000"),\n' +
+    '           grant_type: "Tied",\n' +
+    '           not_allocated_fund: 10000000200000,\n' +
+    '           ~~~~~~~~~~~~~~~~~~\n' +
+    '       ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,\n' +
+    '       ?   ULB?: ULBUpdateOneRequiredWithoutFinancial_reportsNestedInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Unknown argument `not_allocated_fund`. Available options are marked with ?.',
+  level: 'error',
+  message: 'Error fetching financial summary report: \n' +
+    'Invalid `prisma.financialSummaryReport.update()` invocation in\n' +
+    'D:\\finance-project-b\\finance_backend\\src\\component\\controllers\\financialSummaryReport\\financialSummaryController.js:94:67\n' +
+    '\n' +
+    '  91 \n' +
+    '  92 if (existingRecord) {\n' +
+    '  93   // Update the existing record with new data\n' +
+    '→ 94   const updatedRecord = await prisma.financialSummaryReport.update({\n' +
+    '         where: {\n' +
+    '           ulb_id: 3\n' +
+    '         },\n' +
+    '         data: {\n' +
+    '           ulb_name: "Basukinath Nagar Panchayat",\n' +
+    '           approved_schemes: 23,\n' +
+    '           fund_release_to_ulbs: 240000000,\n' +
+    '           amount: 240000000,\n' +
+    '           project_completed: 5,\n' +
+    '           expenditure: 6700000,\n' +
+    '           balance_amount: 58800000,\n' +
+    '           financial_progress_in_percentage: 46,\n' +
+    '           number_of_tender_floated: 3,\n' +
+    '           tender_not_floated: 5,\n' +
+    '           work_in_progress: 18,\n' +
+    '           financial_year: 2024,\n' +
+    '           first_instalment: new Prisma.Decimal("1000000"),\n' +
+    '           second_instalment: new Prisma.Decimal("2000000"),\n' +
+    '           interest_amount: new Prisma.Decimal("50000"),\n' +
+    '           grant_type: "Tied",\n' +
+    '           not_allocated_fund: 10000000200000,\n' +
+    '           ~~~~~~~~~~~~~~~~~~\n' +
+    '       ?   created_at?: DateTime | DateTimeFieldUpdateOperationsInput,\n' +
+    '       ?   ULB?: ULBUpdateOneRequiredWithoutFinancial_reportsNestedInput\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Unknown argument `not_allocated_fund`. Available options are marked with ?.',
+  timestamp: '2024-09-20 16:48:54'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 16:53:30'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-20 16:53:38'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-20 16:53:38'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-20 16:53:39'
+}
