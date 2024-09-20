@@ -60,6 +60,12 @@ const getFinancialSummaryReport = async (req, res) => {
 
     // Process the report data to ensure compatibility with the database schema
     const result = report.map((row) => {
+      const firstInstalment = row.first_instalment || 0;
+      const secondInstalment = row.second_instalment || 0;
+      const expenditure = row.expenditure || 0;
+
+      const notAllocatedFund = firstInstalment + secondInstalment - expenditure;
+
       return {
         ...row,
         financial_year:
@@ -71,6 +77,7 @@ const getFinancialSummaryReport = async (req, res) => {
         interest_amount:
           row.interest_amount !== undefined ? row.interest_amount : null,
         grant_type: row.grant_type !== undefined ? row.grant_type : null,
+        not_allocated_fund: notAllocatedFund, // Include the not allocated fund field
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -137,6 +144,10 @@ const getFinancialSummaryReport = async (req, res) => {
               row.grant_type !== undefined
                 ? row.grant_type
                 : existingRecord.grant_type,
+            not_allocated_fund:
+              row.not_allocated_fund !== undefined
+                ? row.not_allocated_fund
+                : existingRecord.not_allocated_fund,
           },
         });
 
@@ -182,6 +193,7 @@ const getFinancialSummaryReport = async (req, res) => {
             interest_amount:
               row.interest_amount !== undefined ? row.interest_amount : null,
             grant_type: row.grant_type !== undefined ? row.grant_type : null,
+            not_allocated_fund: row.not_allocated_fund, // Include the not allocated fund field
           },
         });
 
