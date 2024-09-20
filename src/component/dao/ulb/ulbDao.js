@@ -74,7 +74,7 @@ const getULBsAndSchemes = async () => {
         FSR.approved_schemes AS total_schemes,
         FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
         "Scheme_info".financial_progress AS financial_progress_schemeinfo,
-        "Scheme_info".city_type -- Add city_type field
+        -- "Scheme_info".city_type -- Add city_type field
       FROM 
         "ULB"
       LEFT JOIN 
