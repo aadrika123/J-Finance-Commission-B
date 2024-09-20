@@ -14723,3 +14723,93 @@
   message: 'ULBs fetched successfully',
   timestamp: '2024-09-20 11:32:18'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 11:58:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 11:59:12'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 11:59:50'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 11:59:57'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-20 12:00:17'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 43,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-20 12:00:17'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 12:23:40'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-20 12:23:57'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '3',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-20 12:24:10'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-20 12:24:10'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalschemes: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 12:24:15'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalschemes: 25,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-20 12:24:20'
+}

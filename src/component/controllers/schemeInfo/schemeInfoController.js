@@ -147,9 +147,9 @@ const fetchSchemeInfo = async (req, res) => {
 
     // Prepare the filter condition for query
     const filterCondition = {};
-    if (ulb) {
-      filterCondition.ulb = ulb;
-    }
+    // if (ulb) {
+    //   filterCondition.ulb = ulb;
+    // }
     if (grant_type) {
       filterCondition.grant_type = grant_type;
     }
