@@ -93,7 +93,27 @@ const getULBsAndSchemes = async () => {
   }
 };
 
+async function getULBInfoByCityType(city_type) {
+  try {
+    const ulbInfo = await prisma.scheme_info.findMany({
+      where: {
+        city_type: city_type, // Filtering by city_type
+      },
+      select: {
+        ulb_id: true,
+        ulb: true,
+        city_type: true,
+      },
+    });
+    return ulbInfo;
+  } catch (error) {
+    console.error("Error fetching ULB info by city type: ", error);
+    throw error;
+  }
+}
+
 module.exports = {
   getULBs,
   getULBsAndSchemes,
+  getULBInfoByCityType,
 };

@@ -19,7 +19,7 @@ model AuditLog {
 
 model ULB {
   id                Int                      @id @default(autoincrement())
-  ulb_name          String
+  ulb_name          String                   @unique
   longitude         Float
   latitude          Float
   // Define the relationship to Scheme_info

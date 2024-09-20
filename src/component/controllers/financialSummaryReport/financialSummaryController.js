@@ -413,6 +413,14 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
   const { ulb_id } = req.query;
 
   try {
+    // Ensure ulb_id is present
+    if (!ulb_id) {
+      return res.status(400).json({
+        status: false,
+        message: "ulb_id is required",
+      });
+    }
+
     // Log request details
     logger.info("Fetching updated financial summary reports...", {
       userId,
@@ -478,7 +486,6 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
