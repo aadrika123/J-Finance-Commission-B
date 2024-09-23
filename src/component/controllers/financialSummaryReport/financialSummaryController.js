@@ -284,8 +284,8 @@ const updateFinancialSummaryReport = async (req, res) => {
         action: "UPDATE_FINANCIAL_SUMMARY",
         ip: clientIp,
       });
-      return res.status(400).json({
-        status: false,
+      return res.status(200).json({
+        status: true,
         message: "ULB ID is required",
       });
     }
@@ -304,9 +304,10 @@ const updateFinancialSummaryReport = async (req, res) => {
     });
 
     if (!existingReport) {
-      return res.status(404).json({
-        status: false,
+      return res.status(200).json({
+        status: true,
         message: "Financial summary report not found",
+        data: [],
       });
     }
 
@@ -442,9 +443,10 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
         ulb_id,
         ulb_name,
       });
-      return res.status(404).json({
-        status: false,
+      return res.status(200).json({
+        status: true,
         message: "No updated financial summary reports found",
+        data: [],
       });
     }
 

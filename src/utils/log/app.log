@@ -18863,3 +18863,457 @@
   message: 'Attempting to add new scheme information...',
   timestamp: '2024-09-23 16:12:46'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:24:55'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-23 16:25:03'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-23 16:25:03'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 0,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-23 16:25:22'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-23 16:25:39'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'warn',
+  message: 'No financial summary data found for Non-Million Plus Cities.',
+  timestamp: '2024-09-23 16:25:39'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-23 16:25:44'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-23 16:25:44'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-23 16:25:44'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-23 16:25:52'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-23 16:25:52'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-23 16:25:55'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-23 16:25:55'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO_BY_ID',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching scheme information for scheme_id: sch-03-002',
+  timestamp: '2024-09-23 16:25:59'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO_BY_ID',
+  ip: '::1',
+  level: 'info',
+  message: 'Scheme information found for scheme_id: sch-03-002',
+  timestamp: '2024-09-23 16:25:59'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs and Schemes from the database...',
+  timestamp: '2024-09-23 16:26:06'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  resultCount: 0,
+  level: 'warn',
+  message: 'No data found',
+  timestamp: '2024-09-23 16:26:06'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-23 16:26:33'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-23 16:26:33'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-23 16:26:33'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:29:09'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs and Schemes from the database...',
+  timestamp: '2024-09-23 16:29:16'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  resultCount: 0,
+  level: 'warn',
+  message: 'No data found',
+  timestamp: '2024-09-23 16:29:16'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:31:33'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:31:53'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  ulb_name: 'Adityapur Municipal Corporation',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-23 16:32:09'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  ulb_name: 'Adityapur Municipal Corporation',
+  level: 'warn',
+  message: 'No updated financial summary reports found.',
+  timestamp: '2024-09-23 16:32:10'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 0,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-23 16:32:20'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  filters: {
+    ulb_name: null,
+    grant_type: null,
+    financial_year: null,
+    sector: null
+  },
+  level: 'info',
+  message: 'Fetching financial summary for Non-Million Plus Cities...',
+  timestamp: '2024-09-23 16:32:26'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_NON_MILLION_PLUS',
+  ip: '::1',
+  resultCount: 4,
+  level: 'info',
+  message: 'Financial summary for Non-Million Plus Cities fetched successfully.',
+  timestamp: '2024-09-23 16:32:26'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-23 16:32:30'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-23 16:32:30'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-23 16:32:30'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-23 16:32:33'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-23 16:32:33'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs from the database...',
+  timestamp: '2024-09-23 16:32:37'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs',
+  ip: '::1',
+  resultCount: 42,
+  level: 'info',
+  message: 'ULBs fetched successfully',
+  timestamp: '2024-09-23 16:32:37'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO_BY_ID',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching scheme information for scheme_id: sch-03-002',
+  timestamp: '2024-09-23 16:32:41'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO_BY_ID',
+  ip: '::1',
+  level: 'info',
+  message: 'Scheme information found for scheme_id: sch-03-002',
+  timestamp: '2024-09-23 16:32:41'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  level: 'info',
+  message: 'Fetching ULBs and Schemes from the database...',
+  timestamp: '2024-09-23 16:32:45'
+}
+{
+  userId: 6972,
+  action: 'FETCH_ULBs_Schemes',
+  ip: '::1',
+  resultCount: 0,
+  level: 'warn',
+  message: 'No data found',
+  timestamp: '2024-09-23 16:32:45'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-23 16:33:11'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 1,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-23 16:33:11'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 1,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-23 16:33:11'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  ulb_name: 'Adityapur Municipal Corporation',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-23 16:33:22'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  ulb_name: 'Adityapur Municipal Corporation',
+  level: 'warn',
+  message: 'No updated financial summary reports found.',
+  timestamp: '2024-09-23 16:33:22'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:34:44'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  ulb_name: 'Adityapur Municipal Corporation',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-23 16:34:52'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: undefined,
+  ulb_name: 'Adityapur Municipal Corporation',
+  level: 'warn',
+  message: 'No updated financial summary reports found.',
+  timestamp: '2024-09-23 16:34:52'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:36:25'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:37:17'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:39:14'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 16:39:56'
+}
