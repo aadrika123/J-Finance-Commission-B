@@ -3,7 +3,7 @@ const logger = require("../../../utils/log/logger"); // Import logger for loggin
 const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Import audit logger for tracking changes
 
 /**
- * devloper - Kaushal Kant Mishra
+ * developer - Kaushal Kant Mishra
  *
  *
  * Fetches ULBs (Urban Local Bodies) from the database.
