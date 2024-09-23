@@ -54,8 +54,10 @@ const addSchemeInfo = async (req, res) => {
     });
 
     // Convert date of approval to UTC format
-    const dateOfApprovedUTC = moment(date_of_approval).utc().toDate();
-    const createdAtUTC = moment.tz("Asia/Kolkata").utc().toDate();
+    const dateOfApprovedUTC = moment(date_of_approval, "DD-MM-YYYY")
+      .utc()
+      .toDate(); // Specify format
+    const createdAtUTC = moment.utc().toDate();
 
     // Create new scheme information
     const newSchemeInfo = await createSchemeInfo({
@@ -66,7 +68,6 @@ const addSchemeInfo = async (req, res) => {
       grant_type,
       city_type,
       date_of_approval: dateOfApprovedUTC,
-      created_at: createdAtUTC,
       ulb,
     });
 
@@ -103,7 +104,6 @@ const addSchemeInfo = async (req, res) => {
     });
   }
 };
-
 /**
  * Retrieves a paginated list of scheme information from the database.
  *
