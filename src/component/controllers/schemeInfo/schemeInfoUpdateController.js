@@ -5,6 +5,9 @@ const logger = require("../../../utils/log/logger");
 const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust the path if needed
 
 /**
+ *
+ * developer - Kaushal Kant Mishra
+ *
  * Updates scheme information in the database.
  *
  * This function:
