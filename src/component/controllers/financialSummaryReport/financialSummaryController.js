@@ -422,6 +422,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       return res.status(200).json({
         status: true,
         message: "Either ulb_id or ulb_name is required",
+        data: [],
       });
     }
 
