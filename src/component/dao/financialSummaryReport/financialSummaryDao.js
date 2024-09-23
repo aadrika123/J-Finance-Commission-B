@@ -34,13 +34,9 @@ const fetchFinancialSummaryReport = async (
       f.second_instalment,
       f.interest_amount,
       f.grant_type,
-      CASE 
-        WHEN f.first_instalment IS NOT NULL AND f.second_instalment IS NULL THEN 
-          (f.first_instalment - SUM(s.financial_progress)) 
-        WHEN f.first_instalment IS NOT NULL AND f.second_instalment IS NOT NULL THEN 
-          ((f.first_instalment + f.second_instalment) - SUM(s.financial_progress)) 
-        ELSE 0 
-      END AS not_allocated_fund
+      (SUM(s.project_cost) - SUM(s.financial_progress) + 
+        COALESCE(f.first_instalment, 0) + 
+        COALESCE(f.second_instalment, 0)) AS not_allocated_fund
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id

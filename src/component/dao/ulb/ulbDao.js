@@ -93,24 +93,25 @@ const getULBsAndSchemes = async () => {
   }
 };
 
-async function getULBInfoByCityType(city_type) {
+const getULBInfoByCityType = async (city_type) => {
   try {
-    const ulbInfo = await prisma.scheme_info.findMany({
-      where: {
-        city_type: city_type, // Filtering by city_type
-      },
-      select: {
-        ulb_id: true,
-        ulb: true,
-        city_type: true,
-      },
-    });
-    return ulbInfo;
+    const result = await prisma.$queryRaw`
+      SELECT 
+        "ULB".id AS ulb_id,
+        "ULB".ulb_name,
+        "ULB".city_type
+      FROM 
+        "ULB"
+      WHERE 
+        "ULB".city_type = ${city_type};
+    `;
+
+    return result;
   } catch (error) {
-    console.error("Error fetching ULB info by city type: ", error);
-    throw error;
+    console.error("Error fetching ULB info by city type:", error);
+    throw new Error("Error fetching ULB info by city type");
   }
-}
+};
 
 module.exports = {
   getULBs,
