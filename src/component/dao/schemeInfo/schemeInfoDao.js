@@ -63,9 +63,9 @@ const createSchemeInfo = async (data) => {
     // Fetch ulb_id from ULB table using ulb name
     const ulbRecord = await prisma.uLB.findUnique({
       where: {
-        ulb_name: data.ulb, // Assuming the ulb_name field matches the ulb field in the request
+        ulb_name: data.ulb,
       },
-      select: { id: true }, // Only fetch the id (ulb_id)
+      select: { id: true },
     });
 
     if (!ulbRecord) {
@@ -77,16 +77,13 @@ const createSchemeInfo = async (data) => {
     // Generate the new scheme_id
     const scheme_id = await generateSchemeId();
 
-    // Convert date of approval to UTC
-    const dateInUTC = moment
-      .tz(data.date_of_approval, "Asia/Kolkata")
-      .utc()
-      .toDate();
+    // Convert date of approval to UTC (allowing for backdated entries)
+    const dateInUTC = moment(data.date_of_approval).utc().toDate();
 
     // Create a new scheme_info record with the ulb_id
     return await prisma.scheme_info.create({
       data: {
-        scheme_id, // Use the generated scheme_id
+        scheme_id,
         project_cost: data.project_cost,
         approved_project_cost: data.project_cost,
         scheme_name: data.scheme_name,
@@ -94,9 +91,9 @@ const createSchemeInfo = async (data) => {
         grant_type: data.grant_type,
         city_type: data.city_type,
         date_of_approval: dateInUTC,
-        created_at: new Date(), // Automatically handled by Prisma in UTC
+        created_at: new Date(),
         ulb: data.ulb,
-        ulb_id: ulb_id, // Include the fetched ulb_id
+        ulb_id: ulb_id,
       },
     });
   } catch (error) {

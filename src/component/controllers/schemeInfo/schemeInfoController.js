@@ -54,10 +54,7 @@ const addSchemeInfo = async (req, res) => {
     });
 
     // Convert date of approval to UTC format
-    const dateOfApprovedUTC = moment
-      .tz(date_of_approval, "Asia/Kolkata")
-      .utc()
-      .toDate();
+    const dateOfApprovedUTC = moment(date_of_approval).utc().toDate();
     const createdAtUTC = moment.tz("Asia/Kolkata").utc().toDate();
 
     // Create new scheme information
