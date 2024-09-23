@@ -30,8 +30,6 @@ const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust
 const addSchemeInfo = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
-  let userId = req.body?.auth?.id || null; // Get user ID from request
-
   try {
     const {
       scheme_id,
@@ -40,16 +38,11 @@ const addSchemeInfo = async (req, res) => {
       sector,
       grant_type,
       city_type,
-      date_of_approval, // Raw date input
+      date_of_approval,
       ulb,
     } = req.body;
 
-    // Validate date_of_approval format
-    if (!moment(date_of_approval, "YYYY-MM-DD", true).isValid()) {
-      throw new Error(
-        "Invalid date_of_approval format. Expected format: YYYY-MM-DD."
-      );
-    }
+    const userId = req.body?.auth?.id || null; // Get user ID from request
 
     // Log the attempt to add new scheme information
     logger.info("Attempting to add new scheme information...", {
@@ -60,6 +53,13 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
     });
 
+    // Convert date of approval to UTC format
+    const dateOfApprovalUTC = moment
+      .tz(date_of_approval, "Asia/Kolkata")
+      .utc()
+      .toDate();
+    const createdAtUTC = moment.tz("Asia/Kolkata").utc().toDate();
+
     // Create new scheme information
     const newSchemeInfo = await createSchemeInfo({
       scheme_id,
@@ -68,57 +68,28 @@ const addSchemeInfo = async (req, res) => {
       sector,
       grant_type,
       city_type,
-      date_of_approval, // Pass the raw date
+      date_of_approval: dateOfApprovalUTC,
+      created_at: createdAtUTC,
       ulb,
     });
 
-    // Log the successful creation of the scheme
-    logger.info("Scheme information created successfully", {
-      userId,
-      action: "ADD_SCHEME_INFO",
-      ip: clientIp,
-      scheme_id,
-      scheme_name,
-    });
-
-    // Create an audit log entry for the creation action
-    await createAuditLog(userId, "CREATE", "Scheme_info", scheme_id, req.body);
-
-    // Send a success response
+    // Send success response
     res.status(201).json({
-      status: true,
-      message: "Scheme information created successfully",
+      message: "Scheme information added successfully",
       data: newSchemeInfo,
     });
   } catch (error) {
-    // Prepare for logging
-    const errorUserId = userId || "unknown"; // Fallback to 'unknown' if userId is null
-
-    // Log error details and send error response
-    logger.error("Error creating scheme info", {
-      userId: errorUserId,
+    // Log error and send response
+    logger.error("Error adding scheme information", {
+      userId,
       action: "ADD_SCHEME_INFO",
       ip: clientIp,
       error: error.message,
     });
-
-    // Custom response for specific errors
-    let statusCode = 500; // Default to internal server error
-    let errorMessage = "Failed to create scheme information";
-
-    // Specific error handling
-    if (error.message.includes("Invalid date_of_approval format")) {
-      statusCode = 400; // Bad Request for invalid date format
-      errorMessage = error.message; // Use the custom error message
-    }
-
-    res.status(statusCode).json({
-      status: false,
-      message: errorMessage,
-      error: error.message,
-    });
+    res.status(500).json({ error: "Failed to add scheme information" });
   }
 };
+
 /**
  * Retrieves a paginated list of scheme information from the database.
  *
