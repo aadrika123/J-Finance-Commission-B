@@ -419,8 +419,8 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
   try {
     // Ensure at least one filter is present
     if (!ulb_id && !ulb_name) {
-      return res.status(400).json({
-        status: false,
+      return res.status(200).json({
+        status: true,
         message: "Either ulb_id or ulb_name is required",
       });
     }
