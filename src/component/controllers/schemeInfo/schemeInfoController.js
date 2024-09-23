@@ -73,12 +73,19 @@ const addSchemeInfo = async (req, res) => {
       ulb,
     });
 
-    // Send success response
-    res.status(201).json({ success: true, data: newSchemeInfo });
+    // Send success response with status and message
+    res.status(201).json({
+      status: true,
+      message: "Scheme information added successfully",
+      data: newSchemeInfo,
+    });
   } catch (error) {
-    // Handle error
+    // Handle error response with status and message
     logger.error("Error adding scheme information:", error);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({
+      status: false,
+      message: `Error adding scheme information: ${error.message}`,
+    });
   }
 };
 
