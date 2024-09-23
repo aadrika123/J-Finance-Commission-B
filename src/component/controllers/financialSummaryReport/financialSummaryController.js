@@ -409,15 +409,15 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
   const userId = req.body?.auth?.id || null; // Get user ID from request
 
-  // Retrieve ulb_id from query parameters
-  const { ulb_id } = req.query;
+  // Retrieve ulb_id and ulb_name from query parameters
+  const { ulb_id, ulb_name } = req.query;
 
   try {
-    // Ensure ulb_id is present
-    if (!ulb_id) {
+    // Ensure at least one filter is present
+    if (!ulb_id && !ulb_name) {
       return res.status(400).json({
         status: false,
-        message: "ulb_id is required",
+        message: "Either ulb_id or ulb_name is required",
       });
     }
 
@@ -427,10 +427,11 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
       ulb_id,
+      ulb_name,
     });
 
     // Fetch updated financial summary reports
-    const reports = await fetchUpdatedFinancialSummary(ulb_id);
+    const reports = await fetchUpdatedFinancialSummary({ ulb_id, ulb_name });
 
     // Handle case where no reports are found
     if (!reports || reports.length === 0) {
@@ -439,6 +440,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
         action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
         ip: clientIp,
         ulb_id,
+        ulb_name,
       });
       return res.status(404).json({
         status: false,
@@ -446,13 +448,13 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Process the reports if needed (e.g., ensure compatibility with frontend)
+    // Process the reports if needed
     const processedReports = reports.map((report) => ({
       ...report,
       not_allocated_fund:
         report.not_allocated_fund !== undefined
           ? report.not_allocated_fund
-          : null, // Ensure field is present
+          : null,
     }));
 
     // Log success and send response with fetched reports

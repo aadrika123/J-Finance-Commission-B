@@ -122,30 +122,40 @@ const updateFinancialSummary = async ({
  * @param {number|string} ulb_id - The ULB ID to fetch the report.
  * @returns {Promise<Object[]>} - The list of updated financial summary reports.
  */
-const fetchUpdatedFinancialSummary = async (ulb_id) => {
+const fetchUpdatedFinancialSummary = async (filters) => {
   try {
-    // Ensure ulb_id is a valid number
-    if (!ulb_id || isNaN(ulb_id)) {
-      throw new Error("Invalid ulb_id provided.");
+    const { ulb_id, ulb_name } = filters;
+
+    // Build the where clause
+    const whereConditions = {
+      AND: [],
+    };
+
+    if (ulb_id && !isNaN(ulb_id)) {
+      whereConditions.AND.push({ ulb_id: parseInt(ulb_id, 10) });
     }
 
-    // Convert ulb_id to an integer
-    const ulbIdInt = parseInt(ulb_id, 10);
+    if (ulb_name) {
+      whereConditions.AND.push({
+        ulb_name: { contains: ulb_name, mode: "insensitive" },
+      });
+    }
 
-    // Fetch only records where any of the fields are updated (not null)
+    // Ensure at least one filter is provided
+    if (whereConditions.AND.length === 0) {
+      throw new Error("At least ulb_id or ulb_name must be provided.");
+    }
+
+    // Fetch records based on the constructed conditions
     const reports = await prisma.financialSummaryReport.findMany({
       where: {
-        AND: [
-          { ulb_id: ulbIdInt }, // Ensure ulb_id is an integer
-          {
-            OR: [
-              { financial_year: { not: null } },
-              { first_instalment: { not: null } },
-              { second_instalment: { not: null } },
-              { interest_amount: { not: null } },
-              { grant_type: { not: null } },
-            ],
-          },
+        ...whereConditions,
+        OR: [
+          { financial_year: { not: null } },
+          { first_instalment: { not: null } },
+          { second_instalment: { not: null } },
+          { interest_amount: { not: null } },
+          { grant_type: { not: null } },
         ],
       },
     });
@@ -156,7 +166,6 @@ const fetchUpdatedFinancialSummary = async (ulb_id) => {
     throw error;
   }
 };
-
 module.exports = {
   fetchFinancialSummaryReport,
   updateFinancialSummary,

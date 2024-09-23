@@ -190,34 +190,46 @@ const getULBsAndSchemes = async (req, res) => {
 async function fetchULBInfoByCityType(req, res) {
   const { city_type } = req.query; // Get city_type from query parameters
 
-  // if (!city_type) {
-  //   return res.status(400).json({
-  //     error: "city_type is required",
-  //   });
-  // }
+  if (!city_type) {
+    return res.status(400).json({
+      error: "city_type is required",
+    });
+  }
 
   try {
-    const ulbInfo = await ulbDao.getULBInfoByCityType(city_type);
+    // If city_type is provided, fetch ULBs by city_type
+    let ulbInfo;
+    if (city_type) {
+      ulbInfo = await ulbDao.getULBInfoByCityType(city_type);
+    } else {
+      // If no city_type, fetch all ULBs
+      ulbInfo = await ulbDao.getULBInfoByCityType(); // Update this function to handle no filter
+    }
 
-    if (ulbInfo.length === 0) {
+    // If no ULB data is found, respond accordingly
+    if (!ulbInfo || ulbInfo.length === 0) {
       return res.status(404).json({
-        message: "No ULB data found for the given city_type",
+        status: false,
+        message: "No ULB data found.",
+        data: [], // Return empty data array
       });
     }
-    // Ensure unique ULB entries by using a Set or filter method
-    const uniqueUlbInfo = Array.from(
-      new Set(ulbInfo.map((ulb) => ulb.ulb_id))
-    ).map((id) => ulbInfo.find((ulb) => ulb.ulb_id === id));
 
-    return res.status(200).json(uniqueUlbInfo);
+    // Return response with status, message, and data
+    return res.status(200).json({
+      status: true,
+      message: "ULB data fetched successfully",
+      data: ulbInfo, // Return the raw data
+    });
   } catch (error) {
     console.error("Error in controller: ", error);
     return res.status(500).json({
-      error: "Internal Server Error",
+      status: false,
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
 }
-
 module.exports = {
   getULBs,
   getULBsAndSchemes,
