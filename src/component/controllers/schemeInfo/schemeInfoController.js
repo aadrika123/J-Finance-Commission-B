@@ -54,7 +54,7 @@ const addSchemeInfo = async (req, res) => {
     });
 
     // Convert date of approval to UTC format
-    const dateOfApprovedUTC = moment(date_of_approval, "DD-MM-YYYY")
+    const dateOfApprovedUTC = moment(date_of_approval, "YYYY-MM-DD")
       .utc()
       .toDate(); // Specify format
     const createdAtUTC = moment.utc().toDate();
