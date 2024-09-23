@@ -77,8 +77,13 @@ const createSchemeInfo = async (data) => {
     // Generate the new scheme_id
     const scheme_id = await generateSchemeId();
 
-    // Convert date of approval to UTC (allowing for backdated entries)
-    const dateInUTC = moment(data.date_of_approval).utc().toDate();
+    // Check if date_of_approval is valid
+    const dateInUTC = moment(data.date_of_approval, "YYYY-MM-DD", true);
+    if (!dateInUTC.isValid()) {
+      throw new Error(
+        "Invalid date_of_approval format. Expected format: YYYY-MM-DD."
+      );
+    }
 
     // Create a new scheme_info record with the ulb_id
     return await prisma.scheme_info.create({
@@ -90,7 +95,7 @@ const createSchemeInfo = async (data) => {
         sector: data.sector,
         grant_type: data.grant_type,
         city_type: data.city_type,
-        date_of_approval: dateInUTC,
+        date_of_approval: dateInUTC.utc().toDate(), // Convert to UTC Date
         created_at: new Date(),
         ulb: data.ulb,
         ulb_id: ulb_id,
@@ -98,7 +103,7 @@ const createSchemeInfo = async (data) => {
     });
   } catch (error) {
     console.error("Error creating scheme information:", error);
-    throw new Error("Error creating scheme information");
+    throw new Error(error.message); // Throw the error message directly
   }
 };
 /**
