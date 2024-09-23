@@ -32,7 +32,6 @@ const addSchemeInfo = async (req, res) => {
 
   try {
     const {
-      scheme_id,
       project_cost,
       scheme_name,
       sector,
@@ -49,25 +48,30 @@ const addSchemeInfo = async (req, res) => {
       userId,
       action: "ADD_SCHEME_INFO",
       ip: clientIp,
-      scheme_id,
       scheme_name,
     });
 
     // Convert date of approval to UTC format
-    const dateOfApprovedUTC = moment(date_of_approval, "YYYY-MM-DD")
+    const dateInUTC = moment(date_of_approval, "DD-MM-YYYY", true)
+      .startOf("day")
       .utc()
-      .toDate(); // Specify format
-    const createdAtUTC = moment.utc().toDate();
+      .toDate();
+
+    if (isNaN(dateInUTC.getTime())) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid date_of_approval format. Please use DD-MM-YYYY.",
+      });
+    }
 
     // Create new scheme information
     const newSchemeInfo = await createSchemeInfo({
-      scheme_id,
       project_cost,
       scheme_name,
       sector,
       grant_type,
       city_type,
-      date_of_approval: dateOfApprovedUTC,
+      date_of_approval: dateInUTC,
       ulb,
     });
 
@@ -76,12 +80,17 @@ const addSchemeInfo = async (req, res) => {
       userId,
       action: "ADD_SCHEME_INFO",
       ip: clientIp,
-      scheme_id,
       scheme_name,
     });
 
     // Create an audit log entry for the creation action
-    await createAuditLog(userId, "CREATE", "Scheme_info", scheme_id, req.body);
+    await createAuditLog(
+      userId,
+      "CREATE",
+      "Scheme_info",
+      newSchemeInfo.scheme_id,
+      req.body
+    );
 
     // Send a success response
     res.status(201).json({

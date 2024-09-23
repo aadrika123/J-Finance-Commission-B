@@ -18384,3 +18384,71 @@
   message: 'Scheme information created successfully',
   timestamp: '2024-09-23 14:24:01'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 14:32:18'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-23 14:32:20'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-23 14:32:20'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-23 14:32:46'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-23 14:32:46'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 14:37:48'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-23 14:38:14'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Scheme information created successfully',
+  timestamp: '2024-09-23 14:38:14'
+}
