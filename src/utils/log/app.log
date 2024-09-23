@@ -17821,3 +17821,82 @@
   message: 'Updated financial summary reports fetched successfully.',
   timestamp: '2024-09-20 18:30:58'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 10:28:27'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-23 10:28:49'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-23 10:28:49'
+}
+{
+  userId: 6972,
+  action: 'FETCH_SCHEME_INFO',
+  ip: '::1',
+  page: 1,
+  take: 10,
+  totalResult: 23,
+  level: 'info',
+  message: 'Scheme information list fetched successfully',
+  timestamp: '2024-09-23 10:29:56'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  ulb_id: '4',
+  level: 'info',
+  message: 'Fetching updated financial summary reports...',
+  timestamp: '2024-09-23 10:58:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportCount: 1,
+  level: 'info',
+  message: 'Updated financial summary reports fetched successfully.',
+  timestamp: '2024-09-23 10:58:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-23 10:59:17'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 2,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-23 10:59:17'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 2,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-23 10:59:17'
+}
