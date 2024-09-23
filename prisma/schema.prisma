@@ -22,6 +22,7 @@ model ULB {
   ulb_name          String                   @unique
   longitude         Float
   latitude          Float
+  city_type         String?
   // Define the relationship to Scheme_info
   schemes           Scheme_info[]
   // Define the relationship to FinancialSummaryReport
