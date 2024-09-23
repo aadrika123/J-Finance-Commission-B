@@ -18740,3 +18740,81 @@
   message: 'Scheme information created successfully',
   timestamp: '2024-09-23 15:04:56'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 15:32:56'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 15:33:51'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-23 15:33:57'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  error: 'Error generating scheme ID',
+  level: 'error',
+  message: 'Error creating scheme info',
+  timestamp: '2024-09-23 15:33:58'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  error: 'Invalid date_of_approval format. Expected format: YYYY-MM-DD.',
+  level: 'error',
+  message: 'Error creating scheme info',
+  timestamp: '2024-09-23 15:34:13'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 15:34:46'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 15:34:55'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-23 15:35:02'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 15:51:58'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-23 15:58:33'
+}
+{
+  userId: 6972,
+  action: 'ADD_SCHEME_INFO',
+  ip: '::1',
+  scheme_id: undefined,
+  scheme_name: 'Infrastructure Development',
+  level: 'info',
+  message: 'Attempting to add new scheme information...',
+  timestamp: '2024-09-23 15:58:41'
+}
