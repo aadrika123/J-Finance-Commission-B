@@ -78,10 +78,7 @@ const createSchemeInfo = async (data) => {
     const scheme_id = await generateSchemeId();
 
     // Convert date of approval to UTC (allowing for backdated entries)
-    const dateInUTC = moment(data.date_of_approval, "DD-MM-YYYY")
-      .startOf("night")
-      .utc()
-      .toDate(); // Specify format
+    const dateInUTC = moment(data.date_of_approval).utc().toDate();
 
     // Create a new scheme_info record with the ulb_id
     return await prisma.scheme_info.create({
