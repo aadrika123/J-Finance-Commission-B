@@ -38,7 +38,7 @@ const addSchemeInfo = async (req, res) => {
       sector,
       grant_type,
       city_type,
-      date_of_approval,
+      date_of_approval, // Date input that can be backdated
       ulb,
     } = req.body;
 
@@ -53,8 +53,8 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
     });
 
-    // Convert date of approval to UTC format
-    const dateOfApprovalUTC = moment
+    // Ensure the backdated 'date_of_approval' is converted to UTC format
+    const dateOfApprovedUTC = moment
       .tz(date_of_approval, "Asia/Kolkata")
       .utc()
       .toDate();
@@ -68,25 +68,17 @@ const addSchemeInfo = async (req, res) => {
       sector,
       grant_type,
       city_type,
-      date_of_approval: dateOfApprovalUTC,
+      date_of_approval: dateOfApprovedUTC, // Pass the backdated date
       created_at: createdAtUTC,
       ulb,
     });
 
     // Send success response
-    res.status(201).json({
-      message: "Scheme information added successfully",
-      data: newSchemeInfo,
-    });
+    res.status(201).json({ success: true, data: newSchemeInfo });
   } catch (error) {
-    // Log error and send response
-    logger.error("Error adding scheme information", {
-      userId,
-      action: "ADD_SCHEME_INFO",
-      ip: clientIp,
-      error: error.message,
-    });
-    res.status(500).json({ error: "Failed to add scheme information" });
+    // Handle error
+    logger.error("Error adding scheme information:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 

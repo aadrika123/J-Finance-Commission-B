@@ -77,7 +77,7 @@ const createSchemeInfo = async (data) => {
     // Generate the new scheme_id
     const scheme_id = await generateSchemeId();
 
-    // Convert date of approval to UTC
+    // Convert date of approval (including backdated entries) to UTC
     const dateInUTC = moment
       .tz(data.date_of_approval, "Asia/Kolkata")
       .utc()
@@ -93,7 +93,7 @@ const createSchemeInfo = async (data) => {
         sector: data.sector,
         grant_type: data.grant_type,
         city_type: data.city_type,
-        date_of_approval: dateInUTC,
+        date_of_approval: dateInUTC, // Store backdated date in UTC
         created_at: new Date(), // Automatically handled by Prisma in UTC
         ulb: data.ulb,
         ulb_id, // Include the fetched ulb_id
