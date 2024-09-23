@@ -52,8 +52,8 @@ const getULBs = async (req, res) => {
         ip: clientIp,
         resultCount: 0, // Log result count
       });
-      return res.status(404).json({
-        status: false,
+      return res.status(200).json({
+        status: true,
         message: "No ULBs found",
       });
     }
@@ -147,9 +147,11 @@ const getULBsAndSchemes = async (req, res) => {
         ip: clientIp,
         resultCount: 0, // Log result count
       });
-      return res.status(404).json({
-        status: false,
-        message: "No data found",
+      // Return success with an empty data array and a "no data found" message
+      return res.status(200).json({
+        status: true,
+        message: "No ULBs or schemes data found",
+        data: [], // Empty data array
       });
     }
 
@@ -166,7 +168,7 @@ const getULBsAndSchemes = async (req, res) => {
     });
 
     // Send a success response with the combined data
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
       message: "Data fetched successfully",
       data: formattedData,
@@ -179,7 +181,7 @@ const getULBsAndSchemes = async (req, res) => {
       ip: clientIp,
       error: error.message, // Log error message
     });
-    res.status(500).json({
+    return res.status(500).json({
       status: false,
       message: "Error fetching data",
       error: error.message,

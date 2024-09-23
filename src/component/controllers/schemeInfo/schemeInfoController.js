@@ -246,8 +246,8 @@ const getSchemeInfoById = async (req, res) => {
 
     // Validate presence of scheme_id
     if (!scheme_id) {
-      return res.status(400).json({
-        status: false,
+      return res.status(200).json({
+        status: true,
         message: "Missing scheme_id",
       });
     }
@@ -295,9 +295,10 @@ const getSchemeInfoById = async (req, res) => {
         ip: clientIp,
       });
 
-      res.status(404).json({
-        status: false,
+      res.status(200).json({
+        status: true,
         message: "Scheme information not found",
+        data: [],
       });
     }
   } catch (error) {
