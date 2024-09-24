@@ -133,13 +133,15 @@ const getULBsAndSchemes = async (req, res) => {
     // Fetch combined data of ULBs and schemes from the data access layer
     const data = await ulbDao.getULBsAndSchemes();
 
-    // Format the retrieved data, converting relevant fields to strings
+    // Format the retrieved data, converting relevant fields to strings if needed
     const formattedData = data.map((item) => ({
       ...item,
       ulb_id: item.ulb_id.toString(),
-      scheme_id: item.scheme_id,
+      total_schemes_schemeinfo: item.total_schemes_schemeinfo?.toString(),
+      financial_progress_in_percentage_schemeinfo:
+        item.financial_progress_in_percentage_schemeinfo?.toString(),
       financial_progress_schemeinfo:
-        item.financial_progress_schemeinfo?.toString(),
+        item.total_financial_progress_schemeinfo?.toString(),
     }));
 
     // Check if no data was found

@@ -65,11 +65,12 @@ const getULBsAndSchemes = async () => {
     const result = await prisma.$queryRaw`
       SELECT 
         "ULB".id AS ulb_id,
-        "Scheme_info".scheme_id,
         "ULB".ulb_name,
-        FSR.approved_schemes AS total_schemes,
+        FSR.approved_schemes AS total_schemes_fsr,
         FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
-        "Scheme_info".financial_progress AS financial_progress_schemeinfo
+        COUNT("Scheme_info".scheme_name) AS total_schemes_schemeinfo,  -- Count total schemes from Scheme_info
+        AVG("Scheme_info".financial_progress_in_percentage) AS financial_progress_in_percentage_schemeinfo,  -- Average financial progress from Scheme_info
+        SUM("Scheme_info".financial_progress) AS total_financial_progress_schemeinfo -- Sum of financial progress from Scheme_info
       FROM 
         "ULB"
       LEFT JOIN 
@@ -79,11 +80,13 @@ const getULBsAndSchemes = async () => {
       LEFT JOIN 
         "Scheme_info"
       ON 
-        "ULB".ulb_name = "Scheme_info".ulb
+        "ULB".id = "Scheme_info".ulb_id  -- Now using ulb_id for the relationship
       WHERE
         "Scheme_info".financial_progress IS NOT NULL
+      GROUP BY 
+        "ULB".id, "ULB".ulb_name, FSR.approved_schemes, FSR.financial_progress_in_percentage -- Group by ULB and FinancialSummaryReport fields
       ORDER BY 
-        financial_progress_schemeinfo DESC;
+        total_schemes_schemeinfo DESC;
     `;
 
     return result;
