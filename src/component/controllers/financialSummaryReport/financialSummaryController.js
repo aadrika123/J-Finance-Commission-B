@@ -34,7 +34,6 @@ const getFinancialSummaryReport = async (req, res) => {
   const userId = req.body?.auth?.id || null; // Retrieve user ID from request body if available
 
   try {
-    // Log the initiation of the financial summary report fetching process
     logger.info("Fetching financial summary report...", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
@@ -42,10 +41,8 @@ const getFinancialSummaryReport = async (req, res) => {
       query: req.query, // Log the query parameters for debugging
     });
 
-    // Extract query parameters to use for filtering the financial summary report
     const { city_type, grant_type, sector, financial_year } = req.query;
 
-    // Fetch the financial summary report based on provided query parameters
     const report = await fetchFinancialSummaryReport(
       city_type,
       grant_type,
@@ -53,7 +50,6 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
-    // Log successful fetching of the financial summary report
     logger.info("Financial summary report fetched successfully.", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
@@ -61,22 +57,23 @@ const getFinancialSummaryReport = async (req, res) => {
       reportSummary: report.length, // Log the number of records fetched
     });
 
-    // Process the report data to ensure compatibility with the database schema
     const result = report.map((row) => {
-      const first_instalment = row.first_instalment || 0;
-      const second_instalment = row.second_instalment || 0;
-      const expenditure = row.expenditure || 0;
+      const projectCost = row.project_cost || 0;
+      const financialProgress = row.financial_progress || 0;
+      const firstInstalment = row.first_instalment || 0;
+      const secondInstalment = row.second_instalment || 0;
 
       return {
         ...row,
         financial_year:
           row.financial_year !== undefined ? row.financial_year : null,
-        first_instalment,
-        second_instalment,
+        first_instalment: firstInstalment,
+        second_instalment: secondInstalment,
         interest_amount:
           row.interest_amount !== undefined ? row.interest_amount : null,
         grant_type: row.grant_type !== undefined ? row.grant_type : null,
-        not_allocated_fund: first_instalment + second_instalment - expenditure, // Calculate not_allocated_fund
+        not_allocated_fund:
+          projectCost - financialProgress + firstInstalment + secondInstalment, // Updated calculation to match DAO
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -86,14 +83,12 @@ const getFinancialSummaryReport = async (req, res) => {
       };
     });
 
-    // Iterate over each row of the processed report
     for (const row of result) {
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
 
       if (existingRecord) {
-        // Update the existing record with new data
         const updatedRecord = await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
@@ -143,13 +138,13 @@ const getFinancialSummaryReport = async (req, res) => {
                 ? row.grant_type
                 : existingRecord.grant_type,
             not_allocated_fund:
+              (row.project_cost || 0) -
+              (row.financial_progress || 0) +
               (row.first_instalment || 0) +
-              (row.second_instalment || 0) -
-              (existingRecord.expenditure || 0), // Update not_allocated_fund
+              (row.second_instalment || 0), // Updated not_allocated_fund calculation
           },
         });
 
-        // Log the update operation in the audit log
         await createAuditLog(
           userId,
           "UPDATE",
@@ -161,7 +156,6 @@ const getFinancialSummaryReport = async (req, res) => {
           }
         );
       } else {
-        // Create a new record in the database
         const newRecord = await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
@@ -192,13 +186,13 @@ const getFinancialSummaryReport = async (req, res) => {
               row.interest_amount !== undefined ? row.interest_amount : null,
             grant_type: row.grant_type !== undefined ? row.grant_type : null,
             not_allocated_fund:
+              (row.project_cost || 0) -
+              (row.financial_progress || 0) +
               (row.first_instalment || 0) +
-              (row.second_instalment || 0) -
-              (row.expenditure || 0), // Calculate for new record
+              (row.second_instalment || 0), // Updated not_allocated_fund calculation
           },
         });
 
-        // Log the creation operation in the audit log
         await createAuditLog(
           userId,
           "CREATE",
@@ -211,41 +205,37 @@ const getFinancialSummaryReport = async (req, res) => {
       }
     }
 
-    // Log the successful processing of the financial summary report
     logger.info("Financial summary report processed successfully.", {
       userId,
       action: "PROCESS_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      resultCount: result.length, // Log the number of records processed
+      resultCount: result.length,
     });
 
-    // Respond with the results of the operation
     res.status(200).json({
       status: true,
       message: "Financial summary report fetched and stored successfully",
-      data: result, // Include the processed report data in the response
+      data: result,
     });
   } catch (error) {
-    // Log the error details if the operation fails
     logger.error(`Error fetching financial summary report: ${error.message}`, {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      error: error.message, // Include the error message for debugging
+      error: error.message,
     });
-    // Respond with a 500 Internal Server Error if something goes wrong
+
     res.status(500).json({
       status: false,
       message: "Failed to fetch and store financial summary report",
-      error: error.message, // Include the error message in the response
+      error: error.message,
     });
   }
 };
 
-module.exports = {
-  getFinancialSummaryReport,
-};
-
+// module.exports = {
+//   getFinancialSummaryReport,
+// };
 /**
  * Updates the financial summary report for a specific ULB (Urban Local Body).
  *
@@ -266,10 +256,9 @@ module.exports = {
  * @returns {void} - Sends a JSON response to the client with the status and result of the update operation.
  */
 const updateFinancialSummaryReport = async (req, res) => {
-  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
-  const userId = req.body?.auth?.id || null; // Get user ID from request
+  const clientIp = req.headers["x-forwarded-for"] || req.ip;
+  const userId = req.body?.auth?.id || null;
 
-  // Extract relevant data from request body
   const {
     ulb_id,
     financial_year,
@@ -280,7 +269,6 @@ const updateFinancialSummaryReport = async (req, res) => {
   } = req.body;
 
   try {
-    // Validate that ulb_id is provided
     if (!ulb_id) {
       logger.warn("ULB ID is missing in the request.", {
         userId,
@@ -293,7 +281,6 @@ const updateFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Log request details
     logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`, {
       userId,
       action: "UPDATE_FINANCIAL_SUMMARY",
@@ -301,7 +288,6 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: req.body,
     });
 
-    // Fetch existing report data to calculate not_allocated_fund
     const existingReport = await prisma.financialSummaryReport.findUnique({
       where: { ulb_id },
     });
@@ -314,23 +300,32 @@ const updateFinancialSummaryReport = async (req, res) => {
       });
     }
 
+    // Convert values to numbers
+    const projectCost = Number(existingReport.amount || 0);
+    const financialProgress = Number(existingReport.expenditure || 0);
+    const updatedFirstInstalment = Number(
+      first_instalment || existingReport.first_instalment || 0
+    );
+    const updatedSecondInstalment = Number(
+      second_instalment || existingReport.second_instalment || 0
+    );
+
     // Calculate not_allocated_fund
-    const updatedFirstInstalment =
-      first_instalment !== undefined
-        ? first_instalment
-        : existingReport.first_instalment;
-    const updatedSecondInstalment =
-      second_instalment !== undefined
-        ? second_instalment
-        : existingReport.second_instalment;
-    const updatedExpenditure = existingReport.expenditure || 0; // Use existing expenditure if not provided in the update
-
     const not_allocated_fund =
-      (updatedFirstInstalment || 0) +
-      (updatedSecondInstalment || 0) -
-      updatedExpenditure;
+      projectCost -
+      financialProgress +
+      updatedFirstInstalment +
+      updatedSecondInstalment;
 
-    // Perform the update operation
+    // Debug log to inspect calculations
+    console.log({
+      projectCost,
+      financialProgress,
+      updatedFirstInstalment,
+      updatedSecondInstalment,
+      not_allocated_fund,
+    });
+
     const updatedReport = await prisma.financialSummaryReport.update({
       where: { ulb_id },
       data: {
@@ -343,13 +338,11 @@ const updateFinancialSummaryReport = async (req, res) => {
       },
     });
 
-    // Audit Log for the update
     await createAuditLog(userId, "UPDATE", "FinancialSummaryReport", ulb_id, {
-      oldData: existingReport, // Fetch old data for detailed audit logs
+      oldData: existingReport,
       newData: updatedReport,
     });
 
-    // Log success and send response
     logger.info(
       `Financial summary report updated successfully for ULB ID: ${ulb_id}`,
       {
@@ -366,7 +359,6 @@ const updateFinancialSummaryReport = async (req, res) => {
       data: updatedReport,
     });
   } catch (error) {
-    // Log error and send error response
     logger.error(
       `Error updating financial summary report with ULB ID ${ulb_id}: ${error.message}`,
       {
