@@ -446,7 +446,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Log success and send response with fetched reports
+    // Log success and prepare formatted reports
     logger.info("Updated financial summary reports fetched successfully.", {
       userId,
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
@@ -454,11 +454,26 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       reportCount: reports.length,
     });
 
-    // Ensure that the not_allocated_fund is correctly formatted
-    const formattedReports = reports.map((report) => ({
-      ...report,
-      not_allocated_fund: parseFloat(report.not_allocated_fund).toFixed(2), // Ensure consistent number formatting
-    }));
+    // Ensure correct calculation and formatting for not_allocated_fund
+    const formattedReports = reports.map((report) => {
+      const fundReleaseToUlbs = parseFloat(report.fund_release_to_ulbs) || 0;
+      const expenditure = parseFloat(report.expenditure) || 0;
+      const firstInstalment = parseFloat(report.first_instalment) || 0;
+      const secondInstalment = parseFloat(report.second_instalment) || 0;
+
+      // Correct calculation of not_allocated_fund
+      const notAllocatedFund = (
+        fundReleaseToUlbs -
+        expenditure +
+        firstInstalment +
+        secondInstalment
+      ).toFixed(2);
+
+      return {
+        ...report,
+        not_allocated_fund: notAllocatedFund,
+      };
+    });
 
     res.status(200).json({
       status: true,
