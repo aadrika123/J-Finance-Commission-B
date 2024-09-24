@@ -25845,3 +25845,8 @@
   message: 'Financial summary report updated successfully for ULB ID: 8',
   timestamp: '2024-09-24 16:49:13'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-24 17:16:58'
+}
