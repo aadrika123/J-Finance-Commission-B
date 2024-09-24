@@ -219,25 +219,11 @@ const fetchUpdatedFinancialSummary = async (filters) => {
         grant_type: true,
         fund_release_to_ulbs: true,
         expenditure: true,
+        not_allocated_fund: true,
       },
     });
 
-    // Calculate not_allocated_fund for each report
-    const updatedReports = reports.map((report) => {
-      const { fund_release_to_ulbs = 0, expenditure = 0 } = report;
-      const not_allocated_fund =
-        fund_release_to_ulbs -
-        expenditure +
-        (report.first_instalment || 0) +
-        (report.second_instalment || 0);
-
-      return {
-        ...report,
-        not_allocated_fund,
-      };
-    });
-
-    return updatedReports;
+    return reports;
   } catch (error) {
     logger.error("Error fetching updated financial summaries:", error);
     throw error;
