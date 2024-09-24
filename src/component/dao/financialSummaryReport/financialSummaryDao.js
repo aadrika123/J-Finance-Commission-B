@@ -219,17 +219,29 @@ const fetchUpdatedFinancialSummary = async (filters) => {
         grant_type: true,
         fund_release_to_ulbs: true,
         expenditure: true,
-        not_allocated_fund: true,
       },
     });
 
-    return reports;
+    // Calculate not_allocated_fund for each report
+    const updatedReports = reports.map((report) => {
+      const not_allocated_fund =
+        (report.fund_release_to_ulbs || 0) -
+        (report.expenditure || 0) +
+        (report.first_instalment || 0) +
+        (report.second_instalment || 0);
+
+      return {
+        ...report,
+        not_allocated_fund, // Add this calculated field to the report
+      };
+    });
+
+    return updatedReports;
   } catch (error) {
     logger.error("Error fetching updated financial summaries:", error);
     throw error;
   }
 };
-
 module.exports = {
   fetchFinancialSummaryReport,
   updateFinancialSummary,
