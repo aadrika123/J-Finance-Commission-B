@@ -60,40 +60,6 @@ const getULBs = async () => {
  *
  * @throws {Error} - Throws an error if the query fails.
  */
-/** const getULBsAndSchemes = async () => {
-  try {
-    const result = await prisma.$queryRaw`
-      SELECT
-        "ULB".id AS ulb_id,
-        "Scheme_info".scheme_id,
-        "ULB".ulb_name,
-        FSR.approved_schemes AS total_schemes,
-        FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
-        "Scheme_info".financial_progress AS financial_progress_schemeinfo
-      FROM
-        "ULB"
-      LEFT JOIN
-        "FinancialSummaryReport" AS FSR
-      ON
-        "ULB".id = FSR.ulb_id
-      LEFT JOIN
-        "Scheme_info"
-      ON
-        "ULB".ulb_name = "Scheme_info".ulb
-      WHERE
-        "Scheme_info".financial_progress IS NOT NULL
-      ORDER BY
-        financial_progress_schemeinfo DESC;
-    `;
-
-    return result;
-  } catch (error) {
-    console.error("Error fetching ULB and scheme data:", error);
-    throw new Error("Error fetching ULB and scheme data");
-  }
-};
-*/
-
 const getULBsAndSchemes = async () => {
   try {
     const result = await prisma.$queryRaw`
@@ -101,21 +67,23 @@ const getULBsAndSchemes = async () => {
         "ULB".id AS ulb_id,
         "Scheme_info".scheme_id,
         "ULB".ulb_name,
-        COUNT("Scheme_info".scheme_id) AS total_schemes,  -- Total number of schemes for the ULB
-        AVG("Scheme_info".financial_progress_in_percentage) AS average_financial_progress_percentage, -- Average financial progress percentage from Scheme_info
-        SUM("Scheme_info".financial_progress) AS total_financial_progress -- Sum of financial progress from Scheme_info
+        FSR.approved_schemes AS total_schemes,
+        FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
+        "Scheme_info".financial_progress AS financial_progress_schemeinfo
       FROM 
         "ULB"
       LEFT JOIN 
+        "FinancialSummaryReport" AS FSR
+      ON 
+        "ULB".id = FSR.ulb_id
+      LEFT JOIN 
         "Scheme_info"
       ON 
-        "ULB".id = "Scheme_info".ulb_id
+        "ULB".ulb_name = "Scheme_info".ulb
       WHERE
         "Scheme_info".financial_progress IS NOT NULL
-      GROUP BY
-        "ULB".id, "ULB".ulb_name, "Scheme_info".scheme_id  -- Include all selected fields in the GROUP BY clause
       ORDER BY 
-        average_financial_progress_percentage DESC;
+        financial_progress_schemeinfo DESC;
     `;
 
     return result;
