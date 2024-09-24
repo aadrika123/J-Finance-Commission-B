@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const logger = require("../../../utils/log/logger");
 
 const prisma = new PrismaClient();
 
@@ -40,6 +41,13 @@ const getULBs = async () => {
       ORDER BY 
         "ULB".id ASC;
     `;
+
+    // Log the fetched ULB data with financial summary
+    logger.info({
+      message: "Fetched ULB data with financial summary",
+      resultCount: ulbs.length,
+      action: "getULBs",
+    });
 
     return ulbs;
   } catch (error) {
@@ -88,6 +96,18 @@ const getULBsAndSchemes = async () => {
       ORDER BY 
         total_schemes_schemeinfo DESC;
     `;
+    // Log the ULBs and their financial progress
+    result.forEach((ulb) => {
+      logger.info({
+        message: `ULB: ${ulb.ulb_name}`,
+        totalSchemesSchemeInfo: ulb.total_schemes_schemeinfo,
+        avgFinancialProgressSchemeInfo:
+          ulb.financial_progress_in_percentage_schemeinfo,
+        totalFinancialProgressSchemeInfo:
+          ulb.total_financial_progress_schemeinfo,
+        action: "getULBsAndSchemes",
+      });
+    });
 
     return result;
   } catch (error) {

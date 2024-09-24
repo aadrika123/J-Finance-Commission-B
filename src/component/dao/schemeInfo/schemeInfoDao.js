@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const logger = require("../../../utils/log/logger");
 const moment = require("moment-timezone");
 
 /**
@@ -60,6 +61,12 @@ const generateSchemeId = async () => {
  */
 const createSchemeInfo = async (data) => {
   try {
+    // Log the request to create a new scheme
+    logger.info({
+      message: `Creating new scheme for ULB: ${data.ulb}`,
+      ulb: data.ulb,
+      action: "createSchemeInfo",
+    });
     // Fetch ulb_id from ULB table using ulb name
     const ulbRecord = await prisma.uLB.findUnique({
       where: {
@@ -84,7 +91,7 @@ const createSchemeInfo = async (data) => {
       .toDate();
 
     // Create a new scheme_info record with the ulb_id
-    return await prisma.scheme_info.create({
+    const createdScheme = await prisma.scheme_info.create({
       data: {
         scheme_id, // Use the generated scheme_id
         project_cost: data.project_cost,
@@ -99,6 +106,27 @@ const createSchemeInfo = async (data) => {
         ulb_id, // Include the fetched ulb_id
       },
     });
+
+    // Log detailed information of the created scheme
+    logger.info({
+      message: `Scheme created successfully for ULB: ${data.ulb}`,
+      schemeDetails: {
+        scheme_id: createdScheme.scheme_id,
+        project_cost: createdScheme.project_cost,
+        approved_project_cost: createdScheme.approved_project_cost,
+        scheme_name: createdScheme.scheme_name,
+        sector: createdScheme.sector,
+        grant_type: createdScheme.grant_type,
+        city_type: createdScheme.city_type,
+        date_of_approval: createdScheme.date_of_approval,
+        created_at: createdScheme.created_at,
+        ulb: createdScheme.ulb,
+        ulb_id,
+      },
+      action: "createSchemeInfo",
+    });
+
+    return createdScheme;
   } catch (error) {
     console.error("Error creating scheme information:", error);
     throw new Error("Error creating scheme information");

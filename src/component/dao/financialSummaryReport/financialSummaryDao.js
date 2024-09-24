@@ -1,4 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
+const logger = require("../../../utils/log/logger");
+
 const prisma = new PrismaClient();
 
 /**
@@ -59,7 +61,33 @@ const fetchFinancialSummaryReport = async (
 
   query += ` GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.first_instalment, f.second_instalment, f.interest_amount, f.grant_type ORDER BY ulb.id ASC`;
 
-  return await prisma.$queryRawUnsafe(query);
+  const result = await prisma.$queryRawUnsafe(query);
+  // Log calculated results
+  logger.info("Fetched financial summary report data:", { result });
+
+  // Optionally log calculated fields
+  result.forEach((item) => {
+    logger.debug(`Calculated values for ULB ${item.ulb_id}:`, {
+      approved_schemes: item.approved_schemes,
+      fund_release_to_ulbs: item.fund_release_to_ulbs,
+      amount: item.amount,
+      project_completed: item.project_completed,
+      expenditure: item.expenditure,
+      balance_amount: item.balance_amount,
+      financial_progress_in_percentage: item.financial_progress_in_percentage,
+      number_of_tender_floated: item.number_of_tender_floated,
+      tender_not_floated: item.tender_not_floated,
+      work_in_progress: item.work_in_progress,
+      not_allocated_fund: item.not_allocated_fund,
+      financial_year: item.financial_year,
+      first_instalment: item.first_instalment,
+      second_instalment: item.second_instalment,
+      interest_amount: item.interest_amount,
+      grant_type: item.grant_type,
+    });
+  });
+
+  return result;
 };
 
 /**
@@ -82,6 +110,16 @@ const updateFinancialSummary = async ({
   grant_type,
 }) => {
   try {
+    // Log the input parameters for updating
+    logger.info("Updating financial summary with parameters:", {
+      ulb_id,
+      financial_year,
+      first_instalment,
+      second_instalment,
+      interest_amount,
+      grant_type,
+    });
+
     // Fetch the current expenditure for calculating not_allocated_fund
     const currentSummary = await prisma.financialSummaryReport.findUnique({
       where: { ulb_id },
@@ -92,9 +130,17 @@ const updateFinancialSummary = async ({
 
     const expenditure = currentSummary?.expenditure || 0;
 
+    // Log current expenditure
+    logger.debug(`Current expenditure for ULB ID ${ulb_id}: ${expenditure}`);
+
     // Calculate not_allocated_fund
     const not_allocated_fund =
       (first_instalment || 0) + (second_instalment || 0) - expenditure;
+
+    // Log the calculation of not_allocated_fund
+    logger.debug(
+      `Calculated not_allocated_fund for ULB ID ${ulb_id}: ${not_allocated_fund}`
+    );
 
     // Update the financial summary report in the database
     const updatedReport = await prisma.financialSummaryReport.update({
@@ -109,9 +155,12 @@ const updateFinancialSummary = async ({
       },
     });
 
+    // Log the updated report
+    logger.info("Updated financial summary report:", { updatedReport });
+
     return updatedReport;
   } catch (error) {
-    console.error("Error in updateFinancialSummaryDao:", error);
+    logger.error("Error in updateFinancialSummaryDao:", error);
     throw error; // Propagate the error to be handled in the controller
   }
 };
@@ -162,10 +211,11 @@ const fetchUpdatedFinancialSummary = async (filters) => {
 
     return reports;
   } catch (error) {
-    console.error("Error fetching updated financial summaries:", error);
+    logger.error("Error fetching updated financial summaries:", error);
     throw error;
   }
 };
+
 module.exports = {
   fetchFinancialSummaryReport,
   updateFinancialSummary,
