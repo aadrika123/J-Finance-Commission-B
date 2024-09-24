@@ -135,7 +135,10 @@ const updateFinancialSummary = async ({
 
     // Calculate not_allocated_fund
     const not_allocated_fund =
-      (first_instalment || 0) + (second_instalment || 0) - expenditure;
+      (currentSummary?.fund_release_to_ulbs || 0) -
+      expenditure +
+      (first_instalment || 0) +
+      (second_instalment || 0);
 
     // Log the calculation of not_allocated_fund
     logger.debug(
