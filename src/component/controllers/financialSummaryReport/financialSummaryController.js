@@ -446,14 +446,34 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Process the reports if needed
-    const processedReports = reports.map((report) => ({
-      ...report,
-      not_allocated_fund:
-        report.not_allocated_fund !== undefined
-          ? report.not_allocated_fund
-          : null,
-    }));
+    // Calculate not_allocated_fund for each report
+    const processedReports = await Promise.all(
+      reports.map(async (report) => {
+        // Fetch the corresponding existing report to get project cost and expenditure
+        const existingReport = await prisma.financialSummaryReport.findUnique({
+          where: { ulb_id: report.ulb_id },
+          select: {
+            amount: true, // project cost
+            expenditure: true,
+          },
+        });
+
+        const projectCost = existingReport?.amount || 0;
+        const financialProgress = existingReport?.expenditure || 0;
+
+        // Calculate not_allocated_fund
+        const not_allocated_fund =
+          projectCost -
+          financialProgress +
+          (report.first_instalment || 0) +
+          (report.second_instalment || 0);
+
+        return {
+          ...report,
+          not_allocated_fund: not_allocated_fund, // Include the calculated field
+        };
+      })
+    );
 
     // Log success and send response with fetched reports
     logger.info("Updated financial summary reports fetched successfully.", {
