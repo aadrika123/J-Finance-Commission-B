@@ -411,8 +411,8 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
   try {
     // Ensure at least one filter is present
     if (!ulb_id && !ulb_name) {
-      return res.status(200).json({
-        status: true,
+      return res.status(400).json({
+        status: false,
         message: "Either ulb_id or ulb_name is required",
         data: [],
       });
@@ -454,10 +454,16 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       reportCount: reports.length,
     });
 
+    // Ensure that the not_allocated_fund is correctly formatted
+    const formattedReports = reports.map((report) => ({
+      ...report,
+      not_allocated_fund: parseFloat(report.not_allocated_fund).toFixed(2), // Ensure consistent number formatting
+    }));
+
     res.status(200).json({
       status: true,
       message: "Updated financial summary reports fetched successfully",
-      data: reports,
+      data: formattedReports,
     });
   } catch (error) {
     // Log error and send error response
