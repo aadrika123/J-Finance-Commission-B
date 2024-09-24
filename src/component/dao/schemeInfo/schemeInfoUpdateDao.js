@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const logger = require("../../../utils/log/logger");
 
 const prisma = new PrismaClient();
 
@@ -43,11 +44,29 @@ const updateSchemeInfo = async (scheme_id, data) => {
       data.project_completion_status_in_percentage;
 
   try {
+    // Log the update request details
+    logger.info({
+      message: `Updating scheme information for scheme ID: ${scheme_id}`,
+      scheme_id,
+      updateData,
+      action: "updateSchemeInfo",
+    });
+
     // Perform the update operation
-    return await prisma.scheme_info.update({
+    const updatedScheme = await prisma.scheme_info.update({
       where: { scheme_id },
       data: updateData,
     });
+
+    // Log the successful update operation
+    logger.info({
+      message: `Scheme updated successfully`,
+      scheme_id: updatedScheme.scheme_id,
+      updatedFields: updateData,
+      action: "updateSchemeInfo",
+    });
+
+    return updatedScheme;
   } catch (error) {
     console.error("Error updating scheme information:", error);
     throw new Error("Error updating scheme information");
