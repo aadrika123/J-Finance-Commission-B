@@ -29220,3 +29220,61 @@
   message: 'Financial summary report processed successfully.',
   timestamp: '2024-09-25 11:31:00'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-25 12:08:46'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {
+    grant_type: 'Tied',
+    city_type: 'Million Plus Cities',
+    financial_year: '2024'
+  },
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-25 12:08:49'
+}
+{
+  message: 'Calculating:\n' +
+    '    - approved_schemes: COUNT(s.scheme_name) counts the total approved schemes per ULB.\n' +
+    '    - fund_release_to_ulbs: SUM(s.project_cost) totals the project costs to be released to the ULBs.\n' +
+    '    - amount: SUM(s.approved_project_cost) totals the approved project costs.\n' +
+    "    - project_completed: SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) counts the projects completed.\n" +
+    '    - expenditure: SUM(s.financial_progress) totals the expenditures.\n' +
+    '    - balance_amount: SUM(s.project_cost - s.financial_progress) calculates the remaining balance by subtracting expenditure from the total project cost.\n' +
+    '    - financial_progress_in_percentage: AVG(s.financial_progress_in_percentage) calculates the average financial progress percentage.\n' +
+    "    - number_of_tender_floated: SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) counts the tenders that have been floated.\n" +
+    "    - tender_not_floated: SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) counts the tenders that have not been floated.\n" +
+    "    - work_in_progress: (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) calculates the number of projects that are still in progress.\n" +
+    '    - not_allocated_fund: (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) calculates the total funds that are not allocated based on project costs and expenditures.',
+  level: 'info',
+  timestamp: '2024-09-25 12:08:49'
+}
+{
+  result: [],
+  level: 'info',
+  message: 'Fetched financial summary report data:',
+  timestamp: '2024-09-25 12:08:49'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 0,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-25 12:08:49'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 0,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-25 12:08:49'
+}
