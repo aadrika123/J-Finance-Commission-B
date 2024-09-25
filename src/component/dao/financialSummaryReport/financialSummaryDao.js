@@ -120,19 +120,22 @@ const fetchFinancialSummaryReport = async (
 
   const result = await prisma.$queryRawUnsafe(query);
   // Log calculated results
-  logger.info(`Calculating project metrics for our Urban Local Bodies (ULBs):
+  result.forEach((ulbData) => {
+    logger.info(`Calculating detailed project metrics for ULB: ${ulbData.ulb_name} (ID: ${ulbData.ulb_id})
 
-- **Total Approved Schemes:** Counting the number of schemes approved for each ULB.
-- **Total Project Costs:** Summing the total project costs to be released to the ULBs.
-- **Total Approved Project Costs:** Adding up the approved project costs.
-- **Completed Projects:** Counting how many projects have been successfully completed.
-- **Total Expenditures:** Summing the total expenditures for all projects.
-- **Remaining Balance:** Calculating remaining funds by subtracting total expenditures from total project costs.
-- **Average Financial Progress Percentage:** Calculating the average financial progress percentage across all projects.
-- **Tender Opportunities:** Counting the tenders that have been floated.
-- **Pending Tenders:** Counting the tenders that have not yet been floated.
-- **Projects in Progress:** Calculating the number of projects that are still ongoing.
-- **Unallocated Funds:** Calculating total unallocated funds based on project costs and expenditures.`);
+    - **Total Approved Schemes:** ${ulbData.approved_schemes} schemes approved.
+    - **Total Project Costs (fund_release_to_ulbs):** Total project costs to be released: ${ulbData.fund_release_to_ulbs}.
+    - **Total Approved Project Costs (amount):** Approved project costs: ${ulbData.amount}.
+    - **Completed Projects (project_completed):** ${ulbData.project_completed} projects marked as completed.
+    - **Total Expenditure (expenditure):** Expenditure so far: ${ulbData.expenditure}.
+    - **Remaining Balance (balance_amount):** Remaining balance: ${ulbData.balance_amount} (calculated as project cost - expenditure).
+    - **Average Financial Progress (financial_progress_in_percentage):** ${ulbData.financial_progress_in_percentage}% progress on average across all projects.
+    - **Number of Tenders Floated (number_of_tender_floated):** ${ulbData.number_of_tender_floated} tenders have been floated.
+    - **Number of Tenders Not Floated (tender_not_floated):** ${ulbData.tender_not_floated} tenders have not yet been floated.
+    - **Work in Progress (work_in_progress):** ${ulbData.work_in_progress} projects are still ongoing.
+    - **Unallocated Funds (not_allocated_fund):** Unallocated funds: ${ulbData.not_allocated_fund} (calculated as project cost - expenditure + first and second instalments).`);
+  });
+
   logger.info("Fetched financial summary report data:", { result });
 
   // Optionally log calculated fields
