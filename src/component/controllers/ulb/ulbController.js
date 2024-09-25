@@ -198,8 +198,8 @@ async function fetchULBInfoByCityType(req, res) {
   const { city_type } = req.query; // Get city_type from query parameters
 
   if (!city_type) {
-    return res.status(400).json({
-      error: "city_type is required",
+    return res.status(200).json({
+      message: "city_type is required",
     });
   }
 

@@ -120,19 +120,19 @@ const fetchFinancialSummaryReport = async (
 
   const result = await prisma.$queryRawUnsafe(query);
   // Log calculated results
-  logger.info(`Calculating:
-    - approved_schemes: COUNT(s.scheme_name) counts the total approved schemes per ULB.
-    - fund_release_to_ulbs: SUM(s.project_cost) totals the project costs to be released to the ULBs.
-    - amount: SUM(s.approved_project_cost) totals the approved project costs.
-    - project_completed: SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) counts the projects completed.
-    - expenditure: SUM(s.financial_progress) totals the expenditures.
-    - balance_amount: SUM(s.project_cost - s.financial_progress) calculates the remaining balance by subtracting expenditure from the total project cost.
-    - financial_progress_in_percentage: AVG(s.financial_progress_in_percentage) calculates the average financial progress percentage.
-    - number_of_tender_floated: SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) counts the tenders that have been floated.
-    - tender_not_floated: SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) counts the tenders that have not been floated.
-    - work_in_progress: (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) calculates the number of projects that are still in progress.
-    - not_allocated_fund: (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) calculates the total funds that are not allocated based on project costs and expenditures.`);
+  logger.info(`Calculating project metrics for our Urban Local Bodies (ULBs):
 
+- **Total Approved Schemes:** Counting the number of schemes approved for each ULB.
+- **Total Project Costs:** Summing the total project costs to be released to the ULBs.
+- **Total Approved Project Costs:** Adding up the approved project costs.
+- **Completed Projects:** Counting how many projects have been successfully completed.
+- **Total Expenditures:** Summing the total expenditures for all projects.
+- **Remaining Balance:** Calculating remaining funds by subtracting total expenditures from total project costs.
+- **Average Financial Progress Percentage:** Calculating the average financial progress percentage across all projects.
+- **Tender Opportunities:** Counting the tenders that have been floated.
+- **Pending Tenders:** Counting the tenders that have not yet been floated.
+- **Projects in Progress:** Calculating the number of projects that are still ongoing.
+- **Unallocated Funds:** Calculating total unallocated funds based on project costs and expenditures.`);
   logger.info("Fetched financial summary report data:", { result });
 
   // Optionally log calculated fields
@@ -282,6 +282,7 @@ const fetchUpdatedFinancialSummary = async (filters) => {
       },
       select: {
         ulb_id: true,
+        ulb_name: true,
         financial_year: true,
         first_instalment: true,
         second_instalment: true,
