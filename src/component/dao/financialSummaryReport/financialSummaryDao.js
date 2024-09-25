@@ -4,13 +4,70 @@ const logger = require("../../../utils/log/logger");
 const prisma = new PrismaClient();
 
 /**
- * Fetches the financial summary report based on various filters.
- * @param {string} city_type - The type of city (e.g., 'Million Plus', 'Non Million Plus').
- * @param {string} grant_type - The type of grant (e.g., 'ambient', 'tied', 'untied').
- * @param {string} sector - The sector for filtering.
- * @param {number} financial_year - The financial year for filtering.
- * @returns {Promise<Object[]>} - The financial summary report.
+ * fetchFinancialSummaryReport
+ *
+ * This function generates and executes an SQL query to retrieve financial summary data for ULBs (Urban Local Bodies),
+ * based on various filters such as city type, grant type, sector, and financial year. The data is calculated from
+ * the "Scheme_info" and "FinancialSummaryReport" tables and joined with the "ULB" table to provide the necessary information.
+ *
+ * Each field in the SELECT statement is explained below:
+ *
+ * - ulb.id AS ulb_id: Fetches the unique identifier (id) for the ULB from the "ULB" table.
+ * - ulb.ulb_name: Fetches the name of the ULB from the "ULB" table.
+ *
+ * - COUNT(s.scheme_name) AS approved_schemes: Counts the total number of approved schemes associated with the ULB from the "Scheme_info" table.
+ *
+ * - SUM(s.project_cost) AS fund_release_to_ulbs: Sums the total project cost for all schemes associated with the ULB,
+ *   representing the total funds released to ULBs.
+ *
+ * - SUM(s.approved_project_cost) AS amount: Sums the approved project cost for all schemes, providing the total approved budget for the ULB's schemes.
+ *
+ * - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed:
+ *   Counts the number of schemes that have been marked as completed (where "project_completion_status" is 'yes').
+ *
+ * - SUM(s.financial_progress) AS expenditure: Sums the financial progress made on each scheme, representing the total expenditure.
+ *
+ * - SUM(s.project_cost - s.financial_progress) AS balance_amount: Calculates the remaining balance by subtracting the financial progress (expenditure)
+ *   from the project cost for each scheme, and then sums up the balance across all schemes.
+ *
+ * - AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage: Averages the financial progress percentage
+ *   across all schemes to provide an overall progress metric in percentage.
+ *
+ * - SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated:
+ *   Counts the number of schemes for which tenders have been floated (where "tender_floated" is 'yes').
+ *
+ * - SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated:
+ *   Counts the number of schemes for which tenders have not been floated (where "tender_floated" is 'no').
+ *
+ * - (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress:
+ *   Calculates the number of schemes that are still in progress by subtracting the number of completed schemes from the total number of schemes.
+ *
+ * - f.financial_year: Retrieves the financial year from the "FinancialSummaryReport" table, which may provide context for the report.
+ *
+ * - f.first_instalment: Retrieves the amount of the first installment of funds released to ULBs from the "FinancialSummaryReport" table.
+ *
+ * - f.second_instalment: Retrieves the amount of the second installment of funds released to ULBs from the "FinancialSummaryReport" table.
+ *
+ * - f.interest_amount: Retrieves any interest earned on the released funds from the "FinancialSummaryReport" table.
+ *
+ * - f.grant_type: Retrieves the type of grant associated with the financial summary from the "FinancialSummaryReport" table.
+ *
+ * - (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) AS not_allocated_fund:
+ *   This field calculates the "not allocated fund," which is the remaining funds that have not yet been allocated to the schemes.
+ *   It is calculated as the total project cost minus the financial progress (expenditure) and then adding the amounts from
+ *   the first and second installments (if available).
+ *
+ * The query also allows filtering based on the following optional parameters:
+ *
+ * - city_type: Filters the results to include only schemes associated with a specific city type.
+ * - grant_type: Filters the results to include only schemes with a specific grant type.
+ * - sector: Filters the results to include only schemes from a specific sector.
+ * - financial_year: Filters the results to include only schemes approved in a specific financial year.
+ *
+ * The query groups the data by ULB (ulb.id, ulb.ulb_name) and by financial year and grant details to provide summarized
+ * information for each ULB.
  */
+
 const fetchFinancialSummaryReport = async (
   city_type,
   grant_type,
@@ -63,6 +120,19 @@ const fetchFinancialSummaryReport = async (
 
   const result = await prisma.$queryRawUnsafe(query);
   // Log calculated results
+  logger.info(`Calculating:
+    - approved_schemes: COUNT(s.scheme_name) counts the total approved schemes per ULB.
+    - fund_release_to_ulbs: SUM(s.project_cost) totals the project costs to be released to the ULBs.
+    - amount: SUM(s.approved_project_cost) totals the approved project costs.
+    - project_completed: SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) counts the projects completed.
+    - expenditure: SUM(s.financial_progress) totals the expenditures.
+    - balance_amount: SUM(s.project_cost - s.financial_progress) calculates the remaining balance by subtracting expenditure from the total project cost.
+    - financial_progress_in_percentage: AVG(s.financial_progress_in_percentage) calculates the average financial progress percentage.
+    - number_of_tender_floated: SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) counts the tenders that have been floated.
+    - tender_not_floated: SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) counts the tenders that have not been floated.
+    - work_in_progress: (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) calculates the number of projects that are still in progress.
+    - not_allocated_fund: (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) calculates the total funds that are not allocated based on project costs and expenditures.`);
+
   logger.info("Fetched financial summary report data:", { result });
 
   // Optionally log calculated fields

@@ -28957,3 +28957,266 @@
   message: 'Financial summary report updated successfully for ULB ID: 14',
   timestamp: '2024-09-25 11:02:10'
 }
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-25 11:27:35'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-25 11:27:47'
+}
+{
+  message: 'Calculating:\n' +
+    '    - approved_schemes: COUNT(s.scheme_name) counts the total approved schemes per ULB.\n' +
+    '    - fund_release_to_ulbs: SUM(s.project_cost) totals the project costs to be released to the ULBs.\n' +
+    '    - amount: SUM(s.approved_project_cost) totals the approved project costs.\n' +
+    "    - project_completed: SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) counts the projects completed.\n" +
+    '    - expenditure: SUM(s.financial_progress) totals the expenditures.\n' +
+    '    - balance_amount: SUM(s.project_cost - s.financial_progress) calculates the remaining balance by subtracting expenditure from the total project cost.\n' +
+    '    - financial_progress_in_percentage: AVG(s.financial_progress_in_percentage) calculates the average financial progress percentage.\n' +
+    "    - number_of_tender_floated: SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) counts the tenders that have been floated.\n" +
+    "    - tender_not_floated: SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) counts the tenders that have not been floated.\n" +
+    "    - work_in_progress: (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) calculates the number of projects that are still in progress.\n" +
+    '    - not_allocated_fund: (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) calculates the total funds that are not allocated based on project costs and expenditures.',
+  level: 'info',
+  timestamp: '2024-09-25 11:27:48'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 8,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-25 11:27:48'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 8,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-25 11:27:48'
+}
+{
+  message: 'Server started on port: http://localhost:9000',
+  level: 'info',
+  timestamp: '2024-09-25 11:29:58'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  query: {},
+  level: 'info',
+  message: 'Fetching financial summary report...',
+  timestamp: '2024-09-25 11:31:00'
+}
+{
+  message: 'Calculating:\n' +
+    '    - approved_schemes: COUNT(s.scheme_name) counts the total approved schemes per ULB.\n' +
+    '    - fund_release_to_ulbs: SUM(s.project_cost) totals the project costs to be released to the ULBs.\n' +
+    '    - amount: SUM(s.approved_project_cost) totals the approved project costs.\n' +
+    "    - project_completed: SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) counts the projects completed.\n" +
+    '    - expenditure: SUM(s.financial_progress) totals the expenditures.\n' +
+    '    - balance_amount: SUM(s.project_cost - s.financial_progress) calculates the remaining balance by subtracting expenditure from the total project cost.\n' +
+    '    - financial_progress_in_percentage: AVG(s.financial_progress_in_percentage) calculates the average financial progress percentage.\n' +
+    "    - number_of_tender_floated: SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) counts the tenders that have been floated.\n" +
+    "    - tender_not_floated: SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) counts the tenders that have not been floated.\n" +
+    "    - work_in_progress: (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) calculates the number of projects that are still in progress.\n" +
+    '    - not_allocated_fund: (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) calculates the total funds that are not allocated based on project costs and expenditures.',
+  level: 'info',
+  timestamp: '2024-09-25 11:31:00'
+}
+{
+  result: [
+    {
+      ulb_id: 1,
+      ulb_name: 'Adityapur Municipal Corporation',
+      approved_schemes: 4n,
+      fund_release_to_ulbs: 54000000,
+      amount: 54000000,
+      project_completed: 2n,
+      expenditure: 3600000,
+      balance_amount: 23400000,
+      financial_progress_in_percentage: 75.5,
+      number_of_tender_floated: 0n,
+      tender_not_floated: 2n,
+      work_in_progress: 2n,
+      financial_year: 2022,
+      first_instalment: 2000000,
+      second_instalment: 2000000,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 54400000
+    },
+    {
+      ulb_id: 2,
+      ulb_name: 'Ranchi Municipal Corporation',
+      approved_schemes: 1n,
+      fund_release_to_ulbs: 13500000,
+      amount: 13500000,
+      project_completed: 1n,
+      expenditure: 1800000,
+      balance_amount: 11700000,
+      financial_progress_in_percentage: 76,
+      number_of_tender_floated: 0n,
+      tender_not_floated: 1n,
+      work_in_progress: 0n,
+      financial_year: 2022,
+      first_instalment: 2000000,
+      second_instalment: 2000000,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 15700000
+    },
+    {
+      ulb_id: 5,
+      ulb_name: 'Bundu Nagar Panchayat',
+      approved_schemes: 5n,
+      fund_release_to_ulbs: 67500000,
+      amount: 67500000,
+      project_completed: 1n,
+      expenditure: 1800000,
+      balance_amount: 11700000,
+      financial_progress_in_percentage: 75,
+      number_of_tender_floated: 0n,
+      tender_not_floated: 1n,
+      work_in_progress: 4n,
+      financial_year: 2022,
+      first_instalment: 1000000,
+      second_instalment: 2000000,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 68700000
+    },
+    {
+      ulb_id: 6,
+      ulb_name: 'Chaibasa Nagar Parishad',
+      approved_schemes: 2n,
+      fund_release_to_ulbs: 1000000,
+      amount: 1000000,
+      project_completed: 2n,
+      expenditure: 1200000,
+      balance_amount: -200000,
+      financial_progress_in_percentage: 100,
+      number_of_tender_floated: 2n,
+      tender_not_floated: 0n,
+      work_in_progress: 0n,
+      financial_year: 2022,
+      first_instalment: 200000,
+      second_instalment: 0,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 0
+    },
+    {
+      ulb_id: 7,
+      ulb_name: 'Chakradharpur Nagar Parishad',
+      approved_schemes: 1n,
+      fund_release_to_ulbs: 500000,
+      amount: 500000,
+      project_completed: 1n,
+      expenditure: 600000,
+      balance_amount: -100000,
+      financial_progress_in_percentage: 100,
+      number_of_tender_floated: 1n,
+      tender_not_floated: 0n,
+      work_in_progress: 0n,
+      financial_year: 2022,
+      first_instalment: 200000,
+      second_instalment: 0,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 100000
+    },
+    {
+      ulb_id: 8,
+      ulb_name: 'Chakulia Nagar Panchayat',
+      approved_schemes: 1n,
+      fund_release_to_ulbs: 500000,
+      amount: 500000,
+      project_completed: 1n,
+      expenditure: 600000,
+      balance_amount: -100000,
+      financial_progress_in_percentage: 100,
+      number_of_tender_floated: 1n,
+      tender_not_floated: 0n,
+      work_in_progress: 0n,
+      financial_year: 2022,
+      first_instalment: 200000,
+      second_instalment: 0,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 100000
+    },
+    {
+      ulb_id: 10,
+      ulb_name: 'Chatra Nagar Parishad',
+      approved_schemes: 1n,
+      fund_release_to_ulbs: 500000,
+      amount: 500000,
+      project_completed: 1n,
+      expenditure: 600000,
+      balance_amount: -100000,
+      financial_progress_in_percentage: 100,
+      number_of_tender_floated: 1n,
+      tender_not_floated: 0n,
+      work_in_progress: 0n,
+      financial_year: 2022,
+      first_instalment: 200000,
+      second_instalment: 0,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 100000
+    },
+    {
+      ulb_id: 14,
+      ulb_name: 'Deoghar Municipal Corporation',
+      approved_schemes: 1n,
+      fund_release_to_ulbs: 500000,
+      amount: 500000,
+      project_completed: 1n,
+      expenditure: 600000,
+      balance_amount: -100000,
+      financial_progress_in_percentage: 100,
+      number_of_tender_floated: 1n,
+      tender_not_floated: 0n,
+      work_in_progress: 0n,
+      financial_year: 2022,
+      first_instalment: 500000,
+      second_instalment: 0,
+      interest_amount: 50000,
+      grant_type: 'Untied',
+      not_allocated_fund: 400000
+    }
+  ],
+  level: 'info',
+  message: 'Fetched financial summary report data:',
+  timestamp: '2024-09-25 11:31:00'
+}
+{
+  userId: 6972,
+  action: 'FETCH_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  reportSummary: 8,
+  level: 'info',
+  message: 'Financial summary report fetched successfully.',
+  timestamp: '2024-09-25 11:31:00'
+}
+{
+  userId: 6972,
+  action: 'PROCESS_FINANCIAL_SUMMARY_REPORT',
+  ip: '::1',
+  resultCount: 8,
+  level: 'info',
+  message: 'Financial summary report processed successfully.',
+  timestamp: '2024-09-25 11:31:00'
+}
