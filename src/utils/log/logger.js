@@ -26,9 +26,9 @@ const logger = createLogger({
       level: "info",
       format: format.combine(format.json(), format.prettyPrint()),
     }),
-    new transports.Console({
-      format: format.combine(format.colorize(), format.simple()),
-    }),
+    // new transports.Console({
+    //   format: format.combine(format.colorize(), format.simple()),
+    // }),
   ],
 });
 
