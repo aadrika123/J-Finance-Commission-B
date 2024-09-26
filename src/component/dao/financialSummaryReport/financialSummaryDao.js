@@ -93,9 +93,11 @@ const fetchFinancialSummaryReport = async (
       f.second_instalment,
       f.interest_amount,
       f.grant_type,
-      (SUM(s.project_cost) - SUM(s.financial_progress) + 
-        COALESCE(f.first_instalment, 0) + 
-        COALESCE(f.second_instalment, 0)) AS not_allocated_fund
+      (
+      COALESCE(f.first_instalment, 0) +
+      COALESCE(f.second_instalment, 0) +
+      COALESCE(f.interest_amount, 0)
+    ) AS not_allocated_fund
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -208,11 +210,9 @@ const updateFinancialSummary = async ({
 
     // Calculate not_allocated_fund
     const not_allocated_fund =
-      (currentSummary?.fund_release_to_ulbs || 0) -
-      expenditure +
       (first_instalment || 0) +
-      (second_instalment || 0);
-
+      (second_instalment || 0) +
+      (interest_amount || 0);
     // Log the calculation of not_allocated_fund
     logger.debug(
       `Calculated not_allocated_fund for ULB ID ${ulb_id}: ${not_allocated_fund}`
@@ -299,11 +299,9 @@ const fetchUpdatedFinancialSummary = async (filters) => {
     // Calculate not_allocated_fund for each report
     const updatedReports = reports.map((report) => {
       const not_allocated_fund =
-        (report.fund_release_to_ulbs || 0) -
-        (report.expenditure || 0) +
         (report.first_instalment || 0) +
-        (report.second_instalment || 0);
-
+        (report.second_instalment || 0) +
+        (report.interest_amount || 0);
       return {
         ...report,
         not_allocated_fund, // Add this calculated field to the report
