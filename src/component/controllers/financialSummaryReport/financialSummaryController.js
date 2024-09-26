@@ -43,6 +43,7 @@ const getFinancialSummaryReport = async (req, res) => {
 
     const { city_type, grant_type, sector, financial_year } = req.query;
 
+    // Fetch the report data using the DAO function
     const report = await fetchFinancialSummaryReport(
       city_type,
       grant_type,
@@ -58,22 +59,15 @@ const getFinancialSummaryReport = async (req, res) => {
     });
 
     const result = report.map((row) => {
-      const projectCost = row.project_cost || 0;
-      const financialProgress = row.financial_progress || 0;
-      const firstInstalment = row.first_instalment || 0;
-      const secondInstalment = row.second_instalment || 0;
-
       return {
         ...row,
         financial_year:
           row.financial_year !== undefined ? row.financial_year : null,
-        first_instalment: firstInstalment,
-        second_instalment: secondInstalment,
+        first_instalment: row.first_instalment || 0,
+        second_instalment: row.second_instalment || 0,
         interest_amount:
           row.interest_amount !== undefined ? row.interest_amount : null,
         grant_type: row.grant_type !== undefined ? row.grant_type : null,
-        not_allocated_fund:
-          projectCost - financialProgress + firstInstalment + secondInstalment, // Updated calculation to match DAO
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -84,11 +78,19 @@ const getFinancialSummaryReport = async (req, res) => {
     });
 
     for (const row of result) {
+      // Calculate not_allocated_fund for each row
+      const firstInstalment = parseFloat(row.first_instalment) || 0;
+      const secondInstalment = parseFloat(row.second_instalment) || 0;
+      const interestAmount = parseFloat(row.interest_amount) || 0;
+      const notAllocatedFund =
+        firstInstalment + secondInstalment + interestAmount;
+
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
 
       if (existingRecord) {
+        // Update the existing record
         const updatedRecord = await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
@@ -137,11 +139,7 @@ const getFinancialSummaryReport = async (req, res) => {
               row.grant_type !== undefined
                 ? row.grant_type
                 : existingRecord.grant_type,
-            not_allocated_fund:
-              (row.project_cost || 0) -
-              (row.financial_progress || 0) +
-              (row.first_instalment || 0) +
-              (row.second_instalment || 0), // Updated not_allocated_fund calculation
+            not_allocated_fund: notAllocatedFund, // Updated not_allocated_fund calculation
           },
         });
 
@@ -156,6 +154,7 @@ const getFinancialSummaryReport = async (req, res) => {
           }
         );
       } else {
+        // Create a new record if it doesn't exist
         const newRecord = await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
@@ -185,11 +184,7 @@ const getFinancialSummaryReport = async (req, res) => {
             interest_amount:
               row.interest_amount !== undefined ? row.interest_amount : null,
             grant_type: row.grant_type !== undefined ? row.grant_type : null,
-            not_allocated_fund:
-              (row.project_cost || 0) -
-              (row.financial_progress || 0) +
-              (row.first_instalment || 0) +
-              (row.second_instalment || 0), // Updated not_allocated_fund calculation
+            not_allocated_fund: notAllocatedFund, // Updated not_allocated_fund calculation
           },
         });
 
@@ -275,6 +270,7 @@ const updateFinancialSummaryReport = async (req, res) => {
         action: "UPDATE_FINANCIAL_SUMMARY",
         ip: clientIp,
       });
+
       return res.status(200).json({
         status: true,
         message: "ULB ID is required",
@@ -301,28 +297,19 @@ const updateFinancialSummaryReport = async (req, res) => {
     }
 
     // Convert values to numbers
-    const projectCost = Number(existingReport.amount || 0);
-    const financialProgress = Number(existingReport.expenditure || 0);
-    const updatedFirstInstalment = Number(
-      first_instalment || existingReport.first_instalment || 0
-    );
-    const updatedSecondInstalment = Number(
-      second_instalment || existingReport.second_instalment || 0
-    );
+    const updatedFirstInstalment = Number(first_instalment || 0);
+    const updatedSecondInstalment = Number(second_instalment || 0);
+    const updatedInterestAmount = Number(interest_amount || 0);
 
-    // Calculate not_allocated_fund
+    // Calculate not_allocated_fund as sum of the first instalment, second instalment, and interest amount
     const not_allocated_fund =
-      projectCost -
-      financialProgress +
-      updatedFirstInstalment +
-      updatedSecondInstalment;
+      updatedFirstInstalment + updatedSecondInstalment + updatedInterestAmount;
 
-    // Debug log to inspect calculations
+    // Log the calculations for debugging purposes
     console.log({
-      projectCost,
-      financialProgress,
       updatedFirstInstalment,
       updatedSecondInstalment,
+      updatedInterestAmount,
       not_allocated_fund,
     });
 
@@ -332,9 +319,9 @@ const updateFinancialSummaryReport = async (req, res) => {
         financial_year,
         first_instalment: updatedFirstInstalment,
         second_instalment: updatedSecondInstalment,
-        interest_amount,
+        interest_amount: updatedInterestAmount,
         grant_type,
-        not_allocated_fund, // Include the calculated field
+        not_allocated_fund, // New calculation field
       },
     });
 
@@ -368,6 +355,7 @@ const updateFinancialSummaryReport = async (req, res) => {
         error: error.message,
       }
     );
+
     if (error.code === "P2025") {
       res.status(404).json({
         status: false,
@@ -456,17 +444,15 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
 
     // Ensure correct calculation and formatting for not_allocated_fund
     const formattedReports = reports.map((report) => {
-      const fundReleaseToUlbs = parseFloat(report.fund_release_to_ulbs) || 0;
-      const expenditure = parseFloat(report.expenditure) || 0;
       const firstInstalment = parseFloat(report.first_instalment) || 0;
       const secondInstalment = parseFloat(report.second_instalment) || 0;
+      const interestAmount = parseFloat(report.interest_amount) || 0;
 
-      // Correct calculation of not_allocated_fund
+      // Correct calculation of not_allocated_fund based only on the instalments and interest amount
       const notAllocatedFund = (
-        fundReleaseToUlbs -
-        expenditure +
         firstInstalment +
-        secondInstalment
+        secondInstalment +
+        interestAmount
       ).toFixed(2);
 
       return {
