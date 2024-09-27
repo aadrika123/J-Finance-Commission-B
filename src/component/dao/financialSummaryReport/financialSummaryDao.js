@@ -135,7 +135,7 @@ const fetchFinancialSummaryReport = async (
     - **Number of Tenders Floated (number_of_tender_floated):** ${ulbData.number_of_tender_floated} tenders have been floated.
     - **Number of Tenders Not Floated (tender_not_floated):** ${ulbData.tender_not_floated} tenders have not yet been floated.
     - **Work in Progress (work_in_progress):** ${ulbData.work_in_progress} projects are still ongoing.
-    - **Unallocated Funds (not_allocated_fund):** Unallocated funds: ${ulbData.not_allocated_fund} (calculated as project cost - expenditure + first and second instalments).`);
+    - **Unallocated Funds (not_allocated_fund):** Unallocated funds: ${ulbData.not_allocated_fund} (first instalments + second instalments + interest_amount).`);
   });
 
   logger.info("Fetched financial summary report data:", { result });
