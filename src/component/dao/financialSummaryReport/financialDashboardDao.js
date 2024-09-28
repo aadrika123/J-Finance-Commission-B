@@ -34,7 +34,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
       SUM(FSR.financial_progress_in_percentage) AS financial_progress,
       SUM(FSR.project_completed) AS project_completed,
       FSR.financial_year,
-      FSR.fr_grant_type AS grant_type,
+      SI.grant_type AS grant_type,
       ARRAY_AGG(SI.sector) AS sectors,  -- Combine all sectors into an array
       SI.city_type,
       SUM(FSR.not_allocated_fund) AS not_allocated_fund,
@@ -57,7 +57,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     paramIndex++;
   }
   if (fr_grant_type) {
-    query += ` AND FSR.fr_grant_type = $${paramIndex}`;
+    query += ` AND SI.grant_type = $${paramIndex}`;
     queryParams.push(fr_grant_type);
     paramIndex++;
   }
@@ -74,7 +74,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
 
   // Group by unique ULB id and name
   query += `
-    GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.financial_year, FSR.fr_grant_type, SI.city_type
+    GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.financial_year, SI.grant_type, SI.city_type
     ORDER BY FSR.ulb_id ASC
   `;
 
@@ -119,7 +119,7 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
       FSR.financial_progress_in_percentage AS financial_progress,
       FSR.project_completed,
       FSR.financial_year,
-      FSR.fr_grant_type AS grant_type,
+      SI.grant_type AS grant_type,
       SI.sector,
       SI.city_type,
       FSR.not_allocated_fund,
