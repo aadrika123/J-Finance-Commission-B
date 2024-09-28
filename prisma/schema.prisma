@@ -53,8 +53,8 @@ model Scheme_info {
 }
 
 model FinancialSummaryReport {
-  id                               Int      @id @default(autoincrement()) // New primary key
-  ulb_id                           Int      @unique // Foreign key
+  id                               Int       @id @default(autoincrement()) // Primary key
+  ulb_id                           Int       @unique // Foreign key
   ulb_name                         String
   approved_schemes                 Int
   fund_release_to_ulbs             Decimal
@@ -67,13 +67,15 @@ model FinancialSummaryReport {
   tender_not_floated               Int
   work_in_progress                 Int
   financial_year                   Int?
-  first_instalment                 Decimal?
-  second_instalment                Decimal?
-  interest_amount                  Decimal?
-  grant_type                       String?
+  fr_first_instalment              Decimal? // Renamed from first_instalment
+  fr_second_instalment             Decimal? // Already existing, but unchanged
+  fr_interest_amount               Decimal? // Renamed from interest_amount
+  fr_grant_type                    String? // Renamed from grant_type
   not_allocated_fund               Decimal?
-  created_at                       DateTime @default(now())
+  created_at                       DateTime  @default(now())
+  updated_at                       DateTime? // New field for tracking updates
+  project_not_started              Int? // New field for tracking non-started projects
 
-  // Add the foreign key relation to ULB
+  // Foreign key relation to ULB
   ULB ULB @relation(fields: [ulb_id], references: [id])
 }

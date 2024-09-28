@@ -68,6 +68,7 @@ const getFinancialSummaryReport = async (req, res) => {
         interest_amount:
           row.interest_amount !== undefined ? row.interest_amount : null,
         grant_type: row.grant_type !== undefined ? row.grant_type : null,
+        project_not_started: row.project_not_started || 0, // Ensure inclusion
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -123,23 +124,27 @@ const getFinancialSummaryReport = async (req, res) => {
               row.financial_year !== undefined
                 ? row.financial_year
                 : existingRecord.financial_year,
-            first_instalment:
+            fr_first_instalment:
               row.first_instalment !== undefined
                 ? row.first_instalment
-                : existingRecord.first_instalment,
-            second_instalment:
+                : existingRecord.fr_first_instalment,
+            fr_second_instalment:
               row.second_instalment !== undefined
                 ? row.second_instalment
-                : existingRecord.second_instalment,
-            interest_amount:
+                : existingRecord.fr_second_instalment,
+            fr_interest_amount:
               row.interest_amount !== undefined
                 ? row.interest_amount
-                : existingRecord.interest_amount,
-            grant_type:
+                : existingRecord.fr_interest_amount,
+            fr_grant_type:
               row.grant_type !== undefined
                 ? row.grant_type
-                : existingRecord.grant_type,
+                : existingRecord.fr_grant_type,
             not_allocated_fund: notAllocatedFund, // Updated not_allocated_fund calculation
+            updated_at: new Date(), // Update the timestamp
+            project_not_started:
+              parseInt(row.project_not_started, 10) ||
+              existingRecord.project_not_started,
           },
         });
 
@@ -175,16 +180,16 @@ const getFinancialSummaryReport = async (req, res) => {
             work_in_progress: parseInt(row.work_in_progress, 10),
             financial_year:
               row.financial_year !== undefined ? row.financial_year : null,
-            first_instalment:
+            fr_first_instalment:
               row.first_instalment !== undefined ? row.first_instalment : null,
-            second_instalment:
+            fr_second_instalment:
               row.second_instalment !== undefined
                 ? row.second_instalment
                 : null,
-            interest_amount:
+            fr_interest_amount:
               row.interest_amount !== undefined ? row.interest_amount : null,
-            grant_type: row.grant_type !== undefined ? row.grant_type : null,
-            not_allocated_fund: notAllocatedFund, // Updated not_allocated_fund calculation
+            fr_grant_type: row.grant_type !== undefined ? row.grant_type : null,
+            not_allocated_fund: notAllocatedFund,
           },
         });
 
@@ -192,42 +197,32 @@ const getFinancialSummaryReport = async (req, res) => {
           userId,
           "CREATE",
           "FinancialSummaryReport",
-          row.ulb_id,
-          {
-            newData: newRecord,
-          }
+          newRecord.ulb_id,
+          newRecord
         );
       }
     }
 
-    logger.info("Financial summary report processed successfully.", {
-      userId,
-      action: "PROCESS_FINANCIAL_SUMMARY_REPORT",
-      ip: clientIp,
-      resultCount: result.length,
-    });
-
-    res.status(200).json({
-      status: true,
-      message: "Financial summary report fetched and stored successfully",
+    return res.status(200).json({
+      status: "success",
+      message: "Financial summary report fetched successfully.",
       data: result,
     });
   } catch (error) {
-    logger.error(`Error fetching financial summary report: ${error.message}`, {
+    logger.error("Error fetching financial summary report.", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      error: error.message,
+      error: error.message, // Log the error message for debugging
     });
 
-    res.status(500).json({
-      status: false,
-      message: "Failed to fetch and store financial summary report",
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to fetch financial summary report.",
       error: error.message,
     });
   }
 };
-
 // module.exports = {
 //   getFinancialSummaryReport,
 // };
@@ -257,10 +252,11 @@ const updateFinancialSummaryReport = async (req, res) => {
   const {
     ulb_id,
     financial_year,
-    first_instalment,
-    second_instalment,
-    interest_amount,
-    grant_type,
+    fr_first_instalment,
+    fr_second_instalment,
+    fr_interest_amount,
+    fr_grant_type,
+    project_not_started,
   } = req.body;
 
   try {
@@ -296,12 +292,13 @@ const updateFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Convert values to numbers
-    const updatedFirstInstalment = Number(first_instalment || 0);
-    const updatedSecondInstalment = Number(second_instalment || 0);
-    const updatedInterestAmount = Number(interest_amount || 0);
+    // Convert values to numbers (or set to null if not provided)
+    const updatedFirstInstalment = Number(fr_first_instalment || 0);
+    const updatedSecondInstalment = Number(fr_second_instalment || 0);
+    const updatedInterestAmount = Number(fr_interest_amount || 0);
+    const updatedProjectNotStarted = Number(project_not_started || 0);
 
-    // Calculate not_allocated_fund as sum of the first instalment, second instalment, and interest amount
+    // Calculate not_allocated_fund as the sum of the first and second instalments and the interest amount
     const not_allocated_fund =
       updatedFirstInstalment + updatedSecondInstalment + updatedInterestAmount;
 
@@ -317,11 +314,13 @@ const updateFinancialSummaryReport = async (req, res) => {
       where: { ulb_id },
       data: {
         financial_year,
-        first_instalment: updatedFirstInstalment,
-        second_instalment: updatedSecondInstalment,
-        interest_amount: updatedInterestAmount,
-        grant_type,
-        not_allocated_fund, // New calculation field
+        fr_first_instalment: updatedFirstInstalment,
+        fr_second_instalment: updatedSecondInstalment,
+        fr_interest_amount: updatedInterestAmount,
+        fr_grant_type,
+        not_allocated_fund,
+        project_not_started: updatedProjectNotStarted, // Updating the non-started projects count
+        updated_at: new Date(), // Updating the timestamp for the last update
       },
     });
 
@@ -444,16 +443,16 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
 
     // Ensure correct calculation and formatting for not_allocated_fund
     const formattedReports = reports.map((report) => {
-      const firstInstalment = parseFloat(report.first_instalment) || 0;
-      const secondInstalment = parseFloat(report.second_instalment) || 0;
-      const interestAmount = parseFloat(report.interest_amount) || 0;
+      const firstInstalment = parseFloat(report.fr_first_instalment) || 0; // Adjusted field name
+      const secondInstalment = parseFloat(report.fr_second_instalment) || 0; // Adjusted field name
+      const interestAmount = parseFloat(report.fr_interest_amount) || 0; // Adjusted field name
 
       // Correct calculation of not_allocated_fund based only on the instalments and interest amount
       const notAllocatedFund = (
         firstInstalment +
         secondInstalment +
         interestAmount
-      ).toFixed(2);
+      ).toFixed(2); // Ensure two decimal places
 
       return {
         ...report,
@@ -484,6 +483,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
