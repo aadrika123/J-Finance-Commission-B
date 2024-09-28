@@ -22,12 +22,12 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
   const userId = req.body?.auth?.id || null; // Get user ID from request if authenticated
 
   try {
-    const { ulb_name, fr_grant_type, financial_year, sector } = req.query; // Updated grant_type to fr_grant_type
+    const { ulb_name, grant_type, financial_year, sector } = req.query; // Updated grant_type to fr_grant_type
 
     // Prepare filters from query parameters with proper sanitization and validation
     const filters = {
       ulb_name: ulb_name || null,
-      fr_grant_type: fr_grant_type || null, // Updated field
+      grant_type: grant_type || null, // Updated field
       financial_year: financial_year ? parseInt(financial_year, 10) : null,
       sector: sector || null,
     };
@@ -128,12 +128,12 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
   const userId = req.body?.auth?.id || null; // Get user ID from request if authenticated
 
   try {
-    const { ulb_name, fr_grant_type, financial_year, sector } = req.query; // Updated grant_type to fr_grant_type
+    const { ulb_name, grant_type, financial_year, sector } = req.query; // Updated grant_type to fr_grant_type
 
     // Prepare filters from query parameters with proper sanitization and validation
     const filters = {
       ulb_name: ulb_name || null,
-      fr_grant_type: fr_grant_type || null, // Updated field
+      grant_type: grant_type || null, // Updated field
       financial_year: financial_year ? parseInt(financial_year, 10) : null,
       sector: sector || null,
     };
