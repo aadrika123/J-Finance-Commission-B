@@ -234,7 +234,7 @@ const updateFinancialSummary = async ({
         fr_second_instalment: fr_second_instalment || null,
         fr_interest_amount: fr_interest_amount || null,
         fr_grant_type: fr_grant_type || null,
-        not_allocated_fund, // Add this field
+        not_allocated_fund: not_allocated_fund, // Add this field
         updated_at: new Date(), // Set the updated_at field
         project_not_started: project_not_started || null, // New field
       },
@@ -256,74 +256,99 @@ const updateFinancialSummary = async ({
  * @param {number|string} ulb_id - The ULB ID to fetch the report.
  * @returns {Promise<Object[]>} - The list of updated financial summary reports.
  */
-const fetchUpdatedFinancialSummary = async (filters) => {
+const fetchUpdatedFinancialSummary = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+  const userId = req.body?.auth?.id || null; // Get user ID from request
+
+  // Retrieve ulb_id and ulb_name from query parameters
+  const { ulb_id, ulb_name } = req.query;
+
   try {
-    const { ulb_id, ulb_name } = filters;
-
-    // Build the where clause
-    const whereConditions = {
-      AND: [],
-    };
-
-    if (ulb_id && !isNaN(ulb_id)) {
-      whereConditions.AND.push({ ulb_id: parseInt(ulb_id, 10) });
-    }
-
-    if (ulb_name) {
-      whereConditions.AND.push({
-        ulb_name: { contains: ulb_name, mode: "insensitive" },
+    // Ensure at least one filter is present
+    if (!ulb_id && !ulb_name) {
+      return res.status(400).json({
+        status: false,
+        message: "Either ulb_id or ulb_name is required",
+        data: [],
       });
     }
 
-    // Ensure at least one filter is provided
-    if (whereConditions.AND.length === 0) {
-      throw new Error("At least ulb_id or ulb_name must be provided.");
-    }
+    // Log request details
+    logger.info("Fetching updated financial summary reports...", {
+      userId,
+      action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      ulb_id,
+      ulb_name,
+    });
 
-    // Fetch records based on the constructed conditions
+    // Fetch updated financial summary reports from DAO
     const reports = await prisma.financialSummaryReport.findMany({
       where: {
-        ...whereConditions,
         OR: [
-          { financial_year: { not: null } },
-          { fr_first_instalment: { not: null } },
-          { fr_second_instalment: { not: null } },
-          { fr_interest_amount: { not: null } },
-          { fr_grant_type: { not: null } },
+          { ulb_id: ulb_id ? parseInt(ulb_id, 10) : undefined },
+          {
+            ulb_name: ulb_name
+              ? { contains: ulb_name, mode: "insensitive" }
+              : undefined,
+          },
         ],
       },
-      select: {
-        ulb_id: true,
-        ulb_name: true,
-        financial_year: true,
-        fr_first_instalment: true,
-        fr_second_instalment: true,
-        fr_interest_amount: true,
-        fr_grant_type: true,
-        fund_release_to_ulbs: true,
-        expenditure: true,
-        not_allocated_fund: true, // Include the new calculated field
-        updated_at: true, // Include the updated_at field
-        project_not_started: true, // Include the project_not_started field
-      },
     });
 
-    // Calculate not_allocated_fund for each report if not already stored
-    const updatedReports = reports.map((report) => {
-      const not_allocated_fund =
-        (report.fr_first_instalment || 0) +
-        (report.fr_second_instalment || 0) +
-        (report.fr_interest_amount || 0);
-      return {
+    // Handle case where no reports are found
+    if (!reports || reports.length === 0) {
+      logger.warn("No updated financial summary reports found.", {
+        userId,
+        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+        ip: clientIp,
+        ulb_id,
+        ulb_name,
+      });
+      return res.status(200).json({
+        status: true,
+        message: "No updated financial summary reports found",
+        data: [],
+      });
+    }
+
+    // Log success and format the response
+    logger.info("Updated financial summary reports fetched successfully.", {
+      userId,
+      action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
+      reportCount: reports.length,
+    });
+
+    // Return the formatted response with correct calculations
+    res.status(200).json({
+      status: true,
+      message: "Updated financial summary reports fetched successfully",
+      data: reports.map((report) => ({
         ...report,
-        not_allocated_fund, // Add this calculated field to the report
-      };
+        not_allocated_fund: (
+          (report.fr_first_instalment || 0) +
+          (report.fr_second_instalment || 0) +
+          (report.fr_interest_amount || 0)
+        ).toFixed(2),
+      })), // Add calculated field
     });
-
-    return updatedReports;
   } catch (error) {
-    logger.error("Error fetching updated financial summaries:", error);
-    throw error;
+    // Log error and send error response
+    logger.error(
+      `Error fetching updated financial summary reports: ${error.message}`,
+      {
+        userId,
+        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+        ip: clientIp,
+        error: error.message,
+      }
+    );
+    res.status(500).json({
+      status: false,
+      message: "Failed to fetch updated financial summary reports",
+      error: error.message,
+    });
   }
 };
 module.exports = {

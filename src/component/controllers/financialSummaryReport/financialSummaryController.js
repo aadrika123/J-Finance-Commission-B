@@ -317,7 +317,8 @@ const updateFinancialSummaryReport = async (req, res) => {
         fr_first_instalment: updatedFirstInstalment,
         fr_second_instalment: updatedSecondInstalment,
         fr_interest_amount: updatedInterestAmount,
-        fr_grant_type,
+        fr_grant_type: fr_grant_type,
+
         not_allocated_fund,
         project_not_started: updatedProjectNotStarted, // Updating the non-started projects count
         updated_at: new Date(), // Updating the timestamp for the last update
@@ -414,12 +415,19 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       ulb_name,
     });
 
-    // Fetch updated financial summary reports
-    const reports = await fetchUpdatedFinancialSummary({ ulb_id, ulb_name });
+    // Fetch updated financial summary report based on ulb_id or ulb_name
+    const report = await prisma.financialSummaryReport.findFirst({
+      where: {
+        OR: [
+          { ulb_id: ulb_id ? Number(ulb_id) : undefined }, // Convert to number if ulb_id is provided
+          { ulb_name: ulb_name },
+        ],
+      },
+    });
 
-    // Handle case where no reports are found
-    if (!reports || reports.length === 0) {
-      logger.warn("No updated financial summary reports found.", {
+    // Handle case where no report is found
+    if (!report) {
+      logger.warn("No updated financial summary report found.", {
         userId,
         action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
         ip: clientIp,
@@ -433,37 +441,35 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       });
     }
 
-    // Log success and prepare formatted reports
-    logger.info("Updated financial summary reports fetched successfully.", {
+    // Log success and prepare formatted report
+    logger.info("Updated financial summary report fetched successfully.", {
       userId,
       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      reportCount: reports.length,
+      report,
     });
 
-    // Ensure correct calculation and formatting for not_allocated_fund
-    const formattedReports = reports.map((report) => {
-      const firstInstalment = parseFloat(report.fr_first_instalment) || 0; // Adjusted field name
-      const secondInstalment = parseFloat(report.fr_second_instalment) || 0; // Adjusted field name
-      const interestAmount = parseFloat(report.fr_interest_amount) || 0; // Adjusted field name
+    // Calculate not_allocated_fund
+    const firstInstalment = parseFloat(report.fr_first_instalment) || 0;
+    const secondInstalment = parseFloat(report.fr_second_instalment) || 0;
+    const interestAmount = parseFloat(report.fr_interest_amount) || 0;
 
-      // Correct calculation of not_allocated_fund based only on the instalments and interest amount
-      const notAllocatedFund = (
-        firstInstalment +
-        secondInstalment +
-        interestAmount
-      ).toFixed(2); // Ensure two decimal places
+    const notAllocatedFund = (
+      firstInstalment +
+      secondInstalment +
+      interestAmount
+    ).toFixed(2); // Fixed to 2 decimal places
 
-      return {
-        ...report,
-        not_allocated_fund: notAllocatedFund,
-      };
-    });
+    // Prepare response
+    const formattedReport = {
+      ...report,
+      not_allocated_fund: notAllocatedFund,
+    };
 
     res.status(200).json({
       status: true,
-      message: "Updated financial summary reports fetched successfully",
-      data: formattedReports,
+      message: "Updated financial summary report fetched successfully",
+      data: formattedReport,
     });
   } catch (error) {
     // Log error and send error response
