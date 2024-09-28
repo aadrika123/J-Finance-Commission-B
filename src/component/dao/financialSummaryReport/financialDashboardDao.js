@@ -20,21 +20,25 @@ const prisma = new PrismaClient();
  */
 
 const fetchFinancialSummaryReportMillionPlus = async (filters) => {
-  const { ulb_name, grant_type, financial_year, sector } = filters;
+  const { ulb_name, fr_grant_type, financial_year, sector } = filters;
 
-  // Base SQL query to fetch data for Million Plus Cities
+  // Updated SQL query to include unique ULB names for Million Plus Cities
   let query = `
-    SELECT 
+    SELECT DISTINCT
       FSR.ulb_id,
       FSR.ulb_name,
-      (FSR.number_of_tender_floated + FSR.tender_not_floated) AS approved_project,
+      FSR.approved_schemes AS approved_project,
       FSR.number_of_tender_floated AS tender_approved,
       FSR.amount AS approved_amount,
       FSR.expenditure,
+      FSR.financial_progress_in_percentage AS financial_progress,
+      FSR.project_completed,
       FSR.financial_year,
-      FSR.grant_type,
+      FSR.fr_grant_type AS grant_type,
       SI.sector,
-      SI.city_type
+      SI.city_type,
+      FSR.not_allocated_fund,
+      FSR.project_not_started
     FROM 
       "FinancialSummaryReport" FSR
     INNER JOIN 
@@ -54,9 +58,9 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     queryParams.push(ulb_name);
     paramIndex++;
   }
-  if (grant_type) {
-    query += ` AND FSR.grant_type = $${paramIndex}`;
-    queryParams.push(grant_type);
+  if (fr_grant_type) {
+    query += ` AND FSR.fr_grant_type = $${paramIndex}`;
+    queryParams.push(fr_grant_type);
     paramIndex++;
   }
   if (financial_year) {
@@ -100,22 +104,25 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
  * @returns {Promise<Object[]>} - Returns a promise that resolves to the query results.
  */
 const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
-  // Destructure filters with default values
-  const { ulb_name, grant_type, financial_year, sector } = filters;
+  const { ulb_name, fr_grant_type, financial_year, sector } = filters;
 
-  // Base SQL query to fetch data for Non-Million Plus Cities
+  // Updated SQL query to include top 5 ULBs based on approved_project and tender_approved for Non-Million Plus Cities
   let query = `
     SELECT 
       FSR.ulb_id,
       FSR.ulb_name,
-      (FSR.number_of_tender_floated + FSR.tender_not_floated) AS approved_project,
+      FSR.approved_schemes AS approved_project,
       FSR.number_of_tender_floated AS tender_approved,
       FSR.amount AS approved_amount,
       FSR.expenditure,
+      FSR.financial_progress_in_percentage AS financial_progress,
+      FSR.project_completed,
       FSR.financial_year,
-      FSR.grant_type,
+      FSR.fr_grant_type AS grant_type,
       SI.sector,
-      SI.city_type
+      SI.city_type,
+      FSR.not_allocated_fund,
+      FSR.project_not_started
     FROM 
       "FinancialSummaryReport" FSR
     INNER JOIN 
@@ -135,9 +142,9 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
     queryParams.push(ulb_name);
     paramIndex++;
   }
-  if (grant_type) {
-    query += ` AND FSR.grant_type = $${paramIndex}`;
-    queryParams.push(grant_type);
+  if (fr_grant_type) {
+    query += ` AND FSR.fr_grant_type = $${paramIndex}`;
+    queryParams.push(fr_grant_type);
     paramIndex++;
   }
   if (financial_year) {
@@ -151,8 +158,8 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
     paramIndex++;
   }
 
-  // Ensure the query ends properly before adding ORDER BY
-  query += ` ORDER BY FSR.ulb_id ASC`;
+  // Ensure the query ends properly before adding ORDER BY and LIMIT
+  query += ` ORDER BY FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC LIMIT 5`;
 
   // Execute the raw query using prisma.$queryRawUnsafe
   try {

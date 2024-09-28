@@ -13,7 +13,7 @@ const moment = require("moment-timezone");
  *
  * @returns {Promise<string>} - Returns a promise that resolves to the newly generated scheme ID.
  */
-const generateSchemeId = async () => {
+const generateSchemeId = async (ulb_id) => {
   try {
     // Get the latest scheme_info record
     const lastScheme = await prisma.scheme_info.findFirst({
@@ -30,8 +30,10 @@ const generateSchemeId = async () => {
       newSchemeNumber = lastNumber + 1;
     }
 
-    // Format the new scheme_id as sch-03-xxx
-    const newSchemeId = `sch-03-${newSchemeNumber.toString().padStart(3, "0")}`;
+    // Format the new scheme_id as sch-{ulb_id}-{xxx}
+    const newSchemeId = `sch-${ulb_id}-${newSchemeNumber
+      .toString()
+      .padStart(3, "0")}`;
 
     return newSchemeId;
   } catch (error) {
@@ -39,7 +41,6 @@ const generateSchemeId = async () => {
     throw new Error("Error generating scheme ID");
   }
 };
-
 /**
  * Creates a new scheme information record in the database.
  *
@@ -67,6 +68,7 @@ const createSchemeInfo = async (data) => {
       ulb: data.ulb,
       action: "createSchemeInfo",
     });
+
     // Fetch ulb_id from ULB table using ulb name
     const ulbRecord = await prisma.uLB.findUnique({
       where: {
@@ -81,8 +83,8 @@ const createSchemeInfo = async (data) => {
 
     const ulb_id = ulbRecord.id;
 
-    // Generate the new scheme_id
-    const scheme_id = await generateSchemeId();
+    // Generate the new scheme_id using the ulb_id
+    const scheme_id = await generateSchemeId(ulb_id);
 
     // Convert date of approval (including backdated entries) to UTC
     const dateInUTC = moment
@@ -132,6 +134,7 @@ const createSchemeInfo = async (data) => {
     throw new Error("Error creating scheme information");
   }
 };
+
 /**
  * Retrieves all scheme information records from the database.
  *

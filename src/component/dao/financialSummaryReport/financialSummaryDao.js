@@ -88,16 +88,17 @@ const fetchFinancialSummaryReport = async (
       SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
       (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
-      f.financial_year,
-      f.first_instalment,
-      f.second_instalment,
-      f.interest_amount,
-      f.grant_type,
-      (
-      COALESCE(f.first_instalment, 0) +
-      COALESCE(f.second_instalment, 0) +
-      COALESCE(f.interest_amount, 0)
-    ) AS not_allocated_fund
+      COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started,
+        f.financial_year,
+        f.fr_first_instalment AS first_instalment,
+        f.fr_second_instalment AS second_instalment,
+        f.fr_interest_amount AS interest_amount,
+        f.fr_grant_type AS grant_type,
+        (
+          COALESCE(f.fr_first_instalment, 0) +
+          COALESCE(f.fr_second_instalment, 0) +
+          COALESCE(f.fr_interest_amount, 0)
+        ) AS not_allocated_fund
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -118,7 +119,10 @@ const fetchFinancialSummaryReport = async (
     query += ` AND EXTRACT(YEAR FROM s.date_of_approval) = ${financial_year}`;
   }
 
-  query += ` GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.first_instalment, f.second_instalment, f.interest_amount, f.grant_type ORDER BY ulb.id ASC`;
+  query += `
+      GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.fr_first_instalment, f.fr_second_instalment, f.fr_interest_amount, f.fr_grant_type 
+      ORDER BY ulb.id ASC
+    `;
 
   const result = await prisma.$queryRawUnsafe(query);
   // Log calculated results
@@ -179,20 +183,22 @@ const fetchFinancialSummaryReport = async (
 const updateFinancialSummary = async ({
   ulb_id,
   financial_year,
-  first_instalment,
-  second_instalment,
-  interest_amount,
-  grant_type,
+  fr_first_instalment,
+  fr_second_instalment,
+  fr_interest_amount,
+  fr_grant_type,
+  project_not_started, // New parameter
 }) => {
   try {
     // Log the input parameters for updating
     logger.info("Updating financial summary with parameters:", {
       ulb_id,
       financial_year,
-      first_instalment,
-      second_instalment,
-      interest_amount,
-      grant_type,
+      fr_first_instalment,
+      fr_second_instalment,
+      fr_interest_amount,
+      fr_grant_type,
+      project_not_started,
     });
 
     // Fetch the current expenditure for calculating not_allocated_fund
@@ -210,9 +216,10 @@ const updateFinancialSummary = async ({
 
     // Calculate not_allocated_fund
     const not_allocated_fund =
-      (first_instalment || 0) +
-      (second_instalment || 0) +
-      (interest_amount || 0);
+      (fr_first_instalment || 0) +
+      (fr_second_instalment || 0) +
+      (fr_interest_amount || 0);
+
     // Log the calculation of not_allocated_fund
     logger.debug(
       `Calculated not_allocated_fund for ULB ID ${ulb_id}: ${not_allocated_fund}`
@@ -223,11 +230,13 @@ const updateFinancialSummary = async ({
       where: { ulb_id }, // Identify by ULB ID
       data: {
         financial_year: financial_year || null,
-        first_instalment: first_instalment || null,
-        second_instalment: second_instalment || null,
-        interest_amount: interest_amount || null,
-        grant_type: grant_type || null,
+        fr_first_instalment: fr_first_instalment || null,
+        fr_second_instalment: fr_second_instalment || null,
+        fr_interest_amount: fr_interest_amount || null,
+        fr_grant_type: fr_grant_type || null,
         not_allocated_fund, // Add this field
+        updated_at: new Date(), // Set the updated_at field
+        project_not_started: project_not_started || null, // New field
       },
     });
 
@@ -277,31 +286,34 @@ const fetchUpdatedFinancialSummary = async (filters) => {
         ...whereConditions,
         OR: [
           { financial_year: { not: null } },
-          { first_instalment: { not: null } },
-          { second_instalment: { not: null } },
-          { interest_amount: { not: null } },
-          { grant_type: { not: null } },
+          { fr_first_instalment: { not: null } },
+          { fr_second_instalment: { not: null } },
+          { fr_interest_amount: { not: null } },
+          { fr_grant_type: { not: null } },
         ],
       },
       select: {
         ulb_id: true,
         ulb_name: true,
         financial_year: true,
-        first_instalment: true,
-        second_instalment: true,
-        interest_amount: true,
-        grant_type: true,
+        fr_first_instalment: true,
+        fr_second_instalment: true,
+        fr_interest_amount: true,
+        fr_grant_type: true,
         fund_release_to_ulbs: true,
         expenditure: true,
+        not_allocated_fund: true, // Include the new calculated field
+        updated_at: true, // Include the updated_at field
+        project_not_started: true, // Include the project_not_started field
       },
     });
 
-    // Calculate not_allocated_fund for each report
+    // Calculate not_allocated_fund for each report if not already stored
     const updatedReports = reports.map((report) => {
       const not_allocated_fund =
-        (report.first_instalment || 0) +
-        (report.second_instalment || 0) +
-        (report.interest_amount || 0);
+        (report.fr_first_instalment || 0) +
+        (report.fr_second_instalment || 0) +
+        (report.fr_interest_amount || 0);
       return {
         ...report,
         not_allocated_fund, // Add this calculated field to the report
