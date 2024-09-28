@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
  */
 
 const fetchFinancialSummaryReportMillionPlus = async (filters) => {
-  const { ulb_name, fr_grant_type, financial_year, sector } = filters;
+  const { ulb_name, grant_type, financial_year, sector } = filters;
 
   // Updated SQL query to include unique ULB names for Million Plus Cities
   let query = `
@@ -56,9 +56,9 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     queryParams.push(ulb_name);
     paramIndex++;
   }
-  if (fr_grant_type) {
+  if (grant_type) {
     query += ` AND SI.grant_type = $${paramIndex}`;
-    queryParams.push(fr_grant_type);
+    queryParams.push(grant_type);
     paramIndex++;
   }
   if (financial_year) {
@@ -105,7 +105,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
  * @returns {Promise<Object[]>} - Returns a promise that resolves to the query results.
  */
 const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
-  const { ulb_name, fr_grant_type, financial_year, sector } = filters;
+  const { ulb_name, grant_type, financial_year, sector } = filters;
 
   // Updated SQL query to fetch unique ULBs based on approved_project and tender_approved
   let query = `
@@ -143,9 +143,9 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
     queryParams.push(ulb_name);
     paramIndex++;
   }
-  if (fr_grant_type) {
-    query += ` AND FSR.fr_grant_type = $${paramIndex}`;
-    queryParams.push(fr_grant_type);
+  if (grant_type) {
+    query += ` AND SI.grant_type = $${paramIndex}`;
+    queryParams.push(grant_type);
     paramIndex++;
   }
   if (financial_year) {
