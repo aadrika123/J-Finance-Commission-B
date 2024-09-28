@@ -107,9 +107,9 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
 const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   const { ulb_name, fr_grant_type, financial_year, sector } = filters;
 
-  // Updated SQL query to include top 5 ULBs based on approved_project and tender_approved for Non-Million Plus Cities
+  // Updated SQL query to fetch unique ULBs based on approved_project and tender_approved
   let query = `
-    SELECT 
+    SELECT DISTINCT ON (FSR.ulb_id)
       FSR.ulb_id,
       FSR.ulb_name,
       FSR.approved_schemes AS approved_project,
@@ -160,7 +160,7 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   }
 
   // Ensure the query ends properly before adding ORDER BY and LIMIT
-  query += ` ORDER BY FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC LIMIT 5`;
+  query += ` ORDER BY FSR.ulb_id ASC, FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC LIMIT 5`;
 
   // Execute the raw query using prisma.$queryRawUnsafe
   try {
