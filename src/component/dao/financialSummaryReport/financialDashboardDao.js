@@ -22,23 +22,23 @@ const prisma = new PrismaClient();
 const fetchFinancialSummaryReportMillionPlus = async (filters) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
-  // Updated SQL query to include unique ULB names for Million Plus Cities
+  // SQL query ensuring only one entry per ULB with proper grouping
   let query = `
     SELECT 
       FSR.ulb_id,
       FSR.ulb_name,
-      SUM(FSR.approved_schemes) AS approved_project,
-      SUM(FSR.number_of_tender_floated) AS tender_approved,
-      SUM(FSR.amount) AS approved_amount,
-      SUM(FSR.expenditure) AS expenditure,
-      SUM(FSR.financial_progress_in_percentage) AS financial_progress,
-      SUM(FSR.project_completed) AS project_completed,
+      FSR.approved_schemes AS approved_project,
+      FSR.number_of_tender_floated AS tender_approved,
+      FSR.amount AS approved_amount,
+      FSR.expenditure,
+      FSR.financial_progress_in_percentage AS financial_progress,
+      FSR.project_completed,
       FSR.financial_year,
       SI.grant_type AS grant_type,
-      ARRAY_AGG(SI.sector) AS sectors,  -- Combine all sectors into an array
+      ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Combine all sectors into an array
       SI.city_type,
-      SUM(FSR.not_allocated_fund) AS not_allocated_fund,
-      SUM(FSR.project_not_started) AS project_not_started
+      FSR.not_allocated_fund,
+      FSR.project_not_started
     FROM 
       "FinancialSummaryReport" FSR
     INNER JOIN 
@@ -48,7 +48,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
   `;
 
   const queryParams = [];
-  let paramIndex = 1; // Index for PostgreSQL numbered parameters
+  let paramIndex = 1;
 
   // Add optional filters to the query
   if (ulb_name) {
@@ -72,9 +72,12 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     paramIndex++;
   }
 
-  // Group by unique ULB id and name
+  // Group by all the selected columns that are not aggregated
   query += `
-    GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.financial_year, SI.grant_type, SI.city_type
+    GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
+             FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, 
+             FSR.project_completed, FSR.financial_year, SI.grant_type, SI.city_type, 
+             FSR.not_allocated_fund, FSR.project_not_started
     ORDER BY FSR.ulb_id ASC
   `;
 
