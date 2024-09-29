@@ -15,22 +15,31 @@ const moment = require("moment-timezone");
  */
 const generateSchemeId = async (ulb_id) => {
   try {
-    // Get the latest scheme_info record
+    // Fetch the latest scheme_info record for the specific ulb_id
     const lastScheme = await prisma.scheme_info.findFirst({
+      where: { ulb_id: ulb_id },
       orderBy: {
-        scheme_id: "desc", // Order by descending to find the latest scheme_id
+        // Assuming scheme_id is in the format 'sch-{ulb_id}-{number}'
+        scheme_id: "desc",
       },
     });
 
-    // Extract the number from the last scheme_id and increment it
-    let newSchemeNumber = 1;
-    if (lastScheme) {
+    let newSchemeNumber = 1; // Default number if no previous schemes exist
+
+    if (lastScheme && lastScheme.scheme_id) {
       const lastSchemeId = lastScheme.scheme_id;
-      const lastNumber = parseInt(lastSchemeId.split("-").pop(), 10);
-      newSchemeNumber = lastNumber + 1;
+      const parts = lastSchemeId.split("-");
+
+      // Ensure the scheme_id has the correct format
+      if (parts.length === 3 && parts[1] == ulb_id.toString()) {
+        const lastNumber = parseInt(parts[2], 10);
+        if (!isNaN(lastNumber)) {
+          newSchemeNumber = lastNumber + 1;
+        }
+      }
     }
 
-    // Format the new scheme_id as sch-{ulb_id}-{xxx}
+    // Format the new scheme_id as 'sch-{ulb_id}-{xxx}'
     const newSchemeId = `sch-${ulb_id}-${newSchemeNumber
       .toString()
       .padStart(3, "0")}`;
