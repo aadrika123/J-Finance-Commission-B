@@ -89,16 +89,16 @@ const fetchFinancialSummaryReport = async (
       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
       (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
       COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started,
-        f.financial_year,
-        f.fr_first_instalment AS first_instalment,
-        f.fr_second_instalment AS second_instalment,
-        f.fr_interest_amount AS interest_amount,
-        f.fr_grant_type AS grant_type,
-        (
-          COALESCE(f.fr_first_instalment, 0) +
-          COALESCE(f.fr_second_instalment, 0) +
-          COALESCE(f.fr_interest_amount, 0)
-        ) AS not_allocated_fund
+      f.financial_year,
+      f.fr_first_instalment,
+      f.fr_second_instalment,
+      f.fr_interest_amount,
+      f.fr_grant_type,
+      (
+        COALESCE(f.fr_first_instalment, 0) +
+        COALESCE(f.fr_second_instalment, 0) +
+        COALESCE(f.fr_interest_amount, 0)
+      ) AS not_allocated_fund
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -122,7 +122,7 @@ const fetchFinancialSummaryReport = async (
   query += `
       GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.fr_first_instalment, f.fr_second_instalment, f.fr_interest_amount, f.fr_grant_type 
       ORDER BY ulb.id ASC
-    `;
+  `;
 
   const result = await prisma.$queryRawUnsafe(query);
   // Log calculated results
@@ -180,179 +180,179 @@ const fetchFinancialSummaryReport = async (
  * @param {string} [params.grant_type] - The grant type (optional).
  * @returns {Promise<Object>} - The updated financial summary report.
  */
-const updateFinancialSummary = async ({
-  ulb_id,
-  financial_year,
-  fr_first_instalment,
-  fr_second_instalment,
-  fr_interest_amount,
-  fr_grant_type,
-  project_not_started, // New parameter
-}) => {
-  try {
-    // Log the input parameters for updating
-    logger.info("Updating financial summary with parameters:", {
-      ulb_id,
-      financial_year,
-      fr_first_instalment,
-      fr_second_instalment,
-      fr_interest_amount,
-      fr_grant_type,
-      project_not_started,
-    });
+// const updateFinancialSummary = async ({
+//   ulb_id,
+//   financial_year,
+//   fr_first_instalment,
+//   fr_second_instalment,
+//   fr_interest_amount,
+//   fr_grant_type,
+//   project_not_started, // New parameter
+// }) => {
+//   try {
+//     // Log the input parameters for updating
+//     logger.info("Updating financial summary with parameters:", {
+//       ulb_id,
+//       financial_year,
+//       fr_first_instalment,
+//       fr_second_instalment,
+//       fr_interest_amount,
+//       fr_grant_type,
+//       project_not_started,
+//     });
 
-    // Fetch the current expenditure for calculating not_allocated_fund
-    const currentSummary = await prisma.financialSummaryReport.findUnique({
-      where: { ulb_id },
-      select: {
-        expenditure: true,
-      },
-    });
+//     // Fetch the current expenditure for calculating not_allocated_fund
+//     const currentSummary = await prisma.financialSummaryReport.findUnique({
+//       where: { ulb_id },
+//       select: {
+//         expenditure: true,
+//       },
+//     });
 
-    const expenditure = currentSummary?.expenditure || 0;
+//     const expenditure = currentSummary?.expenditure || 0;
 
-    // Log current expenditure
-    logger.debug(`Current expenditure for ULB ID ${ulb_id}: ${expenditure}`);
+//     // Log current expenditure
+//     logger.debug(`Current expenditure for ULB ID ${ulb_id}: ${expenditure}`);
 
-    // Calculate not_allocated_fund
-    const not_allocated_fund =
-      (fr_first_instalment || 0) +
-      (fr_second_instalment || 0) +
-      (fr_interest_amount || 0);
+//     // Calculate not_allocated_fund
+//     const not_allocated_fund =
+//       (fr_first_instalment || 0) +
+//       (fr_second_instalment || 0) +
+//       (fr_interest_amount || 0);
 
-    // Log the calculation of not_allocated_fund
-    logger.debug(
-      `Calculated not_allocated_fund for ULB ID ${ulb_id}: ${not_allocated_fund}`
-    );
+//     // Log the calculation of not_allocated_fund
+//     logger.debug(
+//       `Calculated not_allocated_fund for ULB ID ${ulb_id}: ${not_allocated_fund}`
+//     );
 
-    // Update the financial summary report in the database
-    const updatedReport = await prisma.financialSummaryReport.update({
-      where: { ulb_id }, // Identify by ULB ID
-      data: {
-        financial_year: financial_year || null,
-        fr_first_instalment: fr_first_instalment || null,
-        fr_second_instalment: fr_second_instalment || null,
-        fr_interest_amount: fr_interest_amount || null,
-        fr_grant_type: fr_grant_type || null,
-        not_allocated_fund: not_allocated_fund, // Add this field
-        updated_at: new Date(), // Set the updated_at field
-        project_not_started: project_not_started || null, // New field
-      },
-    });
+//     // Update the financial summary report in the database
+//     const updatedReport = await prisma.financialSummaryReport.update({
+//       where: { ulb_id }, // Identify by ULB ID
+//       data: {
+//         financial_year: financial_year || null,
+//         fr_first_instalment: fr_first_instalment || null,
+//         fr_second_instalment: fr_second_instalment || null,
+//         fr_interest_amount: fr_interest_amount || null,
+//         fr_grant_type: fr_grant_type || null,
+//         not_allocated_fund: not_allocated_fund, // Add this field
+//         updated_at: new Date(), // Set the updated_at field
+//         project_not_started: project_not_started || null, // New field
+//       },
+//     });
 
-    // Log the updated report
-    logger.info("Updated financial summary report:", { updatedReport });
+//     // Log the updated report
+//     logger.info("Updated financial summary report:", { updatedReport });
 
-    return updatedReport;
-  } catch (error) {
-    logger.error("Error in updateFinancialSummaryDao:", error);
-    throw error; // Propagate the error to be handled in the controller
-  }
-};
+//     return updatedReport;
+//   } catch (error) {
+//     logger.error("Error in updateFinancialSummaryDao:", error);
+//     throw error; // Propagate the error to be handled in the controller
+//   }
+// };
 
-/**
- * Fetches the updated financial summary report for a given ULB ID.
- * Only returns records where any of the fields have been updated (not null).
- * @param {number|string} ulb_id - The ULB ID to fetch the report.
- * @returns {Promise<Object[]>} - The list of updated financial summary reports.
- */
-const fetchUpdatedFinancialSummary = async (req, res) => {
-  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
-  const userId = req.body?.auth?.id || null; // Get user ID from request
+// /**
+//  * Fetches the updated financial summary report for a given ULB ID.
+//  * Only returns records where any of the fields have been updated (not null).
+//  * @param {number|string} ulb_id - The ULB ID to fetch the report.
+//  * @returns {Promise<Object[]>} - The list of updated financial summary reports.
+//  */
+// const fetchUpdatedFinancialSummary = async (req, res) => {
+//   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+//   const userId = req.body?.auth?.id || null; // Get user ID from request
 
-  // Retrieve ulb_id and ulb_name from query parameters
-  const { ulb_id, ulb_name } = req.query;
+//   // Retrieve ulb_id and ulb_name from query parameters
+//   const { ulb_id, ulb_name } = req.query;
 
-  try {
-    // Ensure at least one filter is present
-    if (!ulb_id && !ulb_name) {
-      return res.status(400).json({
-        status: false,
-        message: "Either ulb_id or ulb_name is required",
-        data: [],
-      });
-    }
+//   try {
+//     // Ensure at least one filter is present
+//     if (!ulb_id && !ulb_name) {
+//       return res.status(400).json({
+//         status: false,
+//         message: "Either ulb_id or ulb_name is required",
+//         data: [],
+//       });
+//     }
 
-    // Log request details
-    logger.info("Fetching updated financial summary reports...", {
-      userId,
-      action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
-      ip: clientIp,
-      ulb_id,
-      ulb_name,
-    });
+//     // Log request details
+//     logger.info("Fetching updated financial summary reports...", {
+//       userId,
+//       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+//       ip: clientIp,
+//       ulb_id,
+//       ulb_name,
+//     });
 
-    // Fetch updated financial summary reports from DAO
-    const reports = await prisma.financialSummaryReport.findMany({
-      where: {
-        OR: [
-          { ulb_id: ulb_id ? parseInt(ulb_id, 10) : undefined },
-          {
-            ulb_name: ulb_name
-              ? { contains: ulb_name, mode: "insensitive" }
-              : undefined,
-          },
-        ],
-      },
-    });
+//     // Fetch updated financial summary reports from DAO
+//     const reports = await prisma.financialSummaryReport.findMany({
+//       where: {
+//         OR: [
+//           { ulb_id: ulb_id ? parseInt(ulb_id, 10) : undefined },
+//           {
+//             ulb_name: ulb_name
+//               ? { contains: ulb_name, mode: "insensitive" }
+//               : undefined,
+//           },
+//         ],
+//       },
+//     });
 
-    // Handle case where no reports are found
-    if (!reports || reports.length === 0) {
-      logger.warn("No updated financial summary reports found.", {
-        userId,
-        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
-        ip: clientIp,
-        ulb_id,
-        ulb_name,
-      });
-      return res.status(200).json({
-        status: true,
-        message: "No updated financial summary reports found",
-        data: [],
-      });
-    }
+//     // Handle case where no reports are found
+//     if (!reports || reports.length === 0) {
+//       logger.warn("No updated financial summary reports found.", {
+//         userId,
+//         action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+//         ip: clientIp,
+//         ulb_id,
+//         ulb_name,
+//       });
+//       return res.status(200).json({
+//         status: true,
+//         message: "No updated financial summary reports found",
+//         data: [],
+//       });
+//     }
 
-    // Log success and format the response
-    logger.info("Updated financial summary reports fetched successfully.", {
-      userId,
-      action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
-      ip: clientIp,
-      reportCount: reports.length,
-    });
+//     // Log success and format the response
+//     logger.info("Updated financial summary reports fetched successfully.", {
+//       userId,
+//       action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+//       ip: clientIp,
+//       reportCount: reports.length,
+//     });
 
-    // Return the formatted response with correct calculations
-    res.status(200).json({
-      status: true,
-      message: "Updated financial summary reports fetched successfully",
-      data: reports.map((report) => ({
-        ...report,
-        not_allocated_fund: (
-          (report.fr_first_instalment || 0) +
-          (report.fr_second_instalment || 0) +
-          (report.fr_interest_amount || 0)
-        ).toFixed(2),
-      })), // Add calculated field
-    });
-  } catch (error) {
-    // Log error and send error response
-    logger.error(
-      `Error fetching updated financial summary reports: ${error.message}`,
-      {
-        userId,
-        action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
-        ip: clientIp,
-        error: error.message,
-      }
-    );
-    res.status(500).json({
-      status: false,
-      message: "Failed to fetch updated financial summary reports",
-      error: error.message,
-    });
-  }
-};
+//     // Return the formatted response with correct calculations
+//     res.status(200).json({
+//       status: true,
+//       message: "Updated financial summary reports fetched successfully",
+//       data: reports.map((report) => ({
+//         ...report,
+//         not_allocated_fund: (
+//           (report.fr_first_instalment || 0) +
+//           (report.fr_second_instalment || 0) +
+//           (report.fr_interest_amount || 0)
+//         ).toFixed(2),
+//       })), // Add calculated field
+//     });
+//   } catch (error) {
+//     // Log error and send error response
+//     logger.error(
+//       `Error fetching updated financial summary reports: ${error.message}`,
+//       {
+//         userId,
+//         action: "FETCH_UPDATED_FINANCIAL_SUMMARY_REPORT",
+//         ip: clientIp,
+//         error: error.message,
+//       }
+//     );
+//     res.status(500).json({
+//       status: false,
+//       message: "Failed to fetch updated financial summary reports",
+//       error: error.message,
+//     });
+//   }
+// };
 module.exports = {
   fetchFinancialSummaryReport,
-  updateFinancialSummary,
-  fetchUpdatedFinancialSummary,
+  // updateFinancialSummary,
+  // fetchUpdatedFinancialSummary,
 };
