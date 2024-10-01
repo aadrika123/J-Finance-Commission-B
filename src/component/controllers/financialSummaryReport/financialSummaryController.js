@@ -1,7 +1,7 @@
 const {
   fetchFinancialSummaryReport,
-  updateFinancialSummary,
-  fetchUpdatedFinancialSummary,
+  // updateFinancialSummary,
+  // fetchUpdatedFinancialSummary,
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
@@ -30,20 +30,19 @@ const prisma = new PrismaClient();
  */
 
 const getFinancialSummaryReport = async (req, res) => {
-  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture client IP address for logging purposes
-  const userId = req.body?.auth?.id || null; // Retrieve user ID from request body if available
+  const clientIp = req.headers["x-forwarded-for"] || req.ip;
+  const userId = req.body?.auth?.id || null;
 
   try {
     logger.info("Fetching financial summary report...", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      query: req.query, // Log the query parameters for debugging
+      query: req.query,
     });
 
     const { city_type, grant_type, sector, financial_year } = req.query;
 
-    // Fetch the report data using the DAO function
     const report = await fetchFinancialSummaryReport(
       city_type,
       grant_type,
@@ -55,20 +54,21 @@ const getFinancialSummaryReport = async (req, res) => {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      reportSummary: report.length, // Log the number of records fetched
+      reportSummary: report.length,
     });
 
     const result = report.map((row) => {
       return {
         ...row,
+        fr_first_instalment: row.fr_first_instalment || 0,
+        fr_second_instalment: row.fr_second_instalment || 0,
+        fr_interest_amount:
+          row.fr_interest_amount !== undefined ? row.fr_interest_amount : null,
+        fr_grant_type:
+          row.fr_grant_type !== undefined ? row.fr_grant_type : null,
+        project_not_started: row.project_not_started || 0,
         financial_year:
           row.financial_year !== undefined ? row.financial_year : null,
-        first_instalment: row.first_instalment || 0,
-        second_instalment: row.second_instalment || 0,
-        interest_amount:
-          row.interest_amount !== undefined ? row.interest_amount : null,
-        grant_type: row.grant_type !== undefined ? row.grant_type : null,
-        project_not_started: row.project_not_started || 0, // Ensure inclusion
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -79,10 +79,9 @@ const getFinancialSummaryReport = async (req, res) => {
     });
 
     for (const row of result) {
-      // Calculate not_allocated_fund for each row
-      const firstInstalment = parseFloat(row.first_instalment) || 0;
-      const secondInstalment = parseFloat(row.second_instalment) || 0;
-      const interestAmount = parseFloat(row.interest_amount) || 0;
+      const firstInstalment = parseFloat(row.fr_first_instalment) || 0;
+      const secondInstalment = parseFloat(row.fr_second_instalment) || 0;
+      const interestAmount = parseFloat(row.fr_interest_amount) || 0;
       const notAllocatedFund =
         firstInstalment + secondInstalment + interestAmount;
 
@@ -91,7 +90,6 @@ const getFinancialSummaryReport = async (req, res) => {
       });
 
       if (existingRecord) {
-        // Update the existing record
         const updatedRecord = await prisma.financialSummaryReport.update({
           where: { ulb_id: row.ulb_id },
           data: {
@@ -125,23 +123,23 @@ const getFinancialSummaryReport = async (req, res) => {
                 ? row.financial_year
                 : existingRecord.financial_year,
             fr_first_instalment:
-              row.first_instalment !== undefined
-                ? row.first_instalment
+              row.fr_first_instalment !== undefined
+                ? row.fr_first_instalment
                 : existingRecord.fr_first_instalment,
             fr_second_instalment:
-              row.second_instalment !== undefined
-                ? row.second_instalment
+              row.fr_second_instalment !== undefined
+                ? row.fr_second_instalment
                 : existingRecord.fr_second_instalment,
             fr_interest_amount:
-              row.interest_amount !== undefined
-                ? row.interest_amount
+              row.fr_interest_amount !== undefined
+                ? row.fr_interest_amount
                 : existingRecord.fr_interest_amount,
             fr_grant_type:
-              row.grant_type !== undefined
-                ? row.grant_type
+              row.fr_grant_type !== undefined
+                ? row.fr_grant_type
                 : existingRecord.fr_grant_type,
-            not_allocated_fund: notAllocatedFund, // Updated not_allocated_fund calculation
-            updated_at: new Date(), // Update the timestamp
+            not_allocated_fund: notAllocatedFund,
+            updated_at: new Date(),
             project_not_started:
               parseInt(row.project_not_started, 10) ||
               existingRecord.project_not_started,
@@ -159,7 +157,6 @@ const getFinancialSummaryReport = async (req, res) => {
           }
         );
       } else {
-        // Create a new record if it doesn't exist
         const newRecord = await prisma.financialSummaryReport.create({
           data: {
             ulb_id: row.ulb_id,
@@ -181,14 +178,19 @@ const getFinancialSummaryReport = async (req, res) => {
             financial_year:
               row.financial_year !== undefined ? row.financial_year : null,
             fr_first_instalment:
-              row.first_instalment !== undefined ? row.first_instalment : null,
+              row.fr_first_instalment !== undefined
+                ? row.fr_first_instalment
+                : null,
             fr_second_instalment:
-              row.second_instalment !== undefined
-                ? row.second_instalment
+              row.fr_second_instalment !== undefined
+                ? row.fr_second_instalment
                 : null,
             fr_interest_amount:
-              row.interest_amount !== undefined ? row.interest_amount : null,
-            fr_grant_type: row.grant_type !== undefined ? row.grant_type : null,
+              row.fr_interest_amount !== undefined
+                ? row.fr_interest_amount
+                : null,
+            fr_grant_type:
+              row.fr_grant_type !== undefined ? row.fr_grant_type : null,
             not_allocated_fund: notAllocatedFund,
           },
         });
@@ -213,7 +215,7 @@ const getFinancialSummaryReport = async (req, res) => {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       ip: clientIp,
-      error: error.message, // Log the error message for debugging
+      error: error.message,
     });
 
     return res.status(500).json({
