@@ -22,35 +22,34 @@ const prisma = new PrismaClient();
 const fetchFinancialSummaryReportMillionPlus = async (filters) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
-  // Updated SQL query to include unique ULB names for Million Plus Cities
+  // SQL query ensuring only one entry per ULB with proper grouping
   let query = `
-    SELECT 
-      FSR.ulb_id,
-      FSR.ulb_name,
-      SUM(FSR.approved_schemes) AS approved_project,
-      SUM(FSR.number_of_tender_floated) AS tender_approved,
-      SUM(FSR.amount) AS approved_amount,
-      SUM(FSR.expenditure) AS expenditure,
-      SUM(FSR.financial_progress_in_percentage) AS financial_progress,
-      SUM(FSR.project_completed) AS project_completed,
-      FSR.financial_year,
-      SI.grant_type AS grant_type,
-      ARRAY_AGG(SI.sector) AS sectors,  -- Combine all sectors into an array
-      SI.city_type,
-      SUM(FSR.not_allocated_fund) AS not_allocated_fund,
-      SUM(FSR.project_not_started) AS project_not_started
-    FROM 
-      "FinancialSummaryReport" FSR
-    INNER JOIN 
-      "Scheme_info" SI ON FSR.ulb_name = SI.ulb
-    WHERE 
-      SI.city_type = 'million plus'
-  `;
+  SELECT 
+    FSR.ulb_id,
+    FSR.ulb_name,
+    FSR.approved_schemes AS approved_project,
+    FSR.number_of_tender_floated AS tender_approved,
+    FSR.amount AS approved_amount,
+    FSR.expenditure,
+    FSR.financial_progress_in_percentage AS financial_progress,
+    FSR.project_completed,
+    FSR.financial_year,
+    ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate grant types into an array
+    ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Combine all sectors into an array
+    SI.city_type,
+    FSR.not_allocated_fund,
+    FSR.project_not_started
+  FROM 
+    "FinancialSummaryReport" FSR
+  INNER JOIN 
+    "Scheme_info" SI ON FSR.ulb_name = SI.ulb
+  WHERE 
+    SI.city_type = 'million plus'
+`;
 
   const queryParams = [];
-  let paramIndex = 1; // Index for PostgreSQL numbered parameters
+  let paramIndex = 1;
 
-  // Add optional filters to the query
   if (ulb_name) {
     query += ` AND FSR.ulb_name = $${paramIndex}`;
     queryParams.push(ulb_name);
@@ -72,13 +71,15 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     paramIndex++;
   }
 
-  // Group by unique ULB id and name
+  // Group results by ULB ID to ensure uniqueness
   query += `
-    GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.financial_year, SI.grant_type, SI.city_type
-    ORDER BY FSR.ulb_id ASC
-  `;
+  GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
+           FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, 
+           FSR.project_completed, FSR.financial_year, SI.city_type, 
+           FSR.not_allocated_fund, FSR.project_not_started
+  ORDER BY FSR.ulb_id ASC
+`;
 
-  // Execute the raw query using prisma.$queryRawUnsafe
   try {
     return await prisma.$queryRawUnsafe(query, ...queryParams);
   } catch (error) {
@@ -107,7 +108,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
 const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
-  // Updated SQL query to fetch unique ULBs based on approved_project and tender_approved
+  // Updated SQL query to fetch unique ULBs with aggregated grant types and sectors
   let query = `
     SELECT DISTINCT ON (FSR.ulb_id)
       FSR.ulb_id,
@@ -119,8 +120,8 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
       FSR.financial_progress_in_percentage AS financial_progress,
       FSR.project_completed,
       FSR.financial_year,
-      SI.grant_type AS grant_type,
-      SI.sector,
+      ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate distinct grant types into an array
+      ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Aggregate distinct sectors into an array
       SI.city_type,
       FSR.not_allocated_fund,
       FSR.project_not_started
@@ -160,7 +161,14 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   }
 
   // Ensure the query ends properly before adding ORDER BY and LIMIT
-  query += ` ORDER BY FSR.ulb_id ASC, FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC LIMIT 5`;
+  query += ` 
+    GROUP BY 
+      FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
+      FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, FSR.project_completed, 
+      FSR.financial_year, SI.city_type, FSR.not_allocated_fund, FSR.project_not_started
+    ORDER BY 
+      FSR.ulb_id ASC, FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC 
+    LIMIT 5`;
 
   // Execute the raw query using prisma.$queryRawUnsafe
   try {
