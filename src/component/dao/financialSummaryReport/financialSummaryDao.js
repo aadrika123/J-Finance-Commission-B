@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
  * fetchFinancialSummaryReport
  *
  * This function generates and executes an SQL query to retrieve financial summary data for ULBs (Urban Local Bodies),
- * based on various filters such as city type, grant type, sector, and financial year. The data is calculated from
+ * based on various filters such as city type, grant type, sector, and financial year. The data is fetched from
  * the "Scheme_info" and "FinancialSummaryReport" tables and joined with the "ULB" table to provide the necessary information.
  *
  * Each field in the SELECT statement is explained below:
@@ -44,18 +44,16 @@ const prisma = new PrismaClient();
  *
  * - f.financial_year: Retrieves the financial year from the "FinancialSummaryReport" table, which may provide context for the report.
  *
- * - f.first_instalment: Retrieves the amount of the first installment of funds released to ULBs from the "FinancialSummaryReport" table.
+ * - f.fr_first_instalment: Retrieves the amount of the first installment of funds released to ULBs from the "FinancialSummaryReport" table.
  *
- * - f.second_instalment: Retrieves the amount of the second installment of funds released to ULBs from the "FinancialSummaryReport" table.
+ * - f.fr_second_instalment: Retrieves the amount of the second installment of funds released to ULBs from the "FinancialSummaryReport" table.
  *
- * - f.interest_amount: Retrieves any interest earned on the released funds from the "FinancialSummaryReport" table.
+ * - f.fr_interest_amount: Retrieves any interest earned on the released funds from the "FinancialSummaryReport" table.
  *
- * - f.grant_type: Retrieves the type of grant associated with the financial summary from the "FinancialSummaryReport" table.
+ * - f.fr_grant_type: Retrieves the type of grant associated with the financial summary from the "FinancialSummaryReport" table.
  *
- * - (SUM(s.project_cost) - SUM(s.financial_progress) + COALESCE(f.first_instalment, 0) + COALESCE(f.second_instalment, 0)) AS not_allocated_fund:
- *   This field calculates the "not allocated fund," which is the remaining funds that have not yet been allocated to the schemes.
- *   It is calculated as the total project cost minus the financial progress (expenditure) and then adding the amounts from
- *   the first and second installments (if available).
+ * - (COALESCE(f.fr_first_instalment, 0) + COALESCE(f.fr_second_instalment, 0) + COALESCE(f.fr_interest_amount, 0)) AS not_allocated_fund:
+ *   This field calculates the "not allocated fund," which includes the amounts from the first and second installments, and interest amounts (if available).
  *
  * The query also allows filtering based on the following optional parameters:
  *
@@ -67,7 +65,6 @@ const prisma = new PrismaClient();
  * The query groups the data by ULB (ulb.id, ulb.ulb_name) and by financial year and grant details to provide summarized
  * information for each ULB.
  */
-
 const fetchFinancialSummaryReport = async (
   city_type,
   grant_type,
@@ -127,59 +124,69 @@ const fetchFinancialSummaryReport = async (
   const result = await prisma.$queryRawUnsafe(query);
   // Log calculated results
   result.forEach((ulbData) => {
-    logger.info(`Calculating detailed project metrics for ULB: ${ulbData.ulb_name} (ID: ${ulbData.ulb_id})
+    logger.info(`Detailed Financial Summary for ULB: ${ulbData.ulb_name} (ID: ${ulbData.ulb_id})
 
-    - **Total Approved Schemes:** ${ulbData.approved_schemes} schemes approved.
-    - **Total Project Costs (fund_release_to_ulbs):** Total project costs to be released: ${ulbData.fund_release_to_ulbs}.
-    - **Total Approved Project Costs (amount):** Approved project costs: ${ulbData.amount}.
-    - **Completed Projects (project_completed):** ${ulbData.project_completed} projects marked as completed.
-    - **Total Expenditure (expenditure):** Expenditure so far: ${ulbData.expenditure}.
-    - **Remaining Balance (balance_amount):** Remaining balance: ${ulbData.balance_amount} (calculated as project cost - expenditure).
-    - **Average Financial Progress (financial_progress_in_percentage):** ${ulbData.financial_progress_in_percentage}% progress on average across all projects.
-    - **Number of Tenders Floated (number_of_tender_floated):** ${ulbData.number_of_tender_floated} tenders have been floated.
-    - **Number of Tenders Not Floated (tender_not_floated):** ${ulbData.tender_not_floated} tenders have not yet been floated.
-    - **Work in Progress (work_in_progress):** ${ulbData.work_in_progress} projects are still ongoing.
-    - **Unallocated Funds (not_allocated_fund):** Unallocated funds: ${ulbData.not_allocated_fund} (first instalments + second instalments + interest_amount).`);
-  });
+    - **Total Approved Schemes:** ${ulbData.approved_schemes} approved schemes under the ULB.
+    - **Fund Released to ULBs (Total Project Costs):** ₹${ulbData.fund_release_to_ulbs} worth of project costs released to ULBs.
+    - **Approved Project Costs (Budget):** ₹${ulbData.amount} total approved budget for schemes.
+    - **Completed Projects:** ${ulbData.project_completed} projects completed out of total approved.
+    - **Expenditure (Financial Progress):** ₹${ulbData.expenditure} total expenditure made so far across all schemes.
+    - **Remaining Balance (Unspent Budget):** ₹${ulbData.balance_amount} remaining balance, calculated as (project cost - expenditure).
+    - **Average Financial Progress:** ${ulbData.financial_progress_in_percentage}% financial progress across all projects.
+    - **Number of Tenders Floated:** ${ulbData.number_of_tender_floated} tenders floated for ongoing schemes.
+    - **Number of Tenders Not Floated:** ${ulbData.tender_not_floated} schemes have yet to float tenders.
+    - **Work in Progress:** ${ulbData.work_in_progress} projects are still under progress.
+    - **Projects Not Started:** ${ulbData.project_not_started} projects have not commenced yet.
+    - **Unallocated Funds:** ₹${ulbData.not_allocated_fund}, including first instalment, second instalment, and interest amounts.
+    - **Financial Year:** ${ulbData.financial_year}.
+    - **Grant Type:** ${ulbData.fr_grant_type}.
+    - **First Instalment Released:** ₹${ulbData.fr_first_instalment}.
+    - **Second Instalment Released:** ₹${ulbData.fr_second_instalment}.
+    - **Interest Earned on Grants:** ₹${ulbData.fr_interest_amount} earned as interest on the released funds.
+    `);
 
-  logger.info("Fetched financial summary report data:", { result });
-
-  // Optionally log calculated fields
-  result.forEach((item) => {
-    logger.debug(`Calculated values for ULB ${item.ulb_id}:`, {
-      approved_schemes: item.approved_schemes,
-      fund_release_to_ulbs: item.fund_release_to_ulbs,
-      amount: item.amount,
-      project_completed: item.project_completed,
-      expenditure: item.expenditure,
-      balance_amount: item.balance_amount,
-      financial_progress_in_percentage: item.financial_progress_in_percentage,
-      number_of_tender_floated: item.number_of_tender_floated,
-      tender_not_floated: item.tender_not_floated,
-      work_in_progress: item.work_in_progress,
-      not_allocated_fund: item.not_allocated_fund,
-      financial_year: item.financial_year,
-      first_instalment: item.first_instalment,
-      second_instalment: item.second_instalment,
-      interest_amount: item.interest_amount,
-      grant_type: item.grant_type,
+    // Immediately follow the detailed log with a debug log for the same ULB
+    logger.debug(`Calculated values for ULB ${ulbData.ulb_id}:`, {
+      approved_schemes: ulbData.approved_schemes,
+      fund_release_to_ulbs: ulbData.fund_release_to_ulbs,
+      amount: ulbData.amount,
+      project_completed: ulbData.project_completed,
+      expenditure: ulbData.expenditure,
+      balance_amount: ulbData.balance_amount,
+      financial_progress_in_percentage:
+        ulbData.financial_progress_in_percentage,
+      number_of_tender_floated: ulbData.number_of_tender_floated,
+      tender_not_floated: ulbData.tender_not_floated,
+      work_in_progress: ulbData.work_in_progress,
+      project_not_started: ulbData.project_not_started,
+      not_allocated_fund: ulbData.not_allocated_fund,
+      financial_year: ulbData.financial_year,
+      first_instalment: ulbData.fr_first_instalment,
+      second_instalment: ulbData.fr_second_instalment,
+      interest_amount: ulbData.fr_interest_amount,
+      grant_type: ulbData.fr_grant_type,
     });
   });
+
+  logger.info(
+    "Detailed financial summary report data retrieved successfully.",
+    { result }
+  );
 
   return result;
 };
 
-/**
- * Updates the financial summary report for a given ULB.
- * @param {Object} params - Parameters to update the financial summary.
- * @param {number} params.ulb_id - The ULB ID to identify the record.
- * @param {number} [params.financial_year] - The financial year (optional).
- * @param {number} [params.first_instalment] - The first installment amount (optional).
- * @param {number} [params.second_instalment] - The second installment amount (optional).
- * @param {number} [params.interest_amount] - The interest amount (optional).
- * @param {string} [params.grant_type] - The grant type (optional).
- * @returns {Promise<Object>} - The updated financial summary report.
- */
+// /**
+//  * Updates the financial summary report for a given ULB.
+//  * @param {Object} params - Parameters to update the financial summary.
+//  * @param {number} params.ulb_id - The ULB ID to identify the record.
+//  * @param {number} [params.financial_year] - The financial year (optional).
+//  * @param {number} [params.first_instalment] - The first installment amount (optional).
+//  * @param {number} [params.second_instalment] - The second installment amount (optional).
+//  * @param {number} [params.interest_amount] - The interest amount (optional).
+//  * @param {string} [params.grant_type] - The grant type (optional).
+//  * @returns {Promise<Object>} - The updated financial summary report.
+//  */
 // const updateFinancialSummary = async ({
 //   ulb_id,
 //   financial_year,
