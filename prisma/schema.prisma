@@ -23,59 +23,59 @@ model ULB {
   longitude         Float
   latitude          Float
   city_type         String?
-  // Define the relationship to Scheme_info
+  // relationship to Scheme_info
   schemes           Scheme_info[]
-  // Define the relationship to FinancialSummaryReport
+  // relationship to FinancialSummaryReport
   financial_reports FinancialSummaryReport[]
 }
 
 model Scheme_info {
-  scheme_id        String    @id @unique
-  project_cost     Decimal
-  scheme_name      String
-  sector           String?
-  grant_type       String
-  city_type        String
-  date_of_approval DateTime?
-  ulb              String?
-  created_at       DateTime  @default(now())
-
-  // New fields with default values
+  scheme_id                               String    @id @unique
+  project_cost                            Decimal
+  scheme_name                             String
+  sector                                  String?
+  grant_type                              String
+  city_type                               String
+  date_of_approval                        DateTime?
+  ulb                                     String?
+  created_at                              DateTime  @default(now())
   project_completion_status               String?
   tender_floated                          String?
   financial_progress                      Decimal?
   financial_progress_in_percentage        Int?
   project_completion_status_in_percentage Int?
   approved_project_cost                   Decimal?
-  // Add the new ulb_id foreign key
   ulb_id                                  Int?
-  ULB                                     ULB?     @relation(fields: [ulb_id], references: [id])
+  ULB                                     ULB?      @relation(fields: [ulb_id], references: [id])
 }
 
 model FinancialSummaryReport {
-  id                               Int       @id @default(autoincrement()) // Primary key
-  ulb_id                           Int       @unique // Foreign key
-  ulb_name                         String
-  approved_schemes                 Int
-  fund_release_to_ulbs             Decimal
-  amount                           Decimal
-  project_completed                Int
-  expenditure                      Decimal
-  balance_amount                   Decimal
-  financial_progress_in_percentage Int
-  number_of_tender_floated         Int
-  tender_not_floated               Int
-  work_in_progress                 Int
-  financial_year                   Int?
-  fr_first_instalment              Decimal? // Renamed from first_instalment
-  fr_second_instalment             Decimal? // Already existing, but unchanged
-  fr_interest_amount               Decimal? // Renamed from interest_amount
-  fr_grant_type                    String? // Renamed from grant_type
-  not_allocated_fund               Decimal?
-  created_at                       DateTime  @default(now())
-  updated_at                       DateTime? // New field for tracking updates
-  project_not_started              Int? // New field for tracking non-started projects
+  id       Int    @id @default(autoincrement()) // Primary key, auto-incremented
+  ulb_id   Int    @unique // Foreign key referencing the ULB model, unique for each ULB
+  ulb_name String // Name of the ULB, useful for display purposes
 
-  // Foreign key relation to ULB
-  ULB ULB @relation(fields: [ulb_id], references: [id])
+  approved_schemes                 Int // The count of schemes approved for this ULB
+  fund_release_to_ulbs             Decimal // Total funds released to the ULB across all schemes
+  amount                           Decimal // The total approved project cost for all schemes
+  project_completed                Int // The count of completed projects for this ULB
+  expenditure                      Decimal // The total expenditure for the ULB's projects
+  balance_amount                   Decimal // The remaining balance amount (funds - expenditure)
+  financial_progress_in_percentage Int // Average financial progress of all schemes, in percentage
+  number_of_tender_floated         Int // The count of tenders floated for this ULB's schemes
+  tender_not_floated               Int // The count of tenders not floated for this ULB's schemes
+  work_in_progress                 Int // The count of schemes that are still in progress
+  financial_year                   Int? // The financial year for which this report is generated
+
+  fr_first_instalment  Decimal? // The first instalment of funds released to the ULB
+  fr_second_instalment Decimal? // The second instalment of funds released to the ULB
+  fr_interest_amount   Decimal? // Interest amount released to the ULB (if any)
+  fr_grant_type        String? // Type of grant allocated to the ULB
+  not_allocated_fund   Decimal? // Funds not yet allocated or distributed to the ULB
+
+  created_at          DateTime  @default(now()) // Timestamp for when this record was created
+  updated_at          DateTime? // Timestamp for the last time this record was updated
+  project_not_started Int? // Count of projects that haven't started yet (financial progress = 0)
+
+  // Foreign key relation to the ULB model
+  ULB ULB @relation(fields: [ulb_id], references: [id]) // Relation to the ULB model based on ulb_id
 }
