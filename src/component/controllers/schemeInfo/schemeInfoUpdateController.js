@@ -46,19 +46,9 @@ const modifySchemeInfo = async (req, res) => {
     const updatedSchemeInfo = await updateSchemeInfo(scheme_id, data);
 
     // Check if the scheme was updated successfully
-    if (!updatedSchemeInfo) {
-      // Log a warning if the scheme was not found
-      logger.warn(`Scheme with ID ${scheme_id} not found`, {
-        userId,
-        action: "UPDATE_SCHEME_INFO",
-        ip: clientIp,
-        scheme_id,
-      });
-      // Send a 404 response if the scheme was not found
-      return res.status(404).json({
-        status: false,
-        message: `Scheme with ID ${scheme_id} not found`,
-      });
+    if (!updatedSchemeInfo.status) {
+      // Return the validation error directly
+      return res.status(200).json(updatedSchemeInfo);
     }
 
     // Log the successful update of the scheme information
@@ -73,15 +63,11 @@ const modifySchemeInfo = async (req, res) => {
     // Create an audit log entry for the update operation
     await createAuditLog(userId, "UPDATE", "Scheme_info", scheme_id, {
       oldData: data, // Optionally log old data if available
-      newData: updatedSchemeInfo,
+      newData: updatedSchemeInfo.data, // Log only the new data
     });
 
     // Send a success response with the updated scheme information
-    res.status(200).json({
-      status: true,
-      message: "Scheme info updated successfully",
-      data: updatedSchemeInfo,
-    });
+    res.status(200).json(updatedSchemeInfo);
   } catch (error) {
     // Log error details and send an error response
     logger.error(
@@ -100,7 +86,6 @@ const modifySchemeInfo = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   modifySchemeInfo,
 };

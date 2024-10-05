@@ -80,8 +80,6 @@ const addSchemeInfo = async (req, res) => {
 
     // Send success response with status and message
     res.status(201).json({
-      status: true,
-      message: "Scheme information added successfully",
       data: newSchemeInfo,
     });
   } catch (error) {
