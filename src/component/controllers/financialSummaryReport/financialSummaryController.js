@@ -261,6 +261,52 @@ const updateFinancialSummaryReport = async (req, res) => {
     project_not_started,
   } = req.body;
 
+  // Validation function
+  const validateFinancialSummaryInputs = (
+    financial_year,
+    first_instalment,
+    second_instalment,
+    interest_amount,
+    grant_type
+  ) => {
+    // Validate financial year
+    if (financial_year) {
+      const yearPattern = /^\d{4}$/; // Regex for a four-digit year
+      if (
+        !yearPattern.test(financial_year) ||
+        financial_year < 2000 ||
+        financial_year > new Date().getFullYear()
+      ) {
+        throw new Error(
+          "Invalid financial year. It must be a four-digit number within a reasonable range."
+        );
+      }
+    }
+
+    // Validate grant type
+    const validGrantTypes = ["tied", "untied", "ambient"]; // Add more valid types as needed
+    if (grant_type && !validGrantTypes.includes(grant_type)) {
+      throw new Error(
+        `Invalid grant type. Allowed values are: ${validGrantTypes.join(", ")}`
+      );
+    }
+
+    // Validate instalments and interest amount
+    [first_instalment, second_instalment, interest_amount].forEach(
+      (amount, index) => {
+        // Check if amount is defined and is not a number or less than zero
+        if (
+          amount !== undefined &&
+          (typeof amount !== "number" || amount < 0)
+        ) {
+          throw new Error(
+            `Invalid amount at index ${index}. Amounts must be non-negative numbers.`
+          );
+        }
+      }
+    );
+  };
+
   try {
     if (!ulb_id) {
       logger.warn("ULB ID is missing in the request.", {
@@ -269,8 +315,8 @@ const updateFinancialSummaryReport = async (req, res) => {
         ip: clientIp,
       });
 
-      return res.status(200).json({
-        status: true,
+      return res.status(400).json({
+        status: false,
         message: "ULB ID is required",
       });
     }
@@ -287,12 +333,21 @@ const updateFinancialSummaryReport = async (req, res) => {
     });
 
     if (!existingReport) {
-      return res.status(200).json({
-        status: true,
+      return res.status(404).json({
+        status: false,
         message: "Financial summary report not found",
         data: [],
       });
     }
+
+    // Validate input values
+    validateFinancialSummaryInputs(
+      financial_year,
+      fr_first_instalment,
+      fr_second_instalment,
+      fr_interest_amount,
+      fr_grant_type
+    );
 
     // Convert values to numbers (or set to null if not provided)
     const updatedFirstInstalment = Number(fr_first_instalment || 0);
@@ -320,7 +375,6 @@ const updateFinancialSummaryReport = async (req, res) => {
         fr_second_instalment: updatedSecondInstalment,
         fr_interest_amount: updatedInterestAmount,
         fr_grant_type: fr_grant_type,
-
         not_allocated_fund,
         project_not_started: updatedProjectNotStarted, // Updating the non-started projects count
         updated_at: new Date(), // Updating the timestamp for the last update
@@ -358,14 +412,14 @@ const updateFinancialSummaryReport = async (req, res) => {
       }
     );
 
-    if (error.code === "P2025") {
+    if (error.message.includes("not found")) {
       res.status(404).json({
         status: false,
         message: "Financial summary report not found",
         error: error.message,
       });
     } else {
-      res.status(500).json({
+      res.status(400).json({
         status: false,
         message: "Failed to update financial summary report",
         error: error.message,
