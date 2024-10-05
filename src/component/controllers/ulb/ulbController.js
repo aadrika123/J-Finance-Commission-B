@@ -28,6 +28,7 @@ const getULBs = async (req, res) => {
 
   try {
     const userId = req.body?.auth?.id || null; // Extract user ID from request body if available
+    // console.log(req.body?.auth);
     logger.info("Fetching ULBs from the database...", {
       userId,
       action: "FETCH_ULBs", // Log action type

@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
+const moment = require("moment-timezone");
 
 const prisma = new PrismaClient();
 
@@ -25,23 +26,76 @@ const prisma = new PrismaClient();
  */
 
 const updateSchemeInfo = async (scheme_id, data) => {
+  // Fetch the existing scheme record to validate against
+  const existingScheme = await prisma.scheme_info.findUnique({
+    where: { scheme_id },
+  });
+
+  if (!existingScheme) {
+    throw new Error(`Scheme with ID ${scheme_id} does not exist`);
+  }
+
   // Prepare the update data object
   const updateData = {};
 
-  // Add fields to updateData only if they are present in the incoming data
-  if (data.sector !== undefined) updateData.sector = data.sector;
-  if (data.project_completion_status !== undefined)
+  // Validate and add fields to updateData only if they are present in the incoming data
+  if (data.sector !== undefined) {
+    updateData.sector = data.sector;
+  }
+
+  if (data.project_completion_status !== undefined) {
     updateData.project_completion_status = data.project_completion_status;
-  if (data.tender_floated !== undefined)
+  }
+
+  if (data.tender_floated !== undefined) {
     updateData.tender_floated = data.tender_floated;
-  if (data.financial_progress !== undefined)
+  }
+
+  if (data.financial_progress !== undefined) {
+    if (
+      typeof data.financial_progress !== "number" ||
+      data.financial_progress < 0
+    ) {
+      throw new Error("Financial progress must be a non-negative number");
+    }
     updateData.financial_progress = data.financial_progress;
-  if (data.financial_progress_in_percentage !== undefined)
+
+    // Calculate financial_progress_in_percentage
+    if (existingScheme.approved_project_cost > 0) {
+      updateData.financial_progress_in_percentage =
+        (data.financial_progress / existingScheme.approved_project_cost) * 100;
+    } else {
+      throw new Error("Approved project cost must be a positive number.");
+    }
+  }
+
+  if (data.financial_progress_in_percentage !== undefined) {
+    if (
+      typeof data.financial_progress_in_percentage !== "number" ||
+      data.financial_progress_in_percentage < 0 ||
+      data.financial_progress_in_percentage > 100
+    ) {
+      throw new Error(
+        "Financial progress percentage must be between 0 and 100"
+      );
+    }
     updateData.financial_progress_in_percentage =
       data.financial_progress_in_percentage;
-  if (data.project_completion_status_in_percentage !== undefined)
+  }
+
+  if (data.project_completion_status_in_percentage !== undefined) {
+    if (
+      typeof data.project_completion_status_in_percentage !== "number" ||
+      data.project_completion_status_in_percentage < 0 ||
+      data.project_completion_status_in_percentage > 100
+    ) {
+      throw new Error(
+        "Project completion status percentage must be between 0 and 100"
+      );
+    }
     updateData.project_completion_status_in_percentage =
       data.project_completion_status_in_percentage;
+  }
 
   try {
     // Log the update request details

@@ -3,6 +3,9 @@ const prisma = new PrismaClient();
 const logger = require("../../../utils/log/logger");
 const moment = require("moment-timezone");
 
+const VALID_GRANT_TYPES = ["tied", "untied", "ambient"];
+const VALID_CITY_TYPES = ["million plus", "non million"];
+
 /**
  * Generates a new scheme ID based on the latest scheme ID in the database.
  *
@@ -71,6 +74,53 @@ const generateSchemeId = async (ulb_id) => {
  */
 const createSchemeInfo = async (data) => {
   try {
+    // Validate the incoming data
+    if (!data.scheme_name || typeof data.scheme_name !== "string") {
+      throw new Error("Invalid scheme name. It must be a non-empty string.");
+    }
+
+    // Validate project_cost and approved_project_cost
+    if (
+      !data.project_cost ||
+      typeof data.project_cost !== "number" ||
+      data.project_cost <= 0
+    ) {
+      throw new Error("Invalid project cost. It must be a positive number.");
+    }
+
+    // if (
+    //   !data.approved_project_cost ||
+    //   typeof data.approved_project_cost !== "number" ||
+    //   data.approved_project_cost <= 0
+    // ) {
+    //   throw new Error(
+    //     "Invalid approved project cost. It must be a positive number."
+    //   );
+    // }
+
+    if (data.sector && typeof data.sector !== "string") {
+      throw new Error("Invalid sector. It must be a string.");
+    }
+
+    if (!VALID_GRANT_TYPES.includes(data.grant_type)) {
+      throw new Error(
+        `Invalid grant type. Valid types are: ${VALID_GRANT_TYPES.join(", ")}`
+      );
+    }
+
+    if (!VALID_CITY_TYPES.includes(data.city_type)) {
+      throw new Error(
+        `Invalid city type. Valid types are: ${VALID_CITY_TYPES.join(", ")}`
+      );
+    }
+
+    if (
+      !data.date_of_approval ||
+      !moment(data.date_of_approval, moment.ISO_8601).isValid()
+    ) {
+      throw new Error("Invalid date of approval. It must be a valid date.");
+    }
+
     // Log the request to create a new scheme
     logger.info({
       message: `Creating new scheme for ULB: ${data.ulb}`,
@@ -124,7 +174,7 @@ const createSchemeInfo = async (data) => {
       schemeDetails: {
         scheme_id: createdScheme.scheme_id,
         project_cost: createdScheme.project_cost,
-        approved_project_cost: createdScheme.approved_project_cost,
+        approved_project_cost: createdScheme.project_cost,
         scheme_name: createdScheme.scheme_name,
         sector: createdScheme.sector,
         grant_type: createdScheme.grant_type,
@@ -140,7 +190,7 @@ const createSchemeInfo = async (data) => {
     return createdScheme;
   } catch (error) {
     console.error("Error creating scheme information:", error);
-    throw new Error("Error creating scheme information");
+    throw new Error("Error creating scheme information: " + error.message);
   }
 };
 
