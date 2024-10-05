@@ -238,10 +238,13 @@ const getSchemeInfo = async () => {
 
 //scheme info acc. to ulb_id
 
-const getSchemesByULBId = async (ulb_id) => {
+const getSchemesByULBName = async (ulb_name) => {
   return await prisma.scheme_info.findMany({
     where: {
-      ulb_id: parseInt(ulb_id),
+      ulb: {
+        equals: ulb_name,
+        mode: "insensitive", // Optional: Makes the search case-insensitive
+      },
     },
   });
 };
@@ -249,5 +252,5 @@ const getSchemesByULBId = async (ulb_id) => {
 module.exports = {
   createSchemeInfo,
   getSchemeInfo,
-  getSchemesByULBId,
+  getSchemesByULBName,
 };
