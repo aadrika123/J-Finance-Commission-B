@@ -327,9 +327,11 @@ const getSchemesInfoByULBName = async (req, res) => {
 
     // ULB name is required, return error if missing
     if (!ulb_name) {
-      return res
-        .status(200)
-        .json({ status: false, message: "ULB name is required", data: [] });
+      return res.status(200).json({
+        status: false,
+        message: "ULB name is required",
+        data: [],
+      });
     }
 
     // Fetch the schemes with pagination
@@ -363,9 +365,17 @@ const getSchemesInfoByULBName = async (req, res) => {
 
     // No schemes found
     if (schemes.length === 0) {
-      return res
-        .status(200)
-        .json({ data: [], message: "No schemes found for this ULB name" });
+      return res.status(200).json({
+        data: [],
+        message: "No schemes found for this ULB name",
+        pagination: {
+          next: null,
+          currentPage: page,
+          currentTake: take,
+          totalPage,
+          totalResult: totalSchemes,
+        },
+      });
     }
 
     // Return schemes with pagination info and total scheme count
@@ -374,16 +384,20 @@ const getSchemesInfoByULBName = async (req, res) => {
       message: "Scheme information fetched successfully",
       data: schemes,
       pagination: {
-        currentPage: page,
-        totalPage,
-        totalResults: totalSchemes, // Total number of schemes
         next: nextPage ? { page: nextPage, take } : null, // Info for next page
+        currentPage: page,
+        currentTake: take,
+        totalPage,
+        totalResult: totalSchemes, // Total number of schemes
       },
-      totalSchemesCount: totalSchemes, // Total number of schemes (not just current page)
     });
   } catch (error) {
     console.error(error); // Log the actual error for debugging
-    res.status(500).json({ error: "An error occurred while fetching schemes" });
+    res.status(500).json({
+      status: false,
+      message: "An error occurred while fetching schemes",
+      error: error.message, // Provide error message for debugging
+    });
   }
 };
 

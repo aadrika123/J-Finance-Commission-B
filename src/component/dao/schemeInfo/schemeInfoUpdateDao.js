@@ -24,7 +24,6 @@ const prisma = new PrismaClient();
  *
  * @throws {Error} - Throws an error if the update operation fails.
  */
-
 const updateSchemeInfo = async (scheme_id, data) => {
   try {
     // Fetch the existing scheme record to validate against
@@ -91,22 +90,27 @@ const updateSchemeInfo = async (scheme_id, data) => {
     // Validate financial_progress
     if (data.financial_progress !== undefined) {
       if (
-        typeof data.financial_progress !== "number" ||
-        data.financial_progress < 0
+        typeof data.financial_progress !== "number" &&
+        typeof data.financial_progress !== "string" // Ensure it's either a number or string (to be converted)
       ) {
         return {
           status: false,
-          message:
-            "Financial progress must be a non-negative number and you cannot change it.",
+          message: "Financial progress must be a non-negative number.",
         };
       }
-      updateData.financial_progress = data.financial_progress;
+      updateData.financial_progress = parseFloat(data.financial_progress); // Convert to number
 
-      // Calculate financial_progress_in_percentage
+      // Calculate financial_progress_in_percentage as a decimal
       if (existingScheme.approved_project_cost > 0) {
-        updateData.financial_progress_in_percentage =
-          (data.financial_progress / existingScheme.approved_project_cost) *
-          100;
+        const financialProgressInPercentage = (
+          (parseFloat(data.financial_progress) /
+            parseFloat(existingScheme.approved_project_cost)) *
+          100
+        ).toFixed(2); // Round to two decimal places
+
+        updateData.financial_progress_in_percentage = parseFloat(
+          financialProgressInPercentage
+        ); // Convert to number again to avoid string issues
       } else {
         return {
           status: false,
