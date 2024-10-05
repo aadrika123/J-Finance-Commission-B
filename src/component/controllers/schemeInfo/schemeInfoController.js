@@ -323,23 +323,65 @@ const getSchemeInfoById = async (req, res) => {
 const getSchemesInfoByULBName = async (req, res) => {
   try {
     const { ulb_name } = req.query; // Use query parameter for ULB name
+    const page = parseInt(req.query.page, 10) || 1; // Current page number, default to 1
+    const take = parseInt(req.query.take, 10) || 10; // Records per page, default to 10
+    const skip = (page - 1) * take; // Calculate records to skip for pagination
+
+    // ULB name is required, return error if missing
     if (!ulb_name) {
       return res
         .status(200)
         .json({ status: false, message: "ULB name is required", data: [] });
     }
 
-    const schemes = await getSchemesByULBName(ulb_name);
+    // Fetch the schemes with pagination
+    const schemes = await prisma.scheme_info.findMany({
+      where: {
+        ulb: {
+          equals: ulb_name,
+          mode: "insensitive", // Optional: case-insensitive match for ULB name
+        },
+      },
+      skip, // Pagination: Skip the records
+      take, // Pagination: Take the required number of records
+      orderBy: {
+        created_at: "desc", // Order by created_at descending
+      },
+    });
+
+    // Fetch the total count for pagination
+    const totalSchemes = await prisma.scheme_info.count({
+      where: {
+        ulb: {
+          equals: ulb_name,
+          mode: "insensitive", // Optional: case-insensitive match for ULB name
+        },
+      },
+    });
+
+    // Calculate total pages
+    const totalPage = Math.ceil(totalSchemes / take);
+    const nextPage = page < totalPage ? page + 1 : null;
+
+    // No schemes found
     if (schemes.length === 0) {
       return res
         .status(200)
         .json({ data: [], message: "No schemes found for this ULB name" });
     }
 
+    // Return schemes with pagination info and total scheme count
     res.status(200).json({
       status: true,
       message: "Scheme information fetched successfully",
       data: schemes,
+      pagination: {
+        currentPage: page,
+        totalPage,
+        totalResults: totalSchemes, // Total number of schemes
+        next: nextPage ? { page: nextPage, take } : null, // Info for next page
+      },
+      totalSchemesCount: totalSchemes, // Total number of schemes (not just current page)
     });
   } catch (error) {
     console.error(error); // Log the actual error for debugging
