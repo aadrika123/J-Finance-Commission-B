@@ -77,7 +77,7 @@ const getULBsAndSchemes = async () => {
         FSR.approved_schemes AS total_schemes_fsr,
         FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
         COUNT("Scheme_info".scheme_name) AS total_schemes_schemeinfo,  -- Count total schemes from Scheme_info
-        ROUND(AVG("Scheme_info".financial_progress_in_percentage), 3) AS financial_progress_in_percentage_schemeinfo,  -- Average financial progress from Scheme_info
+        ROUND(AVG("Scheme_info".financial_progress_in_percentage)::numeric, 3) AS financial_progress_in_percentage_schemeinfo,  -- Average financial progress from Scheme_info, cast to numeric
         SUM("Scheme_info".financial_progress) AS total_financial_progress_schemeinfo -- Sum of financial progress from Scheme_info
       FROM 
         "ULB"
@@ -96,6 +96,7 @@ const getULBsAndSchemes = async () => {
       ORDER BY 
         total_schemes_schemeinfo DESC;
     `;
+
     // Log the ULBs and their financial progress
     result.forEach((ulb) => {
       logger.info({
