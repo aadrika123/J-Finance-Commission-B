@@ -43,8 +43,8 @@ model Scheme_info {
   project_completion_status               String?
   tender_floated                          String?
   financial_progress                      Decimal?
-  financial_progress_in_percentage        Int?
-  project_completion_status_in_percentage Int?
+  financial_progress_in_percentage        Float?
+  project_completion_status_in_percentage Float?
   approved_project_cost                   Decimal?
   ulb_id                                  Int?
   ULB                                     ULB?      @relation(fields: [ulb_id], references: [id])
