@@ -83,10 +83,12 @@ const updateSchemeInfo = async (scheme_id, data) => {
       }
     }
 
+    // Validate tender_floated
     if (data.tender_floated !== undefined) {
       updateData.tender_floated = data.tender_floated;
     }
 
+    // Validate financial_progress
     if (data.financial_progress !== undefined) {
       if (
         typeof data.financial_progress !== "number" ||
@@ -95,7 +97,7 @@ const updateSchemeInfo = async (scheme_id, data) => {
         return {
           status: false,
           message:
-            "Financial progress must be a non-negative number and you can not change it .",
+            "Financial progress must be a non-negative number and you cannot change it.",
         };
       }
       updateData.financial_progress = data.financial_progress;
@@ -113,15 +115,16 @@ const updateSchemeInfo = async (scheme_id, data) => {
       }
     }
 
+    // Validate financial_progress_in_percentage
     if (data.financial_progress_in_percentage !== undefined) {
       if (
         typeof data.financial_progress_in_percentage !== "number" ||
-        data.financial_progress_in_percentage <= 0
+        data.financial_progress_in_percentage < 0
       ) {
         return {
           status: false,
           message:
-            "Financial progress percentage must be greater then equal to 0.",
+            "Financial progress percentage must be greater than or equal to 0.",
         };
       }
       updateData.financial_progress_in_percentage =
@@ -153,9 +156,10 @@ const updateSchemeInfo = async (scheme_id, data) => {
       action: "updateSchemeInfo",
     });
 
+    // Return the success response with updated scheme info
     return {
       status: true,
-      message: "Scheme updated successfully",
+      message: "Scheme info updated successfully",
       data: updatedScheme,
     };
   } catch (error) {

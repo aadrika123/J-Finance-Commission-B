@@ -346,13 +346,18 @@ const updateFinancialSummaryReport = async (req, res) => {
     }
 
     // Validate input values
-    validateFinancialSummaryInputs(
+    const validationResponse = validateFinancialSummaryInputs(
       financial_year,
       fr_first_instalment,
       fr_second_instalment,
       fr_interest_amount,
       fr_grant_type
     );
+
+    // Check if validation failed
+    if (!validationResponse.status) {
+      return res.status(200).json(validationResponse); // Return validation error response
+    }
 
     // Convert values to numbers (or set to null if not provided)
     const updatedFirstInstalment = Number(fr_first_instalment || 0);
