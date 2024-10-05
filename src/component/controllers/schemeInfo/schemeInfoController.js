@@ -79,9 +79,7 @@ const addSchemeInfo = async (req, res) => {
     });
 
     // Send success response with status and message
-    res.status(201).json({
-      data: newSchemeInfo,
-    });
+    res.status(201).json(newSchemeInfo);
   } catch (error) {
     // Handle error response with status and message
     logger.error("Error adding scheme information:", error);
