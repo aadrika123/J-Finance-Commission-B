@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 const {
   createSchemeInfo,
   getSchemeInfo,
-  getSchemesByULBId,
+  getSchemesByULBName,
 } = require("../../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 const logger = require("../../../utils/log/logger");
@@ -320,17 +320,29 @@ const getSchemeInfoById = async (req, res) => {
   }
 };
 
-const getSchemesInfoByULBId = async (req, res) => {
+const getSchemesInfoByULBName = async (req, res) => {
   try {
-    const { ulb_id } = req.params;
-    const schemes = await getSchemesByULBId(ulb_id);
+    const { ulb_name } = req.query; // Use query parameter for ULB name
+    if (!ulb_name) {
+      return res
+        .status(200)
+        .json({ status: false, message: "ULB name is required", data: [] });
+    }
+
+    const schemes = await getSchemesByULBName(ulb_name);
     if (schemes.length === 0) {
       return res
         .status(200)
-        .json({ data: [], message: "No schemes found for this ULB ID" });
+        .json({ data: [], message: "No schemes found for this ULB name" });
     }
-    res.status(200).json(schemes);
+
+    res.status(200).json({
+      status: true,
+      message: "Scheme information fetched successfully",
+      data: schemes,
+    });
   } catch (error) {
+    console.error(error); // Log the actual error for debugging
     res.status(500).json({ error: "An error occurred while fetching schemes" });
   }
 };
@@ -339,5 +351,5 @@ module.exports = {
   addSchemeInfo,
   fetchSchemeInfo,
   getSchemeInfoById,
-  getSchemesInfoByULBId,
+  getSchemesInfoByULBName,
 };

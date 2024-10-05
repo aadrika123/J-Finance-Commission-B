@@ -3,7 +3,7 @@ const {
   addSchemeInfo,
   fetchSchemeInfo,
   getSchemeInfoById,
-  getSchemesInfoByULBId,
+  getSchemesInfoByULBName,
 } = require("../../controllers/schemeInfo/schemeInfoController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -25,9 +25,9 @@ router.get(
   getSchemeInfoById
 );
 router.get(
-  "/scheme-info/show/:ulb_id",
+  "/scheme-info/show",
   roleMiddleware(["SUDA FC"]),
-  getSchemesInfoByULBId
+  getSchemesInfoByULBName
 );
 
 module.exports = router;
