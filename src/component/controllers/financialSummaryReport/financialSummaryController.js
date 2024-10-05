@@ -277,34 +277,39 @@ const updateFinancialSummaryReport = async (req, res) => {
         financial_year < 2000 ||
         financial_year > new Date().getFullYear()
       ) {
-        throw new Error(
-          "Invalid financial year. It must be a four-digit number within a reasonable range."
-        );
+        return {
+          status: false,
+          message:
+            "Invalid financial year. It must be a four-digit number within a reasonable range.",
+        };
       }
     }
 
     // Validate grant type
     const validGrantTypes = ["tied", "untied", "ambient"]; // Add more valid types as needed
     if (grant_type && !validGrantTypes.includes(grant_type)) {
-      throw new Error(
-        `Invalid grant type. Allowed values are: ${validGrantTypes.join(", ")}`
-      );
+      return {
+        status: false,
+        message: `Invalid grant type. Allowed values are: ${validGrantTypes.join(
+          ", "
+        )}`,
+      };
     }
 
     // Validate instalments and interest amount
-    [first_instalment, second_instalment, interest_amount].forEach(
-      (amount, index) => {
-        // Check if amount is defined and is not a number or less than zero
-        if (
-          amount !== undefined &&
-          (typeof amount !== "number" || amount < 0)
-        ) {
-          throw new Error(
-            `Invalid amount at index ${index}. Amounts must be non-negative numbers.`
-          );
-        }
+    const amounts = [first_instalment, second_instalment, interest_amount];
+    for (let i = 0; i < amounts.length; i++) {
+      const amount = amounts[i];
+      if (amount !== undefined && (typeof amount !== "number" || amount < 0)) {
+        return {
+          status: false,
+          message: `Invalid amount at index ${i}. Amounts must be non-negative numbers.`,
+        };
       }
-    );
+    }
+
+    // If everything is valid, return true
+    return { status: true };
   };
 
   try {

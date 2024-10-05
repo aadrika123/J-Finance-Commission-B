@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const {
   createSchemeInfo,
   getSchemeInfo,
+  getSchemesByULBId,
 } = require("../../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 const logger = require("../../../utils/log/logger");
@@ -321,8 +322,24 @@ const getSchemeInfoById = async (req, res) => {
   }
 };
 
+const getSchemesInfoByULBId = async (req, res) => {
+  try {
+    const { ulb_id } = req.params;
+    const schemes = await getSchemesByULBId(ulb_id);
+    if (schemes.length === 0) {
+      return res
+        .status(200)
+        .json({ data: [], message: "No schemes found for this ULB ID" });
+    }
+    res.status(200).json(schemes);
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while fetching schemes" });
+  }
+};
+
 module.exports = {
   addSchemeInfo,
   fetchSchemeInfo,
   getSchemeInfoById,
+  getSchemesInfoByULBId,
 };
