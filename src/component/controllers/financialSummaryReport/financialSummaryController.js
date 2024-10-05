@@ -356,7 +356,7 @@ const updateFinancialSummaryReport = async (req, res) => {
 
     // Check if validation failed
     if (!validationResponse.status) {
-      return res.status(200).json(validationResponse); // Return validation error response
+      return res.status(200).json({ data: validationResponse }); // Return validation error response
     }
 
     // Convert values to numbers (or set to null if not provided)
