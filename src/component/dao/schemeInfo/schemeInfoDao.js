@@ -5,6 +5,7 @@ const moment = require("moment-timezone");
 
 const VALID_GRANT_TYPES = ["tied", "untied", "ambient"];
 const VALID_CITY_TYPES = ["million plus", "non million"];
+const VALID_SECTORS = ["water", "sanitation", "swm", "rejuvenation"];
 
 /**
  * Generates a new scheme ID based on the latest scheme ID in the database.
@@ -76,49 +77,58 @@ const createSchemeInfo = async (data) => {
   try {
     // Validate the incoming data
     if (!data.scheme_name || typeof data.scheme_name !== "string") {
-      throw new Error("Invalid scheme name. It must be a non-empty string.");
+      return {
+        status: false,
+        message: "Invalid scheme name. It must be a non-empty string.",
+      };
     }
 
-    // Validate project_cost and approved_project_cost
     if (
       !data.project_cost ||
       typeof data.project_cost !== "number" ||
       data.project_cost <= 0
     ) {
-      throw new Error("Invalid project cost. It must be a positive number.");
+      return {
+        status: false,
+        message: "Invalid project cost. It must be a positive number.",
+      };
     }
 
-    // if (
-    //   !data.approved_project_cost ||
-    //   typeof data.approved_project_cost !== "number" ||
-    //   data.approved_project_cost <= 0
-    // ) {
-    //   throw new Error(
-    //     "Invalid approved project cost. It must be a positive number."
-    //   );
-    // }
-
-    if (data.sector && typeof data.sector !== "string") {
-      throw new Error("Invalid sector. It must be a string.");
+    if (!VALID_SECTORS.includes(data.sector)) {
+      return {
+        status: false,
+        message: `Invalid sector. Valid sectors are: ${VALID_SECTORS.join(
+          ", "
+        )}`,
+      };
     }
 
     if (!VALID_GRANT_TYPES.includes(data.grant_type)) {
-      throw new Error(
-        `Invalid grant type. Valid types are: ${VALID_GRANT_TYPES.join(", ")}`
-      );
+      return {
+        status: false,
+        message: `Invalid grant type. Valid types are: ${VALID_GRANT_TYPES.join(
+          ", "
+        )}`,
+      };
     }
 
     if (!VALID_CITY_TYPES.includes(data.city_type)) {
-      throw new Error(
-        `Invalid city type. Valid types are: ${VALID_CITY_TYPES.join(", ")}`
-      );
+      return {
+        status: false,
+        message: `Invalid city type. Valid types are: ${VALID_CITY_TYPES.join(
+          ", "
+        )}`,
+      };
     }
 
     if (
       !data.date_of_approval ||
       !moment(data.date_of_approval, moment.ISO_8601).isValid()
     ) {
-      throw new Error("Invalid date of approval. It must be a valid date.");
+      return {
+        status: false,
+        message: "Invalid date of approval. It must be a valid date.",
+      };
     }
 
     // Log the request to create a new scheme
@@ -137,7 +147,10 @@ const createSchemeInfo = async (data) => {
     });
 
     if (!ulbRecord) {
-      throw new Error(`ULB not found for name: ${data.ulb}`);
+      return {
+        status: false,
+        message: `ULB not found for name: ${data.ulb}`,
+      };
     }
 
     const ulb_id = ulbRecord.id;
@@ -187,10 +200,17 @@ const createSchemeInfo = async (data) => {
       action: "createSchemeInfo",
     });
 
-    return createdScheme;
+    return {
+      status: true,
+      message: "Scheme created successfully",
+      data: createdScheme,
+    };
   } catch (error) {
     console.error("Error creating scheme information:", error);
-    throw new Error("Error creating scheme information: " + error.message);
+    return {
+      status: false,
+      message: "Error creating scheme information: " + error.message,
+    };
   }
 };
 
@@ -216,7 +236,18 @@ const getSchemeInfo = async () => {
   }
 };
 
+//scheme info acc. to ulb_id
+
+const getSchemesByULBId = async (ulb_id) => {
+  return await prisma.scheme_info.findMany({
+    where: {
+      ulb_id: parseInt(ulb_id),
+    },
+  });
+};
+
 module.exports = {
   createSchemeInfo,
   getSchemeInfo,
+  getSchemesByULBId,
 };

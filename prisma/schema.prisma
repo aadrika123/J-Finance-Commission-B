@@ -39,6 +39,7 @@ model Scheme_info {
   date_of_approval                        DateTime?
   ulb                                     String?
   created_at                              DateTime  @default(now())
+  updated_at                              DateTime?
   project_completion_status               String?
   tender_floated                          String?
   financial_progress                      Decimal?
