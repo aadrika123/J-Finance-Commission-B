@@ -300,10 +300,14 @@ const updateFinancialSummaryReport = async (req, res) => {
     const amounts = [first_instalment, second_instalment, interest_amount];
     for (let i = 0; i < amounts.length; i++) {
       const amount = amounts[i];
-      if (amount !== undefined && (typeof amount !== "number" || amount < 0)) {
+      if (
+        amount !== null &&
+        amount !== undefined &&
+        (typeof amount !== "number" || amount < 0)
+      ) {
         return {
           status: false,
-          message: `Invalid amount at index ${i}. Amounts must be non-negative numbers.`,
+          message: `Invalid amount at index ${i}. Amounts must be non-negative numbers or null.`,
         };
       }
     }
