@@ -99,6 +99,7 @@ const getULBsAndSchemes = async () => {
     `;
 
     // Log the ULBs and their financial progress
+    // Log the ULBs and their financial progress
     result.forEach((ulb) => {
       logger.info({
         message: `ULB: ${ulb.ulb_name}`,
