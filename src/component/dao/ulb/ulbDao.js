@@ -95,6 +95,7 @@ const getULBsAndSchemes = async () => {
         "ULB".id, "ULB".ulb_name, FSR.approved_schemes, FSR.financial_progress_in_percentage -- Group by ULB and FinancialSummaryReport fields
       ORDER BY 
         total_financial_progress_schemeinfo DESC;
+        -- total_financial_progress_schemeinfo DESC;
     `;
 
     // Log the ULBs and their financial progress
