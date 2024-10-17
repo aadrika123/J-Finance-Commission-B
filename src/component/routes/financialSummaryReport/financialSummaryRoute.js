@@ -4,6 +4,7 @@ const {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
   getUpdatedFinancialSummaryReport,
+  getFundReleaseReport,
 } = require("../../controllers/financialSummaryReport/financialSummaryController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -29,6 +30,11 @@ router.get(
   "/financial-summary/updated",
   roleMiddleware(["EO FC"]),
   getUpdatedFinancialSummaryReport
+);
+router.get(
+  "/financial-summary/fund-release",
+  roleMiddleware(["SUDA FC"]),
+  getFundReleaseReport
 );
 
 module.exports = router;

@@ -233,7 +233,7 @@ const getFinancialSummaryReport = async (req, res) => {
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
       error: error.message,
     });
-    return res.status(500).json({
+    return res.status(200).json({
       status: "error",
       message: "Failed to fetch financial summary report.",
       error: error.message,
@@ -304,7 +304,7 @@ const updateFinancialSummaryReport = async (req, res) => {
         ip: clientIp,
       });
 
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "ULB ID is required",
       });
@@ -322,7 +322,7 @@ const updateFinancialSummaryReport = async (req, res) => {
     });
 
     if (!existingReport) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: false,
         message: "Financial summary report not found",
         data: [],
@@ -344,7 +344,7 @@ const updateFinancialSummaryReport = async (req, res) => {
       !validationResponse ||
       typeof validationResponse.status === "undefined"
     ) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "Validation response is invalid.",
       });
@@ -386,7 +386,7 @@ const updateFinancialSummaryReport = async (req, res) => {
     if (date_of_release) {
       const releaseDate = new Date(date_of_release);
       if (isNaN(releaseDate.getTime())) {
-        return res.status(400).json({
+        return res.status(200).json({
           status: false,
           message:
             "Invalid date_of_release format. Expected format is YYYY-MM-DD.",
@@ -465,13 +465,13 @@ const updateFinancialSummaryReport = async (req, res) => {
     );
 
     if (error.message.includes("not found")) {
-      res.status(404).json({
+      res.status(200).json({
         status: false,
         message: "Financial summary report not found",
         error: error.message,
       });
     } else {
-      res.status(400).json({
+      res.status(200).json({
         status: false,
         message: "Failed to update financial summary report",
         error: error.message,
@@ -507,7 +507,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
   try {
     // Ensure at least one filter is present
     if (!ulb_id && !ulb_name) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "Either ulb_id or ulb_name is required",
         data: [],
@@ -590,9 +590,80 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
         error: error.message,
       }
     );
-    res.status(500).json({
+    res.status(200).json({
       status: false,
       message: "Failed to fetch updated financial summary reports",
+      error: error.message,
+    });
+  }
+};
+
+const getFundReleaseReport = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip;
+  const userId = req.body?.auth?.id || null;
+
+  try {
+    logger.info("Fetching fund release report...", {
+      userId,
+      action: "FETCH_FUND_RELEASE_REPORT",
+      ip: clientIp,
+      query: req.query,
+    });
+
+    const { financial_year, city_type, grant_type } = req.query;
+
+    // Fetch data from Prisma
+    const report = await prisma.financialSummaryReport.findMany({
+      where: {
+        financial_year: financial_year
+          ? parseInt(financial_year, 10)
+          : undefined,
+        city_type: city_type || undefined,
+        fr_grant_type: grant_type || undefined,
+      },
+      select: {
+        ulb_id: true,
+        ulb_name: true,
+        financial_year: true,
+        fr_first_instalment: true,
+        fr_second_instalment: true,
+        fr_third_instalment: true,
+        fr_interest_amount: true,
+        fr_grant_type: true,
+        not_allocated_fund: true,
+        date_of_release: true,
+        city_type: true,
+      },
+    });
+
+    if (!report.length) {
+      return res.status(404).json({
+        status: "error",
+        message: "No fund release report found for the given criteria.",
+      });
+    }
+
+    logger.info("Fund release report fetched successfully.", {
+      userId,
+      action: "FETCH_FUND_RELEASE_REPORT",
+      ip: clientIp,
+      reportSummary: report.length,
+    });
+
+    return res.status(200).json({
+      status: "success",
+      message: "Fund release report fetched successfully.",
+      data: report,
+    });
+  } catch (error) {
+    logger.error("Error fetching fund release report.", {
+      userId,
+      action: "FETCH_FUND_RELEASE_REPORT",
+      error: error.message,
+    });
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to fetch fund release report.",
       error: error.message,
     });
   }
@@ -602,4 +673,5 @@ module.exports = {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
   getUpdatedFinancialSummaryReport,
+  getFundReleaseReport,
 };
