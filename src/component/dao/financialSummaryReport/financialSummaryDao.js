@@ -89,11 +89,14 @@ const fetchFinancialSummaryReport = async (
       f.financial_year,
       f.fr_first_instalment,
       f.fr_second_instalment,
+      f.fr_third_instalment,
       f.fr_interest_amount,
       f.fr_grant_type,
+      f.date_of_release,
       (
         COALESCE(f.fr_first_instalment, 0) +
         COALESCE(f.fr_second_instalment, 0) +
+        COALESCE(f.fr_third_instalment, 0) +
         COALESCE(f.fr_interest_amount, 0)
       ) AS not_allocated_fund
     FROM "Scheme_info" s
@@ -117,11 +120,12 @@ const fetchFinancialSummaryReport = async (
   }
 
   query += `
-      GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.fr_first_instalment, f.fr_second_instalment, f.fr_interest_amount, f.fr_grant_type 
+      GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.fr_first_instalment, f.fr_second_instalment, f.fr_third_instalment, f.fr_interest_amount, f.fr_grant_type, f.date_of_release
       ORDER BY ulb.id ASC
   `;
 
   const result = await prisma.$queryRawUnsafe(query);
+
   // Log calculated results
   result.forEach((ulbData) => {
     logger.info(`Detailed Financial Summary for ULB: ${ulbData.ulb_name} (ID: ${ulbData.ulb_id})
@@ -137,12 +141,14 @@ const fetchFinancialSummaryReport = async (
     - **Number of Tenders Not Floated:** ${ulbData.tender_not_floated} schemes have yet to float tenders.
     - **Work in Progress:** ${ulbData.work_in_progress} projects are still under progress.
     - **Projects Not Started:** ${ulbData.project_not_started} projects have not commenced yet.
-    - **Unallocated Funds:** ₹${ulbData.not_allocated_fund}, including first instalment, second instalment, and interest amounts.
+    - **Unallocated Funds:** ₹${ulbData.not_allocated_fund}, including first, second, and third instalments, and interest amounts.
     - **Financial Year:** ${ulbData.financial_year}.
     - **Grant Type:** ${ulbData.fr_grant_type}.
     - **First Instalment Released:** ₹${ulbData.fr_first_instalment}.
     - **Second Instalment Released:** ₹${ulbData.fr_second_instalment}.
+    - **Third Instalment Released:** ₹${ulbData.fr_third_instalment}.
     - **Interest Earned on Grants:** ₹${ulbData.fr_interest_amount} earned as interest on the released funds.
+    - **Date of Release:** ${ulbData.date_of_release}.
     `);
 
     // Immediately follow the detailed log with a debug log for the same ULB
@@ -163,8 +169,10 @@ const fetchFinancialSummaryReport = async (
       financial_year: ulbData.financial_year,
       first_instalment: ulbData.fr_first_instalment,
       second_instalment: ulbData.fr_second_instalment,
+      third_instalment: ulbData.fr_third_instalment,
       interest_amount: ulbData.fr_interest_amount,
       grant_type: ulbData.fr_grant_type,
+      date_of_release: ulbData.date_of_release,
     });
   });
 

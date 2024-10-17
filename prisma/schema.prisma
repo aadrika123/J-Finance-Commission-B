@@ -69,9 +69,13 @@ model FinancialSummaryReport {
 
   fr_first_instalment  Decimal? // The first instalment of funds released to the ULB
   fr_second_instalment Decimal? // The second instalment of funds released to the ULB
+  fr_third_instalment  Decimal? // The third instalment of funds released to the ULB
   fr_interest_amount   Decimal? // Interest amount released to the ULB (if any)
   fr_grant_type        String? // Type of grant allocated to the ULB
   not_allocated_fund   Decimal? // Funds not yet allocated or distributed to the ULB
+
+  date_of_release DateTime? // The date when the funds were released
+  city_type       String? // The type of city (e.g., million plus, non_million)
 
   created_at          DateTime  @default(now()) // Timestamp for when this record was created
   updated_at          DateTime? // Timestamp for the last time this record was updated
