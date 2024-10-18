@@ -283,18 +283,18 @@ const updateFinancialSummaryReport = async (req, res) => {
   const financialYearInt = parseInt(financial_year, 10);
 
   // Validation function
-  // const validateFinancialSummaryInputs = (
-  //   financial_year,
-  //   first_instalment,
-  //   second_instalment,
-  //   third_instalment,
-  //   interest_amount,
-  //   grant_type
-  // ) => {
-  //   // Validation logic remains unchanged
-  //   // ...
-  //   return { status: true }; // Ensure this is always returned
-  // };
+  const validateFinancialSummaryInputs = (
+    financial_year,
+    first_instalment,
+    second_instalment,
+    third_instalment,
+    interest_amount,
+    grant_type
+  ) => {
+    // Validation logic remains unchanged
+    // ...
+    return { status: true }; // Ensure this is always returned
+  };
 
   try {
     if (!ulb_id) {
