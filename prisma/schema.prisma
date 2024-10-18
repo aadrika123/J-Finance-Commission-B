@@ -27,6 +27,7 @@ model ULB {
   schemes           Scheme_info[]
   // relationship to FinancialSummaryReport
   financial_reports FinancialSummaryReport[]
+  letter            LetterUpload[]
 }
 
 model Scheme_info {
@@ -72,7 +73,7 @@ model FinancialSummaryReport {
   fr_third_instalment  Decimal? // The third instalment of funds released to the ULB
   fr_interest_amount   Decimal? // Interest amount released to the ULB (if any)
   fr_grant_type        String? // Type of grant allocated to the ULB
-  not_allocated_fund   Decimal? // Funds not yet allocated or distributed to the ULB
+  total_fund_released  Decimal? // Funds not yet allocated or distributed to the ULB
 
   date_of_release DateTime? // The date when the funds were released
   city_type       String? // The type of city (e.g., million plus, non_million)
@@ -83,4 +84,18 @@ model FinancialSummaryReport {
 
   // Foreign key relation to the ULB model
   ULB ULB @relation(fields: [ulb_id], references: [id]) // Relation to the ULB model based on ulb_id
+}
+
+model LetterUpload {
+  id           Int       @id @default(autoincrement())
+  ulb_id       Int // Foreign key referencing the ULB model
+  order_number String // Order number for the letter
+  letter_url   String // URL or path for the uploaded letter
+  created_at   DateTime  @default(now()) // Timestamp for when the letter was uploaded
+  updated_at   DateTime? @updatedAt // Timestamp for the last time this record was updated
+  is_active    Boolean   @default(true) // Flag for soft deletion
+  inbox        Boolean   @default(true) // True when the letter is uploaded (inbox)
+  outbox       Boolean   @default(false) // True when the letter is sent to ULB (outbox)
+
+  ULB ULB @relation(fields: [ulb_id], references: [id])
 }

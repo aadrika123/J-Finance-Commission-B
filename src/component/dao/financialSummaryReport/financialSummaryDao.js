@@ -98,7 +98,7 @@ const fetchFinancialSummaryReport = async (
         COALESCE(f.fr_second_instalment, 0) +
         COALESCE(f.fr_third_instalment, 0) +
         COALESCE(f.fr_interest_amount, 0)
-      ) AS not_allocated_fund
+      ) AS total_fund_released
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -141,7 +141,7 @@ const fetchFinancialSummaryReport = async (
     - **Number of Tenders Not Floated:** ${ulbData.tender_not_floated} schemes have yet to float tenders.
     - **Work in Progress:** ${ulbData.work_in_progress} projects are still under progress.
     - **Projects Not Started:** ${ulbData.project_not_started} projects have not commenced yet.
-    - **Unallocated Funds:** ₹${ulbData.not_allocated_fund}, including first, second, and third instalments, and interest amounts.
+    - **Total Funds released:** ₹${ulbData.total_fund_released}, including first, second, and third instalments, and interest amounts.
     - **Financial Year:** ${ulbData.financial_year}.
     - **Grant Type:** ${ulbData.fr_grant_type}.
     - **First Instalment Released:** ₹${ulbData.fr_first_instalment}.
@@ -165,7 +165,7 @@ const fetchFinancialSummaryReport = async (
       tender_not_floated: ulbData.tender_not_floated,
       work_in_progress: ulbData.work_in_progress,
       project_not_started: ulbData.project_not_started,
-      not_allocated_fund: ulbData.not_allocated_fund,
+      total_fund_released: ulbData.total_fund_released,
       financial_year: ulbData.financial_year,
       first_instalment: ulbData.fr_first_instalment,
       second_instalment: ulbData.fr_second_instalment,

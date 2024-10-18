@@ -282,19 +282,19 @@ const updateFinancialSummaryReport = async (req, res) => {
   // Convert `financial_year` to an integer to match the schema
   const financialYearInt = parseInt(financial_year, 10);
 
-  // Validation function remains unchanged
-  const validateFinancialSummaryInputs = (
-    financial_year,
-    first_instalment,
-    second_instalment,
-    third_instalment,
-    interest_amount,
-    grant_type
-  ) => {
-    // Validation logic remains unchanged
-    // ...
-    return { status: true }; // Ensure this is always returned
-  };
+  // Validation function
+  // const validateFinancialSummaryInputs = (
+  //   financial_year,
+  //   first_instalment,
+  //   second_instalment,
+  //   third_instalment,
+  //   interest_amount,
+  //   grant_type
+  // ) => {
+  //   // Validation logic remains unchanged
+  //   // ...
+  //   return { status: true }; // Ensure this is always returned
+  // };
 
   try {
     if (!ulb_id) {
@@ -399,7 +399,7 @@ const updateFinancialSummaryReport = async (req, res) => {
     if (city_type !== undefined) {
       dataToUpdate.city_type = city_type; // Update city_type
     }
-    // Calculate not_allocated_fund ensuring values are treated as numbers
+    // Calculate total_fund_released ensuring values are treated as numbers
     const updatedFirstInstalment = Number(
       dataToUpdate.fr_first_instalment ||
         existingReport.fr_first_instalment ||
@@ -419,13 +419,13 @@ const updateFinancialSummaryReport = async (req, res) => {
       dataToUpdate.fr_interest_amount || existingReport.fr_interest_amount || 0
     );
 
-    const not_allocated_fund =
+    const total_fund_released =
       updatedFirstInstalment +
       updatedSecondInstalment +
       updatedThirdInstalment +
       updatedInterestAmount;
 
-    dataToUpdate.not_allocated_fund = not_allocated_fund; // Ensure the not_allocated_fund is stored as a number
+    dataToUpdate.total_fund_released = total_fund_released; // Ensure the total_fund_released is stored as a number
     dataToUpdate.updated_at = new Date(); // Update the updated_at field
 
     const updatedReport = await prisma.financialSummaryReport.update({
@@ -557,12 +557,12 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
       report,
     });
 
-    // Calculate not_allocated_fund
+    // Calculate total_fund_released
     const firstInstalment = parseFloat(report.fr_first_instalment) || 0;
     const secondInstalment = parseFloat(report.fr_second_instalment) || 0;
     const interestAmount = parseFloat(report.fr_interest_amount) || 0;
 
-    const notAllocatedFund = (
+    const totalFundReleased = (
       firstInstalment +
       secondInstalment +
       interestAmount
@@ -571,7 +571,7 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
     // Prepare response
     const formattedReport = {
       ...report,
-      not_allocated_fund: notAllocatedFund,
+      total_fund_released: totalFundReleased,
     };
 
     res.status(200).json({
@@ -630,18 +630,37 @@ const getFundReleaseReport = async (req, res) => {
         fr_third_instalment: true,
         fr_interest_amount: true,
         fr_grant_type: true,
-        not_allocated_fund: true,
+        total_fund_released: true,
         date_of_release: true,
         city_type: true,
       },
     });
 
     if (!report.length) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: "error",
         message: "No fund release report found for the given criteria.",
       });
     }
+
+    // Calculate totals for all rows
+    const totals = report.reduce(
+      (acc, row) => {
+        acc.totalFirstInstalment += parseFloat(row.fr_first_instalment || 0);
+        acc.totalSecondInstalment += parseFloat(row.fr_second_instalment || 0);
+        acc.totalThirdInstalment += parseFloat(row.fr_third_instalment || 0);
+        acc.totalInterestAmount += parseFloat(row.fr_interest_amount || 0);
+        acc.totalFundReleased += parseFloat(row.total_fund_released || 0);
+        return acc;
+      },
+      {
+        totalFirstInstalment: 0,
+        totalSecondInstalment: 0,
+        totalThirdInstalment: 0,
+        totalInterestAmount: 0,
+        totalFundReleased: 0,
+      }
+    );
 
     logger.info("Fund release report fetched successfully.", {
       userId,
@@ -654,6 +673,13 @@ const getFundReleaseReport = async (req, res) => {
       status: "success",
       message: "Fund release report fetched successfully.",
       data: report,
+      totals: {
+        totalFirstInstalment: totals.totalFirstInstalment.toFixed(2),
+        totalSecondInstalment: totals.totalSecondInstalment.toFixed(2),
+        totalThirdInstalment: totals.totalThirdInstalment.toFixed(2),
+        totalInterestAmount: totals.totalInterestAmount.toFixed(2),
+        totalFundReleased: totals.totalFundReleased.toFixed(2),
+      },
     });
   } catch (error) {
     logger.error("Error fetching fund release report.", {
@@ -668,7 +694,6 @@ const getFundReleaseReport = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   getFinancialSummaryReport,
   updateFinancialSummaryReport,
