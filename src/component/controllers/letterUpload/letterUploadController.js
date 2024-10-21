@@ -17,14 +17,14 @@ const uploadLetterController = async (req, res) => {
   }
 
   try {
-    const letter_url = `./utils/fileUpload/uploads/${file.filename}`;
+    const letter_url = `../../middlewares/utils/fileUpload/uploads/${file.filename}`;
     const letter = await uploadLetter(ulb_id, order_number, letter_url);
 
     return res.status(201).json({
       status: true,
       message: ulb_id
         ? "Letter uploaded to specific ULB"
-        : "Letter uploaded to all ULBs",
+        : "Global letter uploaded to all ULBs",
       data: letter,
     });
   } catch (error) {
@@ -32,7 +32,6 @@ const uploadLetterController = async (req, res) => {
     return res.status(500).json({ message: "Failed to upload letter." });
   }
 };
-
 const getLettersController = async (req, res) => {
   try {
     const letters = await getLetters();

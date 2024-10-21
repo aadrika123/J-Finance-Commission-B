@@ -19,21 +19,36 @@ const storage = multer.diskStorage({
   },
 });
 
-// File filter to allow specific file types (optional)
+// File filter to allow specific file types and set limits
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/pdf") {
-    cb(null, true);
+  // Set size limit based on the file type
+  const isPdf = file.mimetype === "application/pdf";
+  const isImage = file.mimetype.startsWith("image/");
+
+  if (isPdf) {
+    cb(null, true); // Allow PDF files
+  } else if (isImage) {
+    cb(null, true); // Allow image files
   } else {
-    cb(new Error("Only PDF files are allowed"), false);
+    cb(new Error("Only PDF and image files are allowed"), false);
   }
 };
 
-// Set file size limit to 10MB (optional)
-const limits = {
-  fileSize: 10 * 1024 * 1024, // 10 MB
+// Set file size limit based on file type
+const limits = (req, file, cb) => {
+  const isPdf = file.mimetype === "application/pdf";
+  const isImage = file.mimetype.startsWith("image/");
+
+  if (isPdf) {
+    cb(null, { fileSize: 2 * 1024 * 1024 }); // 2 MB for PDFs
+  } else if (isImage) {
+    cb(null, { fileSize: 200 * 1024 }); // 200 KB for images
+  } else {
+    cb(new Error("Invalid file type"), false);
+  }
 };
 
-// Set up multer with the defined storage, file filter, and size limits
+// Set up multer with the defined storage, file filter, and limits
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,

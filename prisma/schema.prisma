@@ -89,16 +89,17 @@ model FinancialSummaryReport {
 
 model LetterUpload {
   id           Int       @id @default(autoincrement())
-  ulb_id       Int // Foreign key referencing the ULB model
+  ulb_id       Int? // Foreign key referencing the ULB model
   order_number String // Order number for the letter
   letter_url   String // URL or path for the uploaded letter
   created_at   DateTime  @default(now()) // Timestamp for when the letter was uploaded
   updated_at   DateTime? @updatedAt // Timestamp for the last time this record was updated
   is_active    Boolean   @default(true) // Flag for soft deletion
+  is_global    Boolean   @default(false) // Add this field to indicate global letters
   inbox        Boolean   @default(true) // True when the letter is uploaded (inbox)
   outbox       Boolean   @default(false) // True when the letter is sent to ULB (outbox)
 
-  ULB          ULB            @relation(fields: [ulb_id], references: [id])
+  ULB          ULB?           @relation(fields: [ulb_id], references: [id])
   notification Notification[]
 }
 
