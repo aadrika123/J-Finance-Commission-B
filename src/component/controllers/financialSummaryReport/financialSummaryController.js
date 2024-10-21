@@ -59,24 +59,35 @@ const getFinancialSummaryReport = async (req, res) => {
 
     const result = report.map((row) => {
       return {
-        ulb_id: row.ulb_id,
-        ulb_name: row.ulb_name,
-        approved_schemes: parseInt(row.approved_schemes, 10),
-        fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
-        amount: parseFloat(row.amount) || 0,
-        project_completed: parseInt(row.project_completed, 10),
-        expenditure: parseFloat(row.expenditure) || 0,
-        balance_amount: parseFloat(row.balance_amount) || 0,
-        financial_progress_in_percentage:
-          parseFloat(row.financial_progress_in_percentage) || 0,
-        number_of_tender_floated: parseInt(row.number_of_tender_floated, 10),
-        tender_not_floated: parseInt(row.tender_not_floated, 10),
-        work_in_progress: parseInt(row.work_in_progress, 10),
-        project_not_started: parseInt(row.project_not_started, 10) || 0,
+        ...row,
+        fr_first_instalment: row.fr_first_instalment || 0,
+        fr_second_instalment: row.fr_second_instalment || 0,
+        fr_third_instalment: row.fr_third_instalment || 0, // New field
+        fr_interest_amount:
+          row.fr_interest_amount !== undefined ? row.fr_interest_amount : null,
+        fr_grant_type:
+          row.fr_grant_type !== undefined ? row.fr_grant_type : null,
+        project_not_started: row.project_not_started || 0,
+        financial_year:
+          row.financial_year !== undefined ? row.financial_year : null,
+        date_of_release: row.date_of_release || null, // New field
+        ...Object.fromEntries(
+          Object.entries(row).map(([key, value]) => [
+            key,
+            typeof value === "bigint" ? value.toString() : value,
+          ])
+        ),
       };
     });
 
     for (const row of result) {
+      const firstInstalment = parseFloat(row.fr_first_instalment) || 0;
+      const secondInstalment = parseFloat(row.fr_second_instalment) || 0;
+      const thirdInstalment = parseFloat(row.fr_third_instalment) || 0; // New calculation
+      const interestAmount = parseFloat(row.fr_interest_amount) || 0;
+      const totalFundReleased =
+        firstInstalment + secondInstalment + thirdInstalment + interestAmount; // Updated calculation
+
       const existingRecord = await prisma.financialSummaryReport.findUnique({
         where: { ulb_id: row.ulb_id },
       });
@@ -99,7 +110,7 @@ const getFinancialSummaryReport = async (req, res) => {
             balance_amount:
               parseFloat(row.balance_amount) || existingRecord.balance_amount,
             financial_progress_in_percentage:
-              parseFloat(row.financial_progress_in_percentage) ||
+              parseInt(row.financial_progress_in_percentage, 10) ||
               existingRecord.financial_progress_in_percentage,
             number_of_tender_floated:
               parseInt(row.number_of_tender_floated, 10) ||
@@ -110,10 +121,39 @@ const getFinancialSummaryReport = async (req, res) => {
             work_in_progress:
               parseInt(row.work_in_progress, 10) ||
               existingRecord.work_in_progress,
+            financial_year:
+              row.financial_year !== undefined
+                ? row.financial_year
+                : existingRecord.financial_year,
+            fr_first_instalment:
+              row.fr_first_instalment !== undefined
+                ? row.fr_first_instalment
+                : existingRecord.fr_first_instalment,
+            fr_second_instalment:
+              row.fr_second_instalment !== undefined
+                ? row.fr_second_instalment
+                : existingRecord.fr_second_instalment,
+            fr_third_instalment:
+              row.fr_third_instalment !== undefined
+                ? row.fr_third_instalment
+                : existingRecord.fr_third_instalment, // New field
+            fr_interest_amount:
+              row.fr_interest_amount !== undefined
+                ? row.fr_interest_amount
+                : existingRecord.fr_interest_amount,
+            fr_grant_type:
+              row.fr_grant_type !== undefined
+                ? row.fr_grant_type
+                : existingRecord.fr_grant_type,
+            total_fund_released: totalFundReleased, // Updated field
+            date_of_release:
+              row.date_of_release !== undefined
+                ? row.date_of_release
+                : existingRecord.date_of_release, // New field
+            updated_at: new Date(),
             project_not_started:
               parseInt(row.project_not_started, 10) ||
               existingRecord.project_not_started,
-            updated_at: new Date(),
           },
         });
 
@@ -139,14 +179,35 @@ const getFinancialSummaryReport = async (req, res) => {
             expenditure: parseFloat(row.expenditure) || 0,
             balance_amount: parseFloat(row.balance_amount) || 0,
             financial_progress_in_percentage:
-              parseFloat(row.financial_progress_in_percentage) || 0,
+              parseInt(row.financial_progress_in_percentage, 10) || 0,
             number_of_tender_floated: parseInt(
               row.number_of_tender_floated,
               10
             ),
             tender_not_floated: parseInt(row.tender_not_floated, 10),
             work_in_progress: parseInt(row.work_in_progress, 10),
-            project_not_started: parseInt(row.project_not_started, 10) || 0,
+            financial_year:
+              row.financial_year !== undefined ? row.financial_year : null,
+            fr_first_instalment:
+              row.fr_first_instalment !== undefined
+                ? row.fr_first_instalment
+                : null,
+            fr_second_instalment:
+              row.fr_second_instalment !== undefined
+                ? row.fr_second_instalment
+                : null,
+            fr_third_instalment:
+              row.fr_third_instalment !== undefined
+                ? row.fr_third_instalment
+                : null, // New field
+            fr_interest_amount:
+              row.fr_interest_amount !== undefined
+                ? row.fr_interest_amount
+                : null,
+            fr_grant_type:
+              row.fr_grant_type !== undefined ? row.fr_grant_type : null,
+            total_fund_released: totalFundReleased, // Updated field
+            date_of_release: row.date_of_release || null, // New field
           },
         });
 
@@ -160,80 +221,20 @@ const getFinancialSummaryReport = async (req, res) => {
       }
     }
 
-    // Initialize sum variables
-    const totalApprovedSchemes = result.reduce(
-      (sum, row) => sum + parseInt(row.approved_schemes, 10),
-      0
-    );
-    const totalFundReleaseToUlbs = result.reduce(
-      (sum, row) => sum + parseFloat(row.fund_release_to_ulbs) || 0,
-      0
-    );
-    const totalAmount = result.reduce(
-      (sum, row) => sum + parseFloat(row.amount) || 0,
-      0
-    );
-    const totalProjectCompleted = result.reduce(
-      (sum, row) => sum + parseInt(row.project_completed, 10),
-      0
-    );
-    const totalExpenditure = result.reduce(
-      (sum, row) => sum + parseFloat(row.expenditure) || 0,
-      0
-    );
-    const totalBalanceAmount = result.reduce(
-      (sum, row) => sum + parseFloat(row.balance_amount) || 0,
-      0
-    );
-    const totalFinancialProgress = result.reduce(
-      (sum, row) => sum + parseFloat(row.financial_progress_in_percentage) || 0,
-      0
-    );
-    const totalNumberOfTenderFloated = result.reduce(
-      (sum, row) => sum + parseInt(row.number_of_tender_floated, 10),
-      0
-    );
-    const totalTenderNotFloated = result.reduce(
-      (sum, row) => sum + parseInt(row.tender_not_floated, 10),
-      0
-    );
-    const totalWorkInProgress = result.reduce(
-      (sum, row) => sum + parseInt(row.work_in_progress, 10),
-      0
-    );
-    const totalProjectNotStarted = result.reduce(
-      (sum, row) => sum + parseInt(row.project_not_started, 10),
-      0
-    );
-
-    const financialSummary = {
-      totalApprovedSchemes,
-      totalFundReleaseToUlbs,
-      totalAmount,
-      totalProjectCompleted,
-      totalExpenditure,
-      totalBalanceAmount,
-      totalFinancialProgress,
-      totalNumberOfTenderFloated,
-      totalTenderNotFloated,
-      totalWorkInProgress,
-      totalProjectNotStarted,
-    };
-
-    // Final response with required format
     return res.status(200).json({
       status: "success",
       message: "Financial summary report fetched successfully.",
       data: result,
-      summary: financialSummary,
     });
   } catch (error) {
     logger.error("Error fetching financial summary report.", {
       userId,
       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+      ip: clientIp,
       error: error.message,
     });
-    return res.status(200).json({
+
+    return res.status(500).json({
       status: "error",
       message: "Failed to fetch financial summary report.",
       error: error.message,
@@ -560,11 +561,13 @@ const getUpdatedFinancialSummaryReport = async (req, res) => {
     // Calculate total_fund_released
     const firstInstalment = parseFloat(report.fr_first_instalment) || 0;
     const secondInstalment = parseFloat(report.fr_second_instalment) || 0;
+    const thirdInstalment = parseFloat(report.fr_third_instalment) || 0;
     const interestAmount = parseFloat(report.fr_interest_amount) || 0;
 
     const totalFundReleased = (
       firstInstalment +
       secondInstalment +
+      thirdInstalment +
       interestAmount
     ).toFixed(2); // Fixed to 2 decimal places
 
