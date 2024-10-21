@@ -2,14 +2,15 @@ const {
   uploadLetter,
   getLetters,
   softDeleteLetter,
-  //   sendLetter,
+  sendLetter,
+  getLettersForULB,
 } = require("../../dao/letterUpload/letterUploadDao");
 
 const uploadLetterController = async (req, res) => {
   const { ulb_id, order_number } = req.body;
   const file = req.file;
 
-  if (!file || !ulb_id || !order_number) {
+  if (!file || !order_number) {
     return res
       .status(200)
       .json({ status: false, message: "Missing required fields." });
@@ -19,20 +20,12 @@ const uploadLetterController = async (req, res) => {
     const letter_url = `./utils/fileUpload/uploads/${file.filename}`;
     const letter = await uploadLetter(ulb_id, order_number, letter_url);
 
-    // Respond with the created letter without updated_at
-    const responseLetter = {
-      id: letter.id,
-      ulb_id: letter.ulb_id,
-      order_number: letter.order_number,
-      letter_url: letter.letter_url,
-      created_at: letter.created_at,
-      is_active: letter.is_active,
-    };
-
     return res.status(201).json({
       status: true,
-      message: "Letter uploaded successfully",
-      data: responseLetter,
+      message: ulb_id
+        ? "Letter uploaded to specific ULB"
+        : "Letter uploaded to all ULBs",
+      data: letter,
     });
   } catch (error) {
     console.error(error);
@@ -58,7 +51,7 @@ const getLettersController = async (req, res) => {
 
     return res.status(200).json({
       status: true,
-      message: "Letter fetched successfully",
+      message: "Letters fetched successfully",
       data: responseLetters,
     });
   } catch (error) {
@@ -68,7 +61,6 @@ const getLettersController = async (req, res) => {
       .json({ status: false, message: "Failed to fetch letters." });
   }
 };
-
 const deleteLetterController = async (req, res) => {
   const { id } = req.params;
 
@@ -98,47 +90,66 @@ const deleteLetterController = async (req, res) => {
   }
 };
 
-// const sendLetterController = async (req, res) => {
-//   const { letterId, ulb_id } = req.query; // Extracting from query parameters
+const sendLetterController = async (req, res) => {
+  const { letterId, ulb_id } = req.body;
 
-//   if (!letterId) {
-//     return res.status(400).json({
-//       status: false,
-//       message: "letterId is required.",
-//     });
-//   }
+  if (!letterId) {
+    return res.status(400).json({
+      status: false,
+      message: "letterId is required.",
+    });
+  }
 
-//   try {
-//     // Send the letter to specific ULB or all ULBs
-//     const result = await sendLetter(
-//       parseInt(letterId),
-//       ulb_id ? parseInt(ulb_id) : null
-//     );
+  try {
+    const result = await sendLetter(
+      parseInt(letterId),
+      ulb_id ? parseInt(ulb_id) : null
+    );
 
-//     // Send notification to specific ULB if `ulb_id` is present
-//     if (ulb_id) {
-//       sendNotificationToULB(ulb_id, "You received a letter");
-//     } else {
-//       sendNotificationToAllULBs("You received a letter");
-//     }
+    return res.status(200).json({
+      status: true,
+      message: ulb_id
+        ? "Letter sent to specific ULB"
+        : "Letter sent to all ULBs",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error in sendLetterController:", error);
+    return res.status(500).json({
+      status: false,
+      message: `Failed to send letter: ${error.message}`,
+    });
+  }
+};
 
-//     return res.status(200).json({
-//       status: true,
-//       message: "Letter sent successfully",
-//       data: result,
-//     });
-//   } catch (error) {
-//     console.error("Error in sendLetterController:", error); // Log the full error
-//     return res.status(500).json({
-//       status: false,
-//       message: `Failed to send letter: ${error.message}`, // Provide more details in the response
-//     });
-//   }
-// };
+const getLettersForULBController = async (req, res) => {
+  const ulb_id = req.body?.auth?.ulb_id; // Use req.body.auth.ulb_id for multi-ULB login
+
+  if (!ulb_id) {
+    return res.status(403).json({ message: "Unauthorized access." });
+  }
+
+  try {
+    const result = await getLettersForULB(ulb_id);
+
+    return res.status(200).json({
+      status: true,
+      message: "Letters fetched successfully.",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Error in getLettersForULBController:", error);
+    return res.status(500).json({
+      status: false,
+      message: `Failed to fetch letters: ${error.message}`,
+    });
+  }
+};
 
 module.exports = {
   uploadLetterController,
   getLettersController,
   deleteLetterController,
-  //   sendLetterController,
+  sendLetterController,
+  getLettersForULBController,
 };

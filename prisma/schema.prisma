@@ -28,6 +28,7 @@ model ULB {
   // relationship to FinancialSummaryReport
   financial_reports FinancialSummaryReport[]
   letter            LetterUpload[]
+  notification      Notification[]
 }
 
 model Scheme_info {
@@ -97,5 +98,18 @@ model LetterUpload {
   inbox        Boolean   @default(true) // True when the letter is uploaded (inbox)
   outbox       Boolean   @default(false) // True when the letter is sent to ULB (outbox)
 
-  ULB ULB @relation(fields: [ulb_id], references: [id])
+  ULB          ULB            @relation(fields: [ulb_id], references: [id])
+  notification Notification[]
+}
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  description String // Description of the notification
+  ulb_id      Int // Foreign key referencing the ULB model
+  letter_id   Int // Foreign key referencing the LetterUpload model
+  created_at  DateTime @default(now()) // Timestamp for when the notification was created
+
+  // Relations
+  ULB          ULB          @relation(fields: [ulb_id], references: [id])
+  LetterUpload LetterUpload @relation(fields: [letter_id], references: [id])
 }
