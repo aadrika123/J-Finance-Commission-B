@@ -13,20 +13,14 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
         },
       });
     } else {
-      // If no specific ULB, create a letter for each ULB (all ULBs)
-      const allULBs = await prisma.uLB.findMany(); // Assuming you have a ULB table
-      const createdLetters = await Promise.all(
-        allULBs.map((ulb) =>
-          prisma.letterUpload.create({
-            data: {
-              ulb_id: ulb.id,
-              order_number,
-              letter_url,
-            },
-          })
-        )
-      );
-      return createdLetters; // Return all created letters
+      // If no specific ULB, create a global letter for all ULBs
+      return await prisma.letterUpload.create({
+        data: {
+          ulb_id: 0, // Indicate global letter
+          order_number,
+          letter_url,
+        },
+      });
     }
   } catch (error) {
     console.error("Error uploading the letter:", error);
