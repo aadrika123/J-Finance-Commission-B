@@ -7,6 +7,7 @@ const {
   deleteLetterController,
   sendLetterController,
   getLettersForULBController,
+  getNotificationsController,
 } = require("../../controllers/letterUpload/letterUploadController");
 
 // Route to upload a letter
@@ -16,10 +17,11 @@ router.post("/letter", upload.single("letter"), uploadLetterController);
 router.get("/letters", getLettersController);
 
 // Route to soft delete a letter
-router.delete("/letter/:id", deleteLetterController);
+router.post("/letter/:id", deleteLetterController);
 
 // Route for sending a letter to a specific ULB or all ULBs
 router.post("/send-letter", sendLetterController);
-router.get("/letters/ulb/:ulb_id", getLettersForULBController);
+router.get("/letters/ulb", getLettersForULBController);
+router.get("/letters/ulb/notifications", getNotificationsController);
 
 module.exports = router;

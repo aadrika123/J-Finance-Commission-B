@@ -184,10 +184,34 @@ const getLettersForULB = async (ulb_id) => {
   }
 };
 
+const getNotificationsByUlbId = async (ulb_id) => {
+  try {
+    const notifications = await prisma.notification.findMany({
+      where: {
+        ulb_id: parseInt(ulb_id), // Filter by ulb_id
+      },
+      include: {
+        LetterUpload: {
+          // Include LetterUpload to get letter details
+          select: {
+            letter_url: true, // Get the letter URL
+          },
+        },
+      },
+    });
+
+    return notifications;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    throw new Error("Failed to fetch notifications.");
+  }
+};
+
 module.exports = {
   uploadLetter,
   getLetters,
   softDeleteLetter,
   sendLetter,
   getLettersForULB,
+  getNotificationsByUlbId,
 };
