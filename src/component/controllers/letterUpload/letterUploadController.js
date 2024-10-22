@@ -17,7 +17,9 @@ const uploadLetterController = async (req, res) => {
   }
 
   try {
-    const letter_url = `../../middlewares/utils/fileUpload/uploads/${file.filename}`;
+    const letter_url = `${req.protocol}://${req.get("host")}/uploads/${
+      file.filename
+    }`;
     const letter = await uploadLetter(ulb_id, order_number, letter_url);
 
     return res.status(201).json({
@@ -32,12 +34,21 @@ const uploadLetterController = async (req, res) => {
     return res.status(500).json({ message: "Failed to upload letter." });
   }
 };
+
 const getLettersController = async (req, res) => {
+  const { page = 1, limit = 10 } = req.query; // Default values
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+  const offset = (pageNumber - 1) * pageSize; // Calculate offset
+
   try {
-    const letters = await getLetters();
+    const letters = await getLetters(); // Get all letters from DAO
+
+    // Apply pagination in memory
+    const paginatedLetters = letters.slice(offset, offset + pageSize);
 
     // Prepare response letters with both created_at and updated_at
-    const responseLetters = letters.map((letter) => ({
+    const responseLetters = paginatedLetters.map((letter) => ({
       id: letter.id,
       ulb_id: letter.ulb_id,
       order_number: letter.order_number,
@@ -52,14 +63,20 @@ const getLettersController = async (req, res) => {
       status: true,
       message: "Letters fetched successfully",
       data: responseLetters,
+      pagination: {
+        page: pageNumber,
+        limit: pageSize,
+        total: letters.length, // Total count of letters
+      },
     });
   } catch (error) {
     console.error(error);
     return res
-      .status(200)
+      .status(500)
       .json({ status: false, message: "Failed to fetch letters." });
   }
 };
+
 const deleteLetterController = async (req, res) => {
   const { id } = req.params;
 
@@ -84,7 +101,7 @@ const deleteLetterController = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res
-      .status(200)
+      .status(500)
       .json({ status: false, message: "Failed to delete letter." });
   }
 };
@@ -122,19 +139,31 @@ const sendLetterController = async (req, res) => {
 };
 
 const getLettersForULBController = async (req, res) => {
-  const ulb_id = req.body?.auth?.ulb_id; // Use req.body.auth.ulb_id for multi-ULB login
+  const { page = 1, limit = 10 } = req.query; // Default values
+  const pageNumber = parseInt(page);
+  const pageSize = parseInt(limit);
+  const offset = (pageNumber - 1) * pageSize; // Calculate offset
+  const ulb_id = req.body?.auth?.ulb_id;
 
   if (!ulb_id) {
     return res.status(403).json({ message: "Unauthorized access." });
   }
 
   try {
-    const result = await getLettersForULB(ulb_id);
+    const result = await getLettersForULB(ulb_id); // Get all letters for the specific ULB
+
+    // Apply pagination in memory
+    const paginatedLetters = result.slice(offset, offset + pageSize);
 
     return res.status(200).json({
       status: true,
-      message: "Letters fetched successfully.",
-      data: result,
+      message: "Letters fetched successfully, including global letters.",
+      data: paginatedLetters,
+      pagination: {
+        page: pageNumber,
+        limit: pageSize,
+        total: result.length, // Total count of letters for the ULB
+      },
     });
   } catch (error) {
     console.error("Error in getLettersForULBController:", error);
