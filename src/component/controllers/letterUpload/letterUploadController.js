@@ -50,13 +50,13 @@ const getLettersController = async (req, res) => {
     // Prepare response letters with both created_at and updated_at
     const responseLetters = paginatedLetters.map((letter) => ({
       id: letter.id,
-      ulb_id: letter.ulb_id,
+      ulb_id: letter.ulb_id || null, // Add null check for ulb_id
       order_number: letter.order_number,
       letter_url: letter.letter_url,
       created_at: letter.created_at,
       updated_at: letter.updated_at,
       is_active: letter.is_active,
-      ULB: letter.ULB,
+      ULB: letter.ULB ? letter.ULB.ulb_name : "Unknown ULB", // Handle missing ULB
     }));
 
     return res.status(200).json({
