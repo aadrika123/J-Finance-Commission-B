@@ -29,6 +29,219 @@ const prisma = new PrismaClient();
  * @returns {void} - Sends a JSON response to the client with the status and result of the operation.
  */
 
+// const getFinancialSummaryReport = async (req, res) => {
+//   const clientIp = req.headers["x-forwarded-for"] || req.ip;
+//   const userId = req.body?.auth?.id || null;
+
+//   try {
+//     logger.info("Fetching financial summary report...", {
+//       userId,
+//       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+//       ip: clientIp,
+//       query: req.query,
+//     });
+
+//     const { city_type, grant_type, sector, financial_year } = req.query;
+
+//     const report = await fetchFinancialSummaryReport(
+//       city_type,
+//       grant_type,
+//       sector,
+//       financial_year
+//     );
+
+//     logger.info("Financial summary report fetched successfully.", {
+//       userId,
+//       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+//       ip: clientIp,
+//       reportSummary: report.length,
+//     });
+
+//     const result = report.map((row) => {
+//       return {
+//         ...row,
+//         fr_first_instalment: row.fr_first_instalment || 0,
+//         fr_second_instalment: row.fr_second_instalment || 0,
+//         fr_third_instalment: row.fr_third_instalment || 0, // New field
+//         fr_interest_amount:
+//           row.fr_interest_amount !== undefined ? row.fr_interest_amount : null,
+//         fr_grant_type:
+//           row.fr_grant_type !== undefined ? row.fr_grant_type : null,
+//         project_not_started: row.project_not_started || 0,
+//         financial_year:
+//           row.financial_year !== undefined ? row.financial_year : null,
+//         date_of_release: row.date_of_release || null, // New field
+//         ...Object.fromEntries(
+//           Object.entries(row).map(([key, value]) => [
+//             key,
+//             typeof value === "bigint" ? value.toString() : value,
+//           ])
+//         ),
+//       };
+//     });
+
+//     for (const row of result) {
+//       const firstInstalment = parseFloat(row.fr_first_instalment) || 0;
+//       const secondInstalment = parseFloat(row.fr_second_instalment) || 0;
+//       const thirdInstalment = parseFloat(row.fr_third_instalment) || 0; // New calculation
+//       const interestAmount = parseFloat(row.fr_interest_amount) || 0;
+//       const totalFundReleased =
+//         firstInstalment + secondInstalment + thirdInstalment + interestAmount; // Updated calculation
+
+//       const existingRecord = await prisma.financialSummaryReport.findUnique({
+//         where: { ulb_id: row.ulb_id },
+//       });
+
+//       if (existingRecord) {
+//         const updatedRecord = await prisma.financialSummaryReport.update({
+//           where: { ulb_id: row.ulb_id },
+//           data: {
+//             ulb_name: row.ulb_name || existingRecord.ulb_name,
+//             approved_schemes: parseInt(row.approved_schemes, 10),
+//             fund_release_to_ulbs:
+//               parseFloat(row.fund_release_to_ulbs) ||
+//               existingRecord.fund_release_to_ulbs,
+//             amount: parseFloat(row.amount) || existingRecord.amount,
+//             project_completed:
+//               parseInt(row.project_completed, 10) ||
+//               existingRecord.project_completed,
+//             expenditure:
+//               parseFloat(row.expenditure) || existingRecord.expenditure,
+//             balance_amount:
+//               parseFloat(row.balance_amount) || existingRecord.balance_amount,
+//             financial_progress_in_percentage:
+//               parseInt(row.financial_progress_in_percentage, 10) ||
+//               existingRecord.financial_progress_in_percentage,
+//             number_of_tender_floated:
+//               parseInt(row.number_of_tender_floated, 10) ||
+//               existingRecord.number_of_tender_floated,
+//             tender_not_floated:
+//               parseInt(row.tender_not_floated, 10) ||
+//               existingRecord.tender_not_floated,
+//             work_in_progress:
+//               parseInt(row.work_in_progress, 10) ||
+//               existingRecord.work_in_progress,
+//             financial_year:
+//               row.financial_year !== undefined
+//                 ? row.financial_year
+//                 : existingRecord.financial_year,
+//             fr_first_instalment:
+//               row.fr_first_instalment !== undefined
+//                 ? row.fr_first_instalment
+//                 : existingRecord.fr_first_instalment,
+//             fr_second_instalment:
+//               row.fr_second_instalment !== undefined
+//                 ? row.fr_second_instalment
+//                 : existingRecord.fr_second_instalment,
+//             fr_third_instalment:
+//               row.fr_third_instalment !== undefined
+//                 ? row.fr_third_instalment
+//                 : existingRecord.fr_third_instalment, // New field
+//             fr_interest_amount:
+//               row.fr_interest_amount !== undefined
+//                 ? row.fr_interest_amount
+//                 : existingRecord.fr_interest_amount,
+//             fr_grant_type:
+//               row.fr_grant_type !== undefined
+//                 ? row.fr_grant_type
+//                 : existingRecord.fr_grant_type,
+//             total_fund_released: totalFundReleased, // Updated field
+//             date_of_release:
+//               row.date_of_release !== undefined
+//                 ? row.date_of_release
+//                 : existingRecord.date_of_release, // New field
+//             updated_at: new Date(),
+//             project_not_started:
+//               parseInt(row.project_not_started, 10) ||
+//               existingRecord.project_not_started,
+//           },
+//         });
+
+//         await createAuditLog(
+//           userId,
+//           "UPDATE",
+//           "FinancialSummaryReport",
+//           row.ulb_id,
+//           {
+//             oldData: existingRecord,
+//             newData: updatedRecord,
+//           }
+//         );
+//       } else {
+//         const newRecord = await prisma.financialSummaryReport.create({
+//           data: {
+//             ulb_id: row.ulb_id,
+//             ulb_name: row.ulb_name,
+//             approved_schemes: parseInt(row.approved_schemes, 10),
+//             fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
+//             amount: parseFloat(row.amount) || 0,
+//             project_completed: parseInt(row.project_completed, 10),
+//             expenditure: parseFloat(row.expenditure) || 0,
+//             balance_amount: parseFloat(row.balance_amount) || 0,
+//             financial_progress_in_percentage:
+//               parseInt(row.financial_progress_in_percentage, 10) || 0,
+//             number_of_tender_floated: parseInt(
+//               row.number_of_tender_floated,
+//               10
+//             ),
+//             tender_not_floated: parseInt(row.tender_not_floated, 10),
+//             work_in_progress: parseInt(row.work_in_progress, 10),
+//             financial_year:
+//               row.financial_year !== undefined ? row.financial_year : null,
+//             fr_first_instalment:
+//               row.fr_first_instalment !== undefined
+//                 ? row.fr_first_instalment
+//                 : null,
+//             fr_second_instalment:
+//               row.fr_second_instalment !== undefined
+//                 ? row.fr_second_instalment
+//                 : null,
+//             fr_third_instalment:
+//               row.fr_third_instalment !== undefined
+//                 ? row.fr_third_instalment
+//                 : null, // New field
+//             fr_interest_amount:
+//               row.fr_interest_amount !== undefined
+//                 ? row.fr_interest_amount
+//                 : null,
+//             fr_grant_type:
+//               row.fr_grant_type !== undefined ? row.fr_grant_type : null,
+//             total_fund_released: totalFundReleased, // Updated field
+//             date_of_release: row.date_of_release || null, // New field
+//           },
+//         });
+
+//         await createAuditLog(
+//           userId,
+//           "CREATE",
+//           "FinancialSummaryReport",
+//           newRecord.ulb_id,
+//           newRecord
+//         );
+//       }
+//     }
+
+//     return res.status(200).json({
+//       status: "success",
+//       message: "Financial summary report fetched successfully.",
+//       data: result,
+//     });
+//   } catch (error) {
+//     logger.error("Error fetching financial summary report.", {
+//       userId,
+//       action: "FETCH_FINANCIAL_SUMMARY_REPORT",
+//       ip: clientIp,
+//       error: error.message,
+//     });
+
+//     return res.status(500).json({
+//       status: "error",
+//       message: "Failed to fetch financial summary report.",
+//       error: error.message,
+//     });
+//   }
+// };
+
 const getFinancialSummaryReport = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip;
   const userId = req.body?.auth?.id || null;
@@ -60,17 +273,7 @@ const getFinancialSummaryReport = async (req, res) => {
     const result = report.map((row) => {
       return {
         ...row,
-        fr_first_instalment: row.fr_first_instalment || 0,
-        fr_second_instalment: row.fr_second_instalment || 0,
-        fr_third_instalment: row.fr_third_instalment || 0, // New field
-        fr_interest_amount:
-          row.fr_interest_amount !== undefined ? row.fr_interest_amount : null,
-        fr_grant_type:
-          row.fr_grant_type !== undefined ? row.fr_grant_type : null,
         project_not_started: row.project_not_started || 0,
-        financial_year:
-          row.financial_year !== undefined ? row.financial_year : null,
-        date_of_release: row.date_of_release || null, // New field
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
@@ -79,147 +282,6 @@ const getFinancialSummaryReport = async (req, res) => {
         ),
       };
     });
-
-    for (const row of result) {
-      const firstInstalment = parseFloat(row.fr_first_instalment) || 0;
-      const secondInstalment = parseFloat(row.fr_second_instalment) || 0;
-      const thirdInstalment = parseFloat(row.fr_third_instalment) || 0; // New calculation
-      const interestAmount = parseFloat(row.fr_interest_amount) || 0;
-      const totalFundReleased =
-        firstInstalment + secondInstalment + thirdInstalment + interestAmount; // Updated calculation
-
-      const existingRecord = await prisma.financialSummaryReport.findUnique({
-        where: { ulb_id: row.ulb_id },
-      });
-
-      if (existingRecord) {
-        const updatedRecord = await prisma.financialSummaryReport.update({
-          where: { ulb_id: row.ulb_id },
-          data: {
-            ulb_name: row.ulb_name || existingRecord.ulb_name,
-            approved_schemes: parseInt(row.approved_schemes, 10),
-            fund_release_to_ulbs:
-              parseFloat(row.fund_release_to_ulbs) ||
-              existingRecord.fund_release_to_ulbs,
-            amount: parseFloat(row.amount) || existingRecord.amount,
-            project_completed:
-              parseInt(row.project_completed, 10) ||
-              existingRecord.project_completed,
-            expenditure:
-              parseFloat(row.expenditure) || existingRecord.expenditure,
-            balance_amount:
-              parseFloat(row.balance_amount) || existingRecord.balance_amount,
-            financial_progress_in_percentage:
-              parseInt(row.financial_progress_in_percentage, 10) ||
-              existingRecord.financial_progress_in_percentage,
-            number_of_tender_floated:
-              parseInt(row.number_of_tender_floated, 10) ||
-              existingRecord.number_of_tender_floated,
-            tender_not_floated:
-              parseInt(row.tender_not_floated, 10) ||
-              existingRecord.tender_not_floated,
-            work_in_progress:
-              parseInt(row.work_in_progress, 10) ||
-              existingRecord.work_in_progress,
-            financial_year:
-              row.financial_year !== undefined
-                ? row.financial_year
-                : existingRecord.financial_year,
-            fr_first_instalment:
-              row.fr_first_instalment !== undefined
-                ? row.fr_first_instalment
-                : existingRecord.fr_first_instalment,
-            fr_second_instalment:
-              row.fr_second_instalment !== undefined
-                ? row.fr_second_instalment
-                : existingRecord.fr_second_instalment,
-            fr_third_instalment:
-              row.fr_third_instalment !== undefined
-                ? row.fr_third_instalment
-                : existingRecord.fr_third_instalment, // New field
-            fr_interest_amount:
-              row.fr_interest_amount !== undefined
-                ? row.fr_interest_amount
-                : existingRecord.fr_interest_amount,
-            fr_grant_type:
-              row.fr_grant_type !== undefined
-                ? row.fr_grant_type
-                : existingRecord.fr_grant_type,
-            total_fund_released: totalFundReleased, // Updated field
-            date_of_release:
-              row.date_of_release !== undefined
-                ? row.date_of_release
-                : existingRecord.date_of_release, // New field
-            updated_at: new Date(),
-            project_not_started:
-              parseInt(row.project_not_started, 10) ||
-              existingRecord.project_not_started,
-          },
-        });
-
-        await createAuditLog(
-          userId,
-          "UPDATE",
-          "FinancialSummaryReport",
-          row.ulb_id,
-          {
-            oldData: existingRecord,
-            newData: updatedRecord,
-          }
-        );
-      } else {
-        const newRecord = await prisma.financialSummaryReport.create({
-          data: {
-            ulb_id: row.ulb_id,
-            ulb_name: row.ulb_name,
-            approved_schemes: parseInt(row.approved_schemes, 10),
-            fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs) || 0,
-            amount: parseFloat(row.amount) || 0,
-            project_completed: parseInt(row.project_completed, 10),
-            expenditure: parseFloat(row.expenditure) || 0,
-            balance_amount: parseFloat(row.balance_amount) || 0,
-            financial_progress_in_percentage:
-              parseInt(row.financial_progress_in_percentage, 10) || 0,
-            number_of_tender_floated: parseInt(
-              row.number_of_tender_floated,
-              10
-            ),
-            tender_not_floated: parseInt(row.tender_not_floated, 10),
-            work_in_progress: parseInt(row.work_in_progress, 10),
-            financial_year:
-              row.financial_year !== undefined ? row.financial_year : null,
-            fr_first_instalment:
-              row.fr_first_instalment !== undefined
-                ? row.fr_first_instalment
-                : null,
-            fr_second_instalment:
-              row.fr_second_instalment !== undefined
-                ? row.fr_second_instalment
-                : null,
-            fr_third_instalment:
-              row.fr_third_instalment !== undefined
-                ? row.fr_third_instalment
-                : null, // New field
-            fr_interest_amount:
-              row.fr_interest_amount !== undefined
-                ? row.fr_interest_amount
-                : null,
-            fr_grant_type:
-              row.fr_grant_type !== undefined ? row.fr_grant_type : null,
-            total_fund_released: totalFundReleased, // Updated field
-            date_of_release: row.date_of_release || null, // New field
-          },
-        });
-
-        await createAuditLog(
-          userId,
-          "CREATE",
-          "FinancialSummaryReport",
-          newRecord.ulb_id,
-          newRecord
-        );
-      }
-    }
 
     return res.status(200).json({
       status: "success",

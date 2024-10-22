@@ -29,6 +29,7 @@ model ULB {
   financial_reports FinancialSummaryReport[]
   letter            LetterUpload[]
   notification      Notification[]
+  fund_release      FundRelease[]
 }
 
 model Scheme_info {
@@ -113,4 +114,20 @@ model Notification {
   // Relations
   ULB          ULB?         @relation(fields: [ulb_id], references: [id])
   LetterUpload LetterUpload @relation(fields: [letter_id], references: [id])
+}
+
+model FundRelease {
+  id                Int       @id @default(autoincrement())
+  city_type         String
+  fund_type         String
+  first_instalment  Float?
+  second_instalment Float?
+  third_instalment  Float?
+  interest_amount   Float?
+  financial_year    String
+  date_of_release   DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+  ulb_id            Int
+  ULB               ULB       @relation(fields: [ulb_id], references: [id])
 }

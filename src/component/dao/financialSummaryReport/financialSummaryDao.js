@@ -65,6 +65,125 @@ const prisma = new PrismaClient();
  * The query groups the data by ULB (ulb.id, ulb.ulb_name) and by financial year and grant details to provide summarized
  * information for each ULB.
  */
+// const fetchFinancialSummaryReport = async (
+//   city_type,
+//   grant_type,
+//   sector,
+//   financial_year
+// ) => {
+//   let query = `
+//     SELECT
+//       ulb.id AS ulb_id,
+//       ulb.ulb_name,
+//       COUNT(s.scheme_name) AS approved_schemes,
+//       SUM(s.project_cost) AS fund_release_to_ulbs,
+//       SUM(s.approved_project_cost) AS amount,
+//       SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
+//       SUM(s.financial_progress) AS expenditure,
+//       SUM(s.project_cost) - SUM(s.financial_progress) AS balance_amount,
+//       AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage,
+//       SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
+//       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
+//       (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
+//       COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started,
+//       f.financial_year,
+//       f.fr_first_instalment,
+//       f.fr_second_instalment,
+//       f.fr_third_instalment,
+//       f.fr_interest_amount,
+//       f.fr_grant_type,
+//       f.date_of_release,
+//       (
+//         COALESCE(f.fr_first_instalment, 0) +
+//         COALESCE(f.fr_second_instalment, 0) +
+//         COALESCE(f.fr_third_instalment, 0) +
+//         COALESCE(f.fr_interest_amount, 0)
+//       ) AS total_fund_released
+//     FROM "Scheme_info" s
+//     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
+//     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
+//     WHERE 1=1
+//   `;
+
+//   // Apply filters to the query based on provided parameters
+//   if (city_type) {
+//     query += ` AND s.city_type = '${city_type}'`;
+//   }
+//   if (grant_type) {
+//     query += ` AND s.grant_type = '${grant_type}'`;
+//   }
+//   if (sector) {
+//     query += ` AND s.sector = '${sector}'`;
+//   }
+//   if (financial_year) {
+//     query += ` AND EXTRACT(YEAR FROM s.date_of_approval) = ${financial_year}`;
+//   }
+
+//   query += `
+//       GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.fr_first_instalment, f.fr_second_instalment, f.fr_third_instalment, f.fr_interest_amount, f.fr_grant_type, f.date_of_release
+//       ORDER BY ulb.id ASC
+//   `;
+
+//   const result = await prisma.$queryRawUnsafe(query);
+
+//   // Log calculated results
+//   result.forEach((ulbData) => {
+//     logger.info(`Detailed Financial Summary for ULB: ${ulbData.ulb_name} (ID: ${ulbData.ulb_id})
+
+//     - **Total Approved Schemes:** ${ulbData.approved_schemes} approved schemes under the ULB.
+//     - **Fund Released to ULBs (Total Project Costs):** ₹${ulbData.fund_release_to_ulbs} worth of project costs released to ULBs.
+//     - **Approved Project Costs (Budget):** ₹${ulbData.amount} total approved budget for schemes.
+//     - **Completed Projects:** ${ulbData.project_completed} projects completed out of total approved.
+//     - **Expenditure (Financial Progress):** ₹${ulbData.expenditure} total expenditure made so far across all schemes.
+//     - **Remaining Balance (Unspent Budget):** ₹${ulbData.balance_amount} remaining balance, calculated as (project cost - expenditure).
+//     - **Average Financial Progress:** ${ulbData.financial_progress_in_percentage}% financial progress across all projects.
+//     - **Number of Tenders Floated:** ${ulbData.number_of_tender_floated} tenders floated for ongoing schemes.
+//     - **Number of Tenders Not Floated:** ${ulbData.tender_not_floated} schemes have yet to float tenders.
+//     - **Work in Progress:** ${ulbData.work_in_progress} projects are still under progress.
+//     - **Projects Not Started:** ${ulbData.project_not_started} projects have not commenced yet.
+//     - **Total Funds released:** ₹${ulbData.total_fund_released}, including first, second, and third instalments, and interest amounts.
+//     - **Financial Year:** ${ulbData.financial_year}.
+//     - **Grant Type:** ${ulbData.fr_grant_type}.
+//     - **First Instalment Released:** ₹${ulbData.fr_first_instalment}.
+//     - **Second Instalment Released:** ₹${ulbData.fr_second_instalment}.
+//     - **Third Instalment Released:** ₹${ulbData.fr_third_instalment}.
+//     - **Interest Earned on Grants:** ₹${ulbData.fr_interest_amount} earned as interest on the released funds.
+//     - **Date of Release:** ${ulbData.date_of_release}.
+//     `);
+
+//     // Immediately follow the detailed log with a debug log for the same ULB
+//     logger.debug(`Calculated values for ULB ${ulbData.ulb_id}:`, {
+//       approved_schemes: ulbData.approved_schemes,
+//       fund_release_to_ulbs: ulbData.fund_release_to_ulbs,
+//       amount: ulbData.amount,
+//       project_completed: ulbData.project_completed,
+//       expenditure: ulbData.expenditure,
+//       balance_amount: ulbData.balance_amount,
+//       financial_progress_in_percentage:
+//         ulbData.financial_progress_in_percentage,
+//       number_of_tender_floated: ulbData.number_of_tender_floated,
+//       tender_not_floated: ulbData.tender_not_floated,
+//       work_in_progress: ulbData.work_in_progress,
+//       project_not_started: ulbData.project_not_started,
+//       total_fund_released: ulbData.total_fund_released,
+//       financial_year: ulbData.financial_year,
+//       first_instalment: ulbData.fr_first_instalment,
+//       second_instalment: ulbData.fr_second_instalment,
+//       third_instalment: ulbData.fr_third_instalment,
+//       interest_amount: ulbData.fr_interest_amount,
+//       grant_type: ulbData.fr_grant_type,
+//       date_of_release: ulbData.date_of_release,
+//     });
+//   });
+
+//   logger.info(
+//     "Detailed financial summary report data retrieved successfully.",
+//     { result }
+//   );
+
+//   return result;
+// };
+
 const fetchFinancialSummaryReport = async (
   city_type,
   grant_type,
@@ -85,20 +204,7 @@ const fetchFinancialSummaryReport = async (
       SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
       (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
-      COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started,
-      f.financial_year,
-      f.fr_first_instalment,
-      f.fr_second_instalment,
-      f.fr_third_instalment,
-      f.fr_interest_amount,
-      f.fr_grant_type,
-      f.date_of_release,
-      (
-        COALESCE(f.fr_first_instalment, 0) +
-        COALESCE(f.fr_second_instalment, 0) +
-        COALESCE(f.fr_third_instalment, 0) +
-        COALESCE(f.fr_interest_amount, 0)
-      ) AS total_fund_released
+      COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
     LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
@@ -120,7 +226,7 @@ const fetchFinancialSummaryReport = async (
   }
 
   query += `
-      GROUP BY ulb.id, ulb.ulb_name, f.financial_year, f.fr_first_instalment, f.fr_second_instalment, f.fr_third_instalment, f.fr_interest_amount, f.fr_grant_type, f.date_of_release
+      GROUP BY ulb.id, ulb.ulb_name
       ORDER BY ulb.id ASC
   `;
 
@@ -141,14 +247,6 @@ const fetchFinancialSummaryReport = async (
     - **Number of Tenders Not Floated:** ${ulbData.tender_not_floated} schemes have yet to float tenders.
     - **Work in Progress:** ${ulbData.work_in_progress} projects are still under progress.
     - **Projects Not Started:** ${ulbData.project_not_started} projects have not commenced yet.
-    - **Total Funds released:** ₹${ulbData.total_fund_released}, including first, second, and third instalments, and interest amounts.
-    - **Financial Year:** ${ulbData.financial_year}.
-    - **Grant Type:** ${ulbData.fr_grant_type}.
-    - **First Instalment Released:** ₹${ulbData.fr_first_instalment}.
-    - **Second Instalment Released:** ₹${ulbData.fr_second_instalment}.
-    - **Third Instalment Released:** ₹${ulbData.fr_third_instalment}.
-    - **Interest Earned on Grants:** ₹${ulbData.fr_interest_amount} earned as interest on the released funds.
-    - **Date of Release:** ${ulbData.date_of_release}.
     `);
 
     // Immediately follow the detailed log with a debug log for the same ULB
@@ -165,14 +263,6 @@ const fetchFinancialSummaryReport = async (
       tender_not_floated: ulbData.tender_not_floated,
       work_in_progress: ulbData.work_in_progress,
       project_not_started: ulbData.project_not_started,
-      total_fund_released: ulbData.total_fund_released,
-      financial_year: ulbData.financial_year,
-      first_instalment: ulbData.fr_first_instalment,
-      second_instalment: ulbData.fr_second_instalment,
-      third_instalment: ulbData.fr_third_instalment,
-      interest_amount: ulbData.fr_interest_amount,
-      grant_type: ulbData.fr_grant_type,
-      date_of_release: ulbData.date_of_release,
     });
   });
 
