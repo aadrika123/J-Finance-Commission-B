@@ -90,19 +90,8 @@ const sendLetter = async (letterId, ulb_id) => {
         },
       });
 
-      const description = `Letter with Order Number ${letterUpdate.order_number} has been sent to ULB ID ${ulb_id}.`;
-
-      const notification = await prisma.notification.create({
-        data: {
-          description,
-          ulb_id,
-          letter_id: letterId,
-        },
-      });
-
       return {
         letterUpdate,
-        notification,
       };
     } else {
       // If no specific ULB, send to all ULBs
@@ -114,17 +103,7 @@ const sendLetter = async (letterId, ulb_id) => {
             data: { inbox: false, outbox: true },
           });
 
-          const description = `Letter with Order Number ${letterUpdate.order_number} has been sent to all ULBs.`;
-
-          const notification = await prisma.notification.create({
-            data: {
-              description,
-              ulb_id: ulb.id,
-              letter_id: letterId,
-            },
-          });
-
-          return { letterUpdate, notification };
+          return { letterUpdate }; // Return only letterUpdate, no notifications
         })
       );
       return notifications;
@@ -190,13 +169,9 @@ const getNotificationsByUlbId = async (ulb_id) => {
       where: {
         ulb_id: parseInt(ulb_id), // Filter by ulb_id
       },
+      distinct: ["letter_id"], // Ensure distinct notifications by letter_id
       include: {
-        LetterUpload: {
-          // Include LetterUpload to get letter details
-          select: {
-            letter_url: true, // Get the letter URL
-          },
-        },
+        LetterUpload: true, // Include all fields of the related LetterUpload model
       },
     });
 
