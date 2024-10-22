@@ -10,15 +10,16 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
           ulb_id: parseInt(ulb_id, 10),
           order_number,
           letter_url,
+          is_global: false, // Specific letter, not global
         },
       });
     } else {
       // If no specific ULB, create a global letter for all ULBs
       return await prisma.letterUpload.create({
         data: {
-          ulb_id: 0, // Indicate global letter
           order_number,
           letter_url,
+          is_global: true, // Global letter
         },
       });
     }
@@ -30,28 +31,14 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
     throw new Error("An unexpected error occurred while uploading the letter.");
   }
 };
-
-const getLetters = async () => {
+const getLetters = async (inboxFilter, outboxFilter) => {
   try {
-    // First, fetch distinct order numbers for active letters
-    const distinctOrders = await prisma.letterUpload.findMany({
-      where: {
-        is_active: true,
-      },
-      distinct: ["order_number"], // Get distinct order numbers
-      select: {
-        order_number: true,
-      },
-    });
-
-    // Extract the order numbers into an array
-    const orderNumbers = distinctOrders.map((order) => order.order_number);
-
-    // Fetch one letter for each distinct order number
+    // Fetch letters directly with filters on is_active, inbox, and outbox
     const letters = await prisma.letterUpload.findMany({
       where: {
-        order_number: { in: orderNumbers },
         is_active: true,
+        ...(inboxFilter && { inbox: true }), // Apply inbox filter if passed
+        ...(outboxFilter && { inbox: false }), // Apply outbox filter if passed
       },
       include: {
         ULB: {
@@ -103,19 +90,8 @@ const sendLetter = async (letterId, ulb_id) => {
         },
       });
 
-      const description = `Letter with Order Number ${letterUpdate.order_number} has been sent to ULB ID ${ulb_id}.`;
-
-      const notification = await prisma.notification.create({
-        data: {
-          description,
-          ulb_id,
-          letter_id: letterId,
-        },
-      });
-
       return {
         letterUpdate,
-        notification,
       };
     } else {
       // If no specific ULB, send to all ULBs
@@ -127,17 +103,7 @@ const sendLetter = async (letterId, ulb_id) => {
             data: { inbox: false, outbox: true },
           });
 
-          const description = `Letter with Order Number ${letterUpdate.order_number} has been sent to all ULBs.`;
-
-          const notification = await prisma.notification.create({
-            data: {
-              description,
-              ulb_id: ulb.id,
-              letter_id: letterId,
-            },
-          });
-
-          return { letterUpdate, notification };
+          return { letterUpdate }; // Return only letterUpdate, no notifications
         })
       );
       return notifications;
@@ -150,11 +116,15 @@ const sendLetter = async (letterId, ulb_id) => {
 
 const getLettersForULB = async (ulb_id) => {
   try {
-    // Fetch active letters for the specific ULB
+    // Fetch active letters for the specific ULB or global letters where outbox is true
     const letters = await prisma.letterUpload.findMany({
       where: {
-        ulb_id: parseInt(ulb_id),
+        OR: [
+          { ulb_id: parseInt(ulb_id) }, // Fetch letters specific to the ULB
+          { is_global: true }, // Fetch global letters
+        ],
         is_active: true, // Fetch only active letters
+        outbox: true, // Ensure outbox is true
       },
       include: {
         ULB: {
@@ -192,10 +162,31 @@ const getLettersForULB = async (ulb_id) => {
     throw new Error(`Failed to fetch letters: ${error.message}`);
   }
 };
+
+const getNotificationsByUlbId = async (ulb_id) => {
+  try {
+    const notifications = await prisma.notification.findMany({
+      where: {
+        ulb_id: parseInt(ulb_id), // Filter by ulb_id
+      },
+      distinct: ["letter_id"], // Ensure distinct notifications by letter_id
+      include: {
+        LetterUpload: true, // Include all fields of the related LetterUpload model
+      },
+    });
+
+    return notifications;
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    throw new Error("Failed to fetch notifications.");
+  }
+};
+
 module.exports = {
   uploadLetter,
   getLetters,
   softDeleteLetter,
   sendLetter,
   getLettersForULB,
+  getNotificationsByUlbId,
 };
