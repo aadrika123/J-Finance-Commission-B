@@ -36,13 +36,14 @@ const uploadLetterController = async (req, res) => {
 };
 
 const getLettersController = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query; // Default values
+  const { page = 1, limit = 10, inbox, outbox } = req.query; // Default values
   const pageNumber = parseInt(page);
   const pageSize = parseInt(limit);
   const offset = (pageNumber - 1) * pageSize; // Calculate offset
 
   try {
-    const letters = await getLetters(); // Get all letters from DAO
+    // Pass the inbox and outbox filters to the DAO
+    const letters = await getLetters(inbox === "true", outbox === "true"); // Convert string to boolean
 
     // Apply pagination in memory
     const paginatedLetters = letters.slice(offset, offset + pageSize);
@@ -53,11 +54,20 @@ const getLettersController = async (req, res) => {
       ulb_id: letter.ulb_id || null, // Add null check for ulb_id
       order_number: letter.order_number,
       letter_url: letter.letter_url,
+      inbox: letter.inbox,
+      outbox: letter.outbox,
       created_at: letter.created_at,
       updated_at: letter.updated_at,
       is_active: letter.is_active,
       ULB: letter.ULB ? letter.ULB.ulb_name : "Unknown ULB", // Handle missing ULB
     }));
+
+    // Total number of letters
+    const totalLetters = letters.length;
+
+    // Calculate if there is a next or previous page
+    const hasNextPage = offset + pageSize < totalLetters;
+    const hasPrevPage = pageNumber > 1;
 
     return res.status(200).json({
       status: true,
@@ -66,7 +76,9 @@ const getLettersController = async (req, res) => {
       pagination: {
         page: pageNumber,
         limit: pageSize,
-        total: letters.length, // Total count of letters
+        total: totalLetters, // Total count of letters
+        next: hasNextPage ? pageNumber + 1 : null, // Provide next page number if available
+        prev: hasPrevPage ? pageNumber - 1 : null, // Provide previous page number if available
       },
     });
   } catch (error) {
@@ -155,6 +167,11 @@ const getLettersForULBController = async (req, res) => {
     // Apply pagination in memory
     const paginatedLetters = result.slice(offset, offset + pageSize);
 
+    // Calculate if there is a next or previous page
+    const totalLetters = result.length;
+    const hasNextPage = offset + pageSize < totalLetters;
+    const hasPrevPage = pageNumber > 1;
+
     return res.status(200).json({
       status: true,
       message: "Letters fetched successfully, including global letters.",
@@ -162,7 +179,9 @@ const getLettersForULBController = async (req, res) => {
       pagination: {
         page: pageNumber,
         limit: pageSize,
-        total: result.length, // Total count of letters for the ULB
+        total: totalLetters, // Total count of letters for the ULB
+        next: hasNextPage ? pageNumber + 1 : null, // Provide next page number if available
+        prev: hasPrevPage ? pageNumber - 1 : null, // Provide previous page number if available
       },
     });
   } catch (error) {
