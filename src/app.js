@@ -9,6 +9,7 @@ const schemeInfoUpdateRoutes = require("./component/routes/schemeInfo/schemeInfo
 const financialSummaryRoute = require("./component/routes/financialSummaryReport/financialSummaryRoute");
 const financialRoutes = require("./component/routes/financialSummaryReport/financialDashboardRoute");
 const fileUpload = require("./component/routes/letterUpload/letterUploadRoute");
+const path = require("path");
 
 const cors = require("cors");
 
@@ -18,6 +19,10 @@ const PORT = process.env.PORT || 9000;
 app.use(cors());
 
 app.use(requestLogger);
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "middlewares/utils/fileUpload/uploads"))
+);
 
 app.get("/", (req, res) => {
   logger.info("Home route accessed");

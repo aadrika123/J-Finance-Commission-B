@@ -10,15 +10,16 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
           ulb_id: parseInt(ulb_id, 10),
           order_number,
           letter_url,
+          is_global: false, // Specific letter, not global
         },
       });
     } else {
       // If no specific ULB, create a global letter for all ULBs
       return await prisma.letterUpload.create({
         data: {
-          ulb_id: 0, // Indicate global letter
           order_number,
           letter_url,
+          is_global: true, // Global letter
         },
       });
     }
@@ -30,7 +31,6 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
     throw new Error("An unexpected error occurred while uploading the letter.");
   }
 };
-
 const getLetters = async () => {
   try {
     // First, fetch distinct order numbers for active letters
@@ -150,10 +150,13 @@ const sendLetter = async (letterId, ulb_id) => {
 
 const getLettersForULB = async (ulb_id) => {
   try {
-    // Fetch active letters for the specific ULB
+    // Fetch active letters for the specific ULB or global letters
     const letters = await prisma.letterUpload.findMany({
       where: {
-        ulb_id: parseInt(ulb_id),
+        OR: [
+          { ulb_id: parseInt(ulb_id) }, // Fetch letters specific to the ULB
+          { is_global: true }, // Fetch global letters
+        ],
         is_active: true, // Fetch only active letters
       },
       include: {
