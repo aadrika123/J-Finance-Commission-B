@@ -43,7 +43,7 @@ const getLettersController = async (req, res) => {
 
   try {
     // Pass the inbox and outbox filters to the DAO
-    const letters = await getLetters(inbox === "true", outbox === "true"); // Convert string to boolean
+    const letters = await getLetters(inbox === "true", inbox === "false"); // Convert string to boolean
 
     // Apply pagination in memory
     const paginatedLetters = letters.slice(offset, offset + pageSize);
