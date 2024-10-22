@@ -150,7 +150,7 @@ const sendLetter = async (letterId, ulb_id) => {
 
 const getLettersForULB = async (ulb_id) => {
   try {
-    // Fetch active letters for the specific ULB or global letters
+    // Fetch active letters for the specific ULB or global letters where outbox is true
     const letters = await prisma.letterUpload.findMany({
       where: {
         OR: [
@@ -158,6 +158,7 @@ const getLettersForULB = async (ulb_id) => {
           { is_global: true }, // Fetch global letters
         ],
         is_active: true, // Fetch only active letters
+        outbox: true, // Ensure outbox is true
       },
       include: {
         ULB: {
@@ -195,6 +196,7 @@ const getLettersForULB = async (ulb_id) => {
     throw new Error(`Failed to fetch letters: ${error.message}`);
   }
 };
+
 module.exports = {
   uploadLetter,
   getLetters,
