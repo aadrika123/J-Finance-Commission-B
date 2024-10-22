@@ -38,7 +38,7 @@ const getLetters = async (inboxFilter, outboxFilter) => {
       where: {
         is_active: true,
         ...(inboxFilter && { inbox: true }), // Apply inbox filter if passed
-        ...(outboxFilter && { outbox: true }), // Apply outbox filter if passed
+        ...(outboxFilter && { inbox: false }), // Apply outbox filter if passed
       },
       include: {
         ULB: {
