@@ -4,6 +4,7 @@ const {
   softDeleteLetter,
   sendLetter,
   getLettersForULB,
+  getNotificationsByUlbId,
 } = require("../../dao/letterUpload/letterUploadDao");
 
 const uploadLetterController = async (req, res) => {
@@ -31,7 +32,7 @@ const uploadLetterController = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Failed to upload letter." });
+    return res.status(200).json({ message: "Failed to upload letter." });
   }
 };
 
@@ -84,7 +85,7 @@ const getLettersController = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res
-      .status(500)
+      .status(200)
       .json({ status: false, message: "Failed to fetch letters." });
   }
 };
@@ -113,7 +114,7 @@ const deleteLetterController = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res
-      .status(500)
+      .status(200)
       .json({ status: false, message: "Failed to delete letter." });
   }
 };
@@ -122,7 +123,7 @@ const sendLetterController = async (req, res) => {
   const { letterId, ulb_id } = req.body;
 
   if (!letterId) {
-    return res.status(400).json({
+    return res.status(200).json({
       status: false,
       message: "letterId is required.",
     });
@@ -143,7 +144,7 @@ const sendLetterController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in sendLetterController:", error);
-    return res.status(500).json({
+    return res.status(200).json({
       status: false,
       message: `Failed to send letter: ${error.message}`,
     });
@@ -151,14 +152,19 @@ const sendLetterController = async (req, res) => {
 };
 
 const getLettersForULBController = async (req, res) => {
-  const { page = 1, limit = 10 } = req.query; // Default values
+  const { page = 1, limit = 10, ulb_id } = req.query; // Get ulb_id from query
   const pageNumber = parseInt(page);
   const pageSize = parseInt(limit);
   const offset = (pageNumber - 1) * pageSize; // Calculate offset
-  const ulb_id = req.body?.auth?.ulb_id;
+
+  const authenticatedUlbId = req.body?.auth?.ulb_id; // Get ulb_id from request body
+
+  if (String(authenticatedUlbId) !== ulb_id) {
+    return res.status(200).json({ message: "Unauthorized access." });
+  }
 
   if (!ulb_id) {
-    return res.status(403).json({ message: "Unauthorized access." });
+    return res.status(200).json({ message: "Ulb id required !" });
   }
 
   try {
@@ -167,21 +173,50 @@ const getLettersForULBController = async (req, res) => {
     // Apply pagination in memory
     const paginatedLetters = result.slice(offset, offset + pageSize);
 
-    // Calculate if there is a next or previous page
+    // Prepare response data
+    const responseData = paginatedLetters.map((item) => {
+      return {
+        id: item.letter.id,
+        ulb_id: item.letter.ulb_id || null,
+        order_number: item.letter.order_number || "Unknown Order Number",
+        letter_url: item.letter.letter_url || null,
+        created_at: item.letter.created_at,
+        updated_at: item.letter.updated_at,
+        is_active: item.letter.is_active,
+        is_global: item.letter.is_global,
+        inbox: item.letter.inbox,
+        outbox: item.letter.outbox,
+        ULB: item.letter.ULB ? item.letter.ULB.ulb_name : "Unknown ULB",
+
+        notification: {
+          id: item.notification.id,
+          description:
+            item.notification.description ||
+            `You received a letter with order number ${item.letter.order_number}`,
+          ulb_id: item.notification.ulb_id,
+          letter_id: item.notification.letter_id,
+          created_at: item.notification.created_at,
+        },
+      };
+    });
+
+    // Total number of letters
     const totalLetters = result.length;
+
+    // Calculate if there is a next or previous page
     const hasNextPage = offset + pageSize < totalLetters;
     const hasPrevPage = pageNumber > 1;
 
     return res.status(200).json({
       status: true,
       message: "Letters fetched successfully, including global letters.",
-      data: paginatedLetters,
+      data: responseData,
       pagination: {
         page: pageNumber,
         limit: pageSize,
-        total: totalLetters, // Total count of letters for the ULB
-        next: hasNextPage ? pageNumber + 1 : null, // Provide next page number if available
-        prev: hasPrevPage ? pageNumber - 1 : null, // Provide previous page number if available
+        total: totalLetters,
+        next: hasNextPage ? pageNumber + 1 : null,
+        prev: hasPrevPage ? pageNumber - 1 : null,
       },
     });
   } catch (error) {
@@ -194,10 +229,54 @@ const getLettersForULBController = async (req, res) => {
   }
 };
 
+const getNotificationsController = async (req, res) => {
+  const { ulb_id } = req.query; // Get ulb_id from query parameters
+
+  const authenticatedUlbId = req.body?.auth?.ulb_id; // Get ulb_id from request body
+
+  if (String(authenticatedUlbId) !== ulb_id) {
+    return res.status(200).json({ message: "Unauthorized access." });
+  }
+
+  if (!ulb_id) {
+    return res
+      .status(200)
+      .json({ status: false, message: "ulb_id is required." });
+  }
+
+  try {
+    const notifications = await getNotificationsByUlbId(ulb_id); // Fetch notifications from DAO
+
+    // Prepare response data
+    const responseData = notifications.map((notification) => ({
+      id: notification.id,
+      description: notification.description,
+      ulb_id: notification.ulb_id,
+      letter_id: notification.letter_id,
+      created_at: notification.created_at,
+      letter_url: notification.LetterUpload.letter_url || null, // Access letter_url
+    }));
+
+    return res.status(200).json({
+      status: true,
+      message: "Notifications fetched successfully.",
+      data: responseData,
+    });
+  } catch (error) {
+    console.error("Error in getNotificationsController:", error);
+    return res.status(200).json({
+      status: false,
+      message: `Failed to fetch notifications: ${error.message}`,
+      data: [],
+    });
+  }
+};
+
 module.exports = {
   uploadLetterController,
   getLettersController,
   deleteLetterController,
   sendLetterController,
   getLettersForULBController,
+  getNotificationsController,
 };
