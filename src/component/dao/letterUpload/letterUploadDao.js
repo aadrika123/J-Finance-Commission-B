@@ -31,27 +31,14 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
     throw new Error("An unexpected error occurred while uploading the letter.");
   }
 };
-const getLetters = async () => {
+const getLetters = async (inboxFilter, outboxFilter) => {
   try {
-    // First, fetch distinct order numbers for active letters
-    const distinctOrders = await prisma.letterUpload.findMany({
-      where: {
-        is_active: true,
-      },
-      distinct: ["order_number"], // Get distinct order numbers
-      select: {
-        order_number: true,
-      },
-    });
-
-    // Extract the order numbers into an array
-    const orderNumbers = distinctOrders.map((order) => order.order_number);
-
-    // Fetch one letter for each distinct order number
+    // Fetch letters directly with filters on is_active, inbox, and outbox
     const letters = await prisma.letterUpload.findMany({
       where: {
-        order_number: { in: orderNumbers },
         is_active: true,
+        ...(inboxFilter && { inbox: true }), // Apply inbox filter if passed
+        ...(outboxFilter && { outbox: true }), // Apply outbox filter if passed
       },
       include: {
         ULB: {
