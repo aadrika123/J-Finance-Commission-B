@@ -9,9 +9,15 @@ const {
   getLettersForULBController,
   getNotificationsController,
 } = require("../../controllers/letterUpload/letterUploadController");
+// const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
 // Route to upload a letter
-router.post("/letter", upload.single("letter"), uploadLetterController);
+router.post(
+  "/letter",
+  // roleMiddleware(["SUDA FC"]),
+  upload.single("letter"),
+  uploadLetterController
+);
 
 // Route to get all active letters
 router.get("/letters", getLettersController);
