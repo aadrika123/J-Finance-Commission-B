@@ -41,6 +41,7 @@ const addSchemeInfo = async (req, res) => {
       project_cost,
       scheme_name,
       sector,
+      financial_year,
       grant_type,
       city_type,
       date_of_approval, // Date input that can be backdated
@@ -72,6 +73,7 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
       sector,
       grant_type,
+      financial_year,
       city_type,
       date_of_approval: dateOfApprovedUTC, // Pass the backdated date
       created_at: createdAtUTC,

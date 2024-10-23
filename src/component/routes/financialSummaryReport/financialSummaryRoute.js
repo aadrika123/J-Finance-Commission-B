@@ -4,11 +4,11 @@ const {
   getFinancialSummaryReport,
   // updateFinancialSummaryReport,
   createFundReleaseController,
-
+  //
   getUpdatedFinancialSummaryReport,
   getFundReleaseReport,
 } = require("../../controllers/financialSummaryReport/financialSummaryController");
-const roleMiddleware = require("../../../middlewares/roleMiddleware");
+// const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
 // Route to fetch the financial summary report
 // This endpoint triggers the controller function to handle fetching of the financial summary
@@ -31,7 +31,7 @@ router.post(
 // This endpoint triggers the controller function to handle fetching of updated financial summaries
 router.get(
   "/financial-summary/updated",
-  roleMiddleware(["EO FC"]),
+  // roleMiddleware(["EO FC"]),
   getUpdatedFinancialSummaryReport
 );
 router.get(

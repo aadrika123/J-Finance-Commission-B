@@ -2,7 +2,7 @@ const express = require("express");
 const {
   modifySchemeInfo,
 } = require("../../controllers/schemeInfo/schemeInfoUpdateController");
-const roleMiddleware = require("../../../middlewares/roleMiddleware");
+// const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ const router = express.Router();
 // This endpoint triggers the controller function to handle updating the information of a specific scheme identified by scheme_id
 router.post(
   "/scheme-info/update/:scheme_id",
-  roleMiddleware(["EO FC"]),
+  // roleMiddleware(["EO FC"]),
   modifySchemeInfo
 );
 
