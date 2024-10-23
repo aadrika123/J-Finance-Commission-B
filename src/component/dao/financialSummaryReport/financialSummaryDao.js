@@ -222,7 +222,8 @@ const fetchFinancialSummaryReport = async (
     query += ` AND s.sector = '${sector}'`;
   }
   if (financial_year) {
-    query += ` AND EXTRACT(YEAR FROM s.date_of_approval) = ${financial_year}`;
+    // query += ` AND s.financial_year) = '${financial_year}'`;
+    query += ` AND s.financial_year = '${financial_year}'`;
   }
 
   query += `
@@ -272,6 +273,107 @@ const fetchFinancialSummaryReport = async (
   );
 
   return result;
+};
+
+// Find an existing fund release by ULB ID and financial year
+const findFundReleaseByUlbIdAndYear = async (ulb_id, financial_year) => {
+  try {
+    const fundRelease = await prisma.fundRelease.findFirst({
+      where: {
+        ulb_id: ulb_id,
+        financial_year: financial_year,
+      },
+    });
+    return fundRelease;
+  } catch (error) {
+    console.error(
+      "Error finding fund release by ULB ID and financial year:",
+      error
+    );
+    throw new Error("Failed to find fund release.");
+  }
+};
+
+// Upsert (insert or update) the fund release data
+const upsertFundReleaseDao = async (
+  ulb_id,
+  financial_year,
+  fundReleaseData
+) => {
+  try {
+    // Fetch existing fund release data
+    const existingFundRelease = await prisma.fundRelease.findFirst({
+      where: { ulb_id, financial_year },
+    });
+
+    let total_fund_released = 0;
+
+    // If a record exists, add the new interest_amount to the existing one
+    if (existingFundRelease) {
+      // Add current interest_amount to the previous interest_amount
+      if (fundReleaseData.interest_amount !== undefined) {
+        fundReleaseData.interest_amount =
+          (existingFundRelease.interest_amount || 0) +
+          fundReleaseData.interest_amount;
+      }
+
+      // Prevent overwriting installments if they already exist
+      if (
+        existingFundRelease.first_instalment &&
+        fundReleaseData.first_instalment
+      ) {
+        delete fundReleaseData.first_instalment;
+      }
+      if (
+        existingFundRelease.second_instalment &&
+        fundReleaseData.second_instalment
+      ) {
+        delete fundReleaseData.second_instalment;
+      }
+      if (
+        existingFundRelease.third_instalment &&
+        fundReleaseData.third_instalment
+      ) {
+        delete fundReleaseData.third_instalment;
+      }
+
+      // Calculate total fund released
+      total_fund_released =
+        (existingFundRelease.first_instalment || 0) +
+        (existingFundRelease.second_instalment || 0) +
+        (existingFundRelease.third_instalment || 0) +
+        (fundReleaseData.interest_amount ||
+          existingFundRelease.interest_amount ||
+          0);
+    } else {
+      // Calculate total_fund_released when creating a new record
+      total_fund_released =
+        (fundReleaseData.first_instalment || 0) +
+        (fundReleaseData.second_instalment || 0) +
+        (fundReleaseData.third_instalment || 0) +
+        (fundReleaseData.interest_amount || 0);
+    }
+
+    // Set the calculated total_fund_released in fundReleaseData
+    fundReleaseData.total_fund_released = total_fund_released;
+
+    // Perform the upsert operation
+    const upsertedFundRelease = await prisma.fundRelease.upsert({
+      where: {
+        ulb_id_financial_year: {
+          ulb_id,
+          financial_year,
+        },
+      },
+      update: fundReleaseData,
+      create: fundReleaseData,
+    });
+
+    return upsertedFundRelease;
+  } catch (error) {
+    console.error("Error upserting fund release:", error);
+    throw new Error("Failed to upsert fund release.");
+  }
 };
 
 // /**
@@ -456,8 +558,42 @@ const fetchFinancialSummaryReport = async (
 //     });
 //   }
 // };
+
+const getFundReleaseDataDao = async (financial_year, city_type, fund_type) => {
+  try {
+    // Fetch data from fundRelease table
+    const report = await prisma.fundRelease.findMany({
+      where: {
+        ...(financial_year && { financial_year }), // Filter by financial_year if provided
+        ...(city_type && { city_type }), // Filter by city_type if provided
+        ...(fund_type && { fund_type }), // Filter by fund_type if provided
+      },
+      select: {
+        ulb_id: true,
+        ULB: { select: { ulb_name: true } }, // Fetch ULB name if needed
+        financial_year: true,
+        fund_type: true,
+        city_type: true,
+        first_instalment: true,
+        second_instalment: true,
+        third_instalment: true,
+        interest_amount: true,
+        total_fund_released: true,
+        date_of_release: true,
+      },
+    });
+
+    return report;
+  } catch (error) {
+    console.error("Error fetching fund release data:", error);
+    throw new Error("Failed to fetch fund release data.");
+  }
+};
 module.exports = {
   fetchFinancialSummaryReport,
+  findFundReleaseByUlbIdAndYear,
+  upsertFundReleaseDao,
+  getFundReleaseDataDao,
   // updateFinancialSummary,
   // fetchUpdatedFinancialSummary,
 };

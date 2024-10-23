@@ -41,6 +41,7 @@ model Scheme_info {
   city_type                               String
   date_of_approval                        DateTime?
   ulb                                     String?
+  financial_year                          String?
   created_at                              DateTime  @default(now())
   updated_at                              DateTime?
   project_completion_status               String?
@@ -68,21 +69,10 @@ model FinancialSummaryReport {
   number_of_tender_floated         Int // The count of tenders floated for this ULB's schemes
   tender_not_floated               Int // The count of tenders not floated for this ULB's schemes
   work_in_progress                 Int // The count of schemes that are still in progress
-  financial_year                   Int? // The financial year for which this report is generated
+  project_not_started              Int? // Count of projects that haven't started yet (financial progress = 0)
 
-  fr_first_instalment  Decimal? // The first instalment of funds released to the ULB
-  fr_second_instalment Decimal? // The second instalment of funds released to the ULB
-  fr_third_instalment  Decimal? // The third instalment of funds released to the ULB
-  fr_interest_amount   Decimal? // Interest amount released to the ULB (if any)
-  fr_grant_type        String? // Type of grant allocated to the ULB
-  total_fund_released  Decimal? // Funds not yet allocated or distributed to the ULB
-
-  date_of_release DateTime? // The date when the funds were released
-  city_type       String? // The type of city (e.g., million plus, non_million)
-
-  created_at          DateTime  @default(now()) // Timestamp for when this record was created
-  updated_at          DateTime? // Timestamp for the last time this record was updated
-  project_not_started Int? // Count of projects that haven't started yet (financial progress = 0)
+  created_at DateTime  @default(now()) // Timestamp for when this record was created
+  updated_at DateTime? // Timestamp for the last time this record was updated
 
   // Foreign key relation to the ULB model
   ULB ULB @relation(fields: [ulb_id], references: [id]) // Relation to the ULB model based on ulb_id
@@ -117,17 +107,20 @@ model Notification {
 }
 
 model FundRelease {
-  id                Int       @id @default(autoincrement())
-  city_type         String
-  fund_type         String
-  first_instalment  Float?
-  second_instalment Float?
-  third_instalment  Float?
-  interest_amount   Float?
-  financial_year    String
-  date_of_release   DateTime?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
-  ulb_id            Int
-  ULB               ULB       @relation(fields: [ulb_id], references: [id])
+  id                  Int       @id @default(autoincrement())
+  city_type           String
+  fund_type           String
+  first_instalment    Float?
+  second_instalment   Float?
+  third_instalment    Float?
+  interest_amount     Float?
+  total_fund_released Float?
+  financial_year      String
+  date_of_release     DateTime?
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
+  ulb_id              Int
+  ULB                 ULB       @relation(fields: [ulb_id], references: [id])
+
+  @@unique([ulb_id, financial_year]) // Composite unique constraint
 }

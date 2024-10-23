@@ -1,5 +1,8 @@
 const {
   fetchFinancialSummaryReport,
+  findFundReleaseByUlbIdAndYear,
+  upsertFundReleaseDao,
+  getFundReleaseDataDao,
   // updateFinancialSummary,
   // fetchUpdatedFinancialSummary,
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
@@ -263,13 +266,43 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
-    logger.info("Financial summary report fetched successfully.", {
-      userId,
-      action: "FETCH_FINANCIAL_SUMMARY_REPORT",
-      ip: clientIp,
-      reportSummary: report.length,
-    });
+    // Calculate totals for all rows
+    const totals = report.reduce(
+      (acc, row) => {
+        acc.totalApprovedSchemes += parseFloat(row.approved_schemes || 0);
+        acc.totalFundReleaseToULBs += parseFloat(row.fund_release_to_ulbs || 0);
+        acc.totalAmount += parseFloat(row.amount || 0);
+        acc.totalProjectCompleted += parseFloat(row.project_completed || 0);
+        acc.totalExpenditure += parseFloat(row.expenditure || 0);
+        acc.totalBalanceAmount += parseFloat(row.balance_amount || 0);
+        acc.totalFinancialProgress += parseFloat(
+          row.financial_progress_in_percentage || 0
+        );
+        acc.totalNumberOfTenderFloated += parseFloat(
+          row.number_of_tender_floated || 0
+        );
+        acc.totalTenderNotFloated += parseFloat(row.tender_not_floated || 0);
+        acc.totalWorkInProgress += parseFloat(row.work_in_progress || 0);
+        acc.totalProjectNotStarted += parseFloat(row.project_not_started || 0);
 
+        return acc;
+      },
+      {
+        totalApprovedSchemes: 0,
+        totalFundReleaseToULBs: 0,
+        totalAmount: 0,
+        totalProjectCompleted: 0,
+        totalExpenditure: 0,
+        totalBalanceAmount: 0,
+        totalFinancialProgress: 0,
+        totalNumberOfTenderFloated: 0,
+        totalTenderNotFloated: 0,
+        totalWorkInProgress: 0,
+        totalProjectNotStarted: 0,
+      }
+    );
+
+    // Handle BigInt serialization by converting to string
     const result = report.map((row) => {
       return {
         ...row,
@@ -277,16 +310,80 @@ const getFinancialSummaryReport = async (req, res) => {
         ...Object.fromEntries(
           Object.entries(row).map(([key, value]) => [
             key,
-            typeof value === "bigint" ? value.toString() : value,
+            typeof value === "bigint" ? value.toString() : value, // Convert BigInt to string
           ])
         ),
       };
     });
 
+    // Upsert into the database
+    const upsertPromises = result.map(async (row) => {
+      return prisma.financialSummaryReport.upsert({
+        where: {
+          ulb_id: row.ulb_id, // Unique identifier
+        },
+        update: {
+          ulb_name: row.ulb_name,
+          approved_schemes: parseFloat(row.approved_schemes || 0),
+          fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs || 0),
+          amount: parseFloat(row.amount || 0),
+          project_completed: parseFloat(row.project_completed || 0),
+          expenditure: parseFloat(row.expenditure || 0),
+          balance_amount: parseFloat(row.balance_amount || 0),
+          financial_progress_in_percentage: parseFloat(
+            row.financial_progress_in_percentage || 0
+          ),
+          number_of_tender_floated: parseFloat(
+            row.number_of_tender_floated || 0
+          ),
+          tender_not_floated: parseFloat(row.tender_not_floated || 0),
+          work_in_progress: parseFloat(row.work_in_progress || 0),
+          project_not_started: parseFloat(row.project_not_started || 0),
+        },
+        create: {
+          ulb_id: row.ulb_id,
+          ulb_name: row.ulb_name,
+          approved_schemes: parseFloat(row.approved_schemes || 0),
+          fund_release_to_ulbs: parseFloat(row.fund_release_to_ulbs || 0),
+          amount: parseFloat(row.amount || 0),
+          project_completed: parseFloat(row.project_completed || 0),
+          expenditure: parseFloat(row.expenditure || 0),
+          balance_amount: parseFloat(row.balance_amount || 0),
+          financial_progress_in_percentage: parseFloat(
+            row.financial_progress_in_percentage || 0
+          ),
+          number_of_tender_floated: parseFloat(
+            row.number_of_tender_floated || 0
+          ),
+          tender_not_floated: parseFloat(row.tender_not_floated || 0),
+          work_in_progress: parseFloat(row.work_in_progress || 0),
+          project_not_started: parseFloat(row.project_not_started || 0),
+        },
+      });
+    });
+
+    // Await all upsert operations
+    await Promise.all(upsertPromises);
+
+    // Return success response with the report and totals
     return res.status(200).json({
       status: "success",
-      message: "Financial summary report fetched successfully.",
+      message: "Financial summary report fetched and saved successfully.",
       data: result,
+      totals: {
+        totalApprovedSchemes: totals.totalApprovedSchemes,
+        totalFundReleaseToULBs: totals.totalFundReleaseToULBs,
+        totalAmount: totals.totalAmount,
+        totalProjectCompleted: totals.totalProjectCompleted,
+        totalExpenditure: totals.totalExpenditure,
+        totalBalanceAmount: totals.totalBalanceAmount,
+        totalFinancialProgress:
+          totals.totalFinancialProgress / report.length || 0, // Average
+        totalNumberOfTenderFloated: totals.totalNumberOfTenderFloated,
+        totalTenderNotFloated: totals.totalTenderNotFloated,
+        totalWorkInProgress: totals.totalWorkInProgress,
+        totalProjectNotStarted: totals.totalProjectNotStarted,
+      },
     });
   } catch (error) {
     logger.error("Error fetching financial summary report.", {
@@ -326,220 +423,335 @@ const getFinancialSummaryReport = async (req, res) => {
  *
  * @returns {void} - Sends a JSON response to the client with the status and result of the update operation.
  */
-const updateFinancialSummaryReport = async (req, res) => {
-  const clientIp = req.headers["x-forwarded-for"] || req.ip;
-  const userId = req.body?.auth?.id || null;
+// const updateFinancialSummaryReport = async (req, res) => {
+//   const clientIp = req.headers["x-forwarded-for"] || req.ip;
+//   const userId = req.body?.auth?.id || null;
 
+//   const {
+//     ulb_id,
+//     financial_year,
+//     fr_first_instalment,
+//     fr_second_instalment,
+//     fr_third_instalment,
+//     fr_interest_amount,
+//     fr_grant_type,
+//     date_of_release,
+//     city_type,
+//   } = req.body;
+
+//   // Convert `financial_year` to an integer to match the schema
+//   const financialYearInt = parseInt(financial_year, 10);
+
+//   // Validation function
+//   const validateFinancialSummaryInputs = (
+//     financial_year,
+//     first_instalment,
+//     second_instalment,
+//     third_instalment,
+//     interest_amount,
+//     grant_type
+//   ) => {
+//     // Validation logic remains unchanged
+//     // ...
+//     return { status: true }; // Ensure this is always returned
+//   };
+
+//   try {
+//     if (!ulb_id) {
+//       logger.warn("ULB ID is missing in the request.", {
+//         userId,
+//         action: "UPDATE_FINANCIAL_SUMMARY",
+//         ip: clientIp,
+//       });
+
+//       return res.status(200).json({
+//         status: false,
+//         message: "ULB ID is required",
+//       });
+//     }
+
+//     logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`, {
+//       userId,
+//       action: "UPDATE_FINANCIAL_SUMMARY",
+//       ip: clientIp,
+//       data: req.body,
+//     });
+
+//     const existingReport = await prisma.financialSummaryReport.findUnique({
+//       where: { ulb_id },
+//     });
+
+//     if (!existingReport) {
+//       return res.status(200).json({
+//         status: false,
+//         message: "Financial summary report not found",
+//         data: [],
+//       });
+//     }
+
+//     // Validate input values
+//     const validationResponse = validateFinancialSummaryInputs(
+//       financial_year,
+//       fr_first_instalment,
+//       fr_second_instalment,
+//       fr_third_instalment,
+//       fr_interest_amount,
+//       fr_grant_type
+//     );
+
+//     // Defensive check to ensure validationResponse exists
+//     if (
+//       !validationResponse ||
+//       typeof validationResponse.status === "undefined"
+//     ) {
+//       return res.status(200).json({
+//         status: false,
+//         message: "Validation response is invalid.",
+//       });
+//     }
+
+//     if (!validationResponse.status) {
+//       return res.status(200).json({ data: validationResponse });
+//     }
+
+//     // Prepare the data for update, only if new values are provided
+//     const dataToUpdate = {};
+
+//     // Update only if the new value is present
+//     if (financial_year !== undefined) {
+//       dataToUpdate.financial_year = financialYearInt; // Update financial_year
+//     }
+
+//     if (fr_first_instalment !== undefined) {
+//       dataToUpdate.fr_first_instalment = Number(fr_first_instalment); // Update first instalment
+//     }
+
+//     if (fr_second_instalment !== undefined) {
+//       dataToUpdate.fr_second_instalment = Number(fr_second_instalment); // Update second instalment
+//     }
+
+//     if (fr_third_instalment !== undefined) {
+//       dataToUpdate.fr_third_instalment = Number(fr_third_instalment); // Update third instalment
+//     }
+
+//     if (fr_interest_amount !== undefined) {
+//       dataToUpdate.fr_interest_amount = Number(fr_interest_amount); // Update interest amount
+//     }
+
+//     if (fr_grant_type !== undefined) {
+//       dataToUpdate.fr_grant_type = fr_grant_type; // Update grant type
+//     }
+
+//     // Handle date_of_release conversion if present
+//     if (date_of_release) {
+//       const releaseDate = new Date(date_of_release);
+//       if (isNaN(releaseDate.getTime())) {
+//         return res.status(200).json({
+//           status: false,
+//           message:
+//             "Invalid date_of_release format. Expected format is YYYY-MM-DD.",
+//         });
+//       }
+//       dataToUpdate.date_of_release = releaseDate; // Update date_of_release
+//     }
+
+//     // Update city_type if provided
+//     if (city_type !== undefined) {
+//       dataToUpdate.city_type = city_type; // Update city_type
+//     }
+//     // Calculate total_fund_released ensuring values are treated as numbers
+//     const updatedFirstInstalment = Number(
+//       dataToUpdate.fr_first_instalment ||
+//         existingReport.fr_first_instalment ||
+//         0
+//     );
+//     const updatedSecondInstalment = Number(
+//       dataToUpdate.fr_second_instalment ||
+//         existingReport.fr_second_instalment ||
+//         0
+//     );
+//     const updatedThirdInstalment = Number(
+//       dataToUpdate.fr_third_instalment ||
+//         existingReport.fr_third_instalment ||
+//         0
+//     );
+//     const updatedInterestAmount = Number(
+//       dataToUpdate.fr_interest_amount || existingReport.fr_interest_amount || 0
+//     );
+
+//     const total_fund_released =
+//       updatedFirstInstalment +
+//       updatedSecondInstalment +
+//       updatedThirdInstalment +
+//       updatedInterestAmount;
+
+//     dataToUpdate.total_fund_released = total_fund_released; // Ensure the total_fund_released is stored as a number
+//     dataToUpdate.updated_at = new Date(); // Update the updated_at field
+
+//     const updatedReport = await prisma.financialSummaryReport.update({
+//       where: { ulb_id },
+//       data: dataToUpdate, // Use prepared data for update
+//     });
+
+//     await createAuditLog(userId, "UPDATE", "FinancialSummaryReport", ulb_id, {
+//       oldData: existingReport,
+//       newData: updatedReport,
+//     });
+
+//     logger.info(
+//       `Financial summary report updated successfully for ULB ID: ${ulb_id}`,
+//       {
+//         userId,
+//         action: "UPDATE_FINANCIAL_SUMMARY",
+//         ip: clientIp,
+//         updatedReport,
+//       }
+//     );
+
+//     res.status(200).json({
+//       status: true,
+//       message: "Financial summary updated successfully",
+//       data: updatedReport,
+//     });
+//   } catch (error) {
+//     logger.error(
+//       `Error updating financial summary report with ULB ID ${ulb_id}: ${error.message}`,
+//       {
+//         userId,
+//         action: "UPDATE_FINANCIAL_SUMMARY",
+//         ip: clientIp,
+//         error: error.message,
+//       }
+//     );
+
+//     if (error.message.includes("not found")) {
+//       res.status(200).json({
+//         status: false,
+//         message: "Financial summary report not found",
+//         error: error.message,
+//       });
+//     } else {
+//       res.status(200).json({
+//         status: false,
+//         message: "Failed to update financial summary report",
+//         error: error.message,
+//       });
+//     }
+//   }
+// };
+
+const createFundReleaseController = async (req, res) => {
   const {
     ulb_id,
-    financial_year,
-    fr_first_instalment,
-    fr_second_instalment,
-    fr_third_instalment,
-    fr_interest_amount,
-    fr_grant_type,
-    date_of_release,
     city_type,
-  } = req.body;
-
-  // Convert `financial_year` to an integer to match the schema
-  const financialYearInt = parseInt(financial_year, 10);
-
-  // Validation function
-  const validateFinancialSummaryInputs = (
-    financial_year,
+    fund_type,
     first_instalment,
     second_instalment,
     third_instalment,
     interest_amount,
-    grant_type
-  ) => {
-    // Validation logic remains unchanged
-    // ...
-    return { status: true }; // Ensure this is always returned
-  };
+    financial_year,
+    date_of_release,
+  } = req.body;
 
   try {
-    if (!ulb_id) {
-      logger.warn("ULB ID is missing in the request.", {
-        userId,
-        action: "UPDATE_FINANCIAL_SUMMARY",
-        ip: clientIp,
-      });
-
-      return res.status(200).json({
+    // Validation to ensure required fields are provided
+    if (!ulb_id || !financial_year || !city_type || !fund_type) {
+      return res.status(400).json({
         status: false,
-        message: "ULB ID is required",
+        message:
+          "Missing required fields (ulb_id, financial_year, city_type, fund_type).",
       });
     }
 
-    logger.info(`Updating financial summary report for ULB ID: ${ulb_id}`, {
-      userId,
-      action: "UPDATE_FINANCIAL_SUMMARY",
-      ip: clientIp,
-      data: req.body,
-    });
+    // Check if there's already a record for the ULB and financial year
+    const existingFundRelease = await findFundReleaseByUlbIdAndYear(
+      ulb_id,
+      financial_year
+    );
 
-    const existingReport = await prisma.financialSummaryReport.findUnique({
-      where: { ulb_id },
-    });
-
-    if (!existingReport) {
-      return res.status(200).json({
-        status: false,
-        message: "Financial summary report not found",
-        data: [],
-      });
-    }
-
-    // Validate input values
-    const validationResponse = validateFinancialSummaryInputs(
+    let total_fund_released = 0;
+    let dataToUpdate = {
+      ulb_id,
+      city_type,
+      fund_type,
       financial_year,
-      fr_first_instalment,
-      fr_second_instalment,
-      fr_third_instalment,
-      fr_interest_amount,
-      fr_grant_type
-    );
+      date_of_release: date_of_release ? new Date(date_of_release) : null,
+    };
 
-    // Defensive check to ensure validationResponse exists
-    if (
-      !validationResponse ||
-      typeof validationResponse.status === "undefined"
-    ) {
-      return res.status(200).json({
-        status: false,
-        message: "Validation response is invalid.",
-      });
-    }
+    if (existingFundRelease) {
+      // If record exists, update only the fields that haven't been set before (are null)
 
-    if (!validationResponse.status) {
-      return res.status(200).json({ data: validationResponse });
-    }
-
-    // Prepare the data for update, only if new values are provided
-    const dataToUpdate = {};
-
-    // Update only if the new value is present
-    if (financial_year !== undefined) {
-      dataToUpdate.financial_year = financialYearInt; // Update financial_year
-    }
-
-    if (fr_first_instalment !== undefined) {
-      dataToUpdate.fr_first_instalment = Number(fr_first_instalment); // Update first instalment
-    }
-
-    if (fr_second_instalment !== undefined) {
-      dataToUpdate.fr_second_instalment = Number(fr_second_instalment); // Update second instalment
-    }
-
-    if (fr_third_instalment !== undefined) {
-      dataToUpdate.fr_third_instalment = Number(fr_third_instalment); // Update third instalment
-    }
-
-    if (fr_interest_amount !== undefined) {
-      dataToUpdate.fr_interest_amount = Number(fr_interest_amount); // Update interest amount
-    }
-
-    if (fr_grant_type !== undefined) {
-      dataToUpdate.fr_grant_type = fr_grant_type; // Update grant type
-    }
-
-    // Handle date_of_release conversion if present
-    if (date_of_release) {
-      const releaseDate = new Date(date_of_release);
-      if (isNaN(releaseDate.getTime())) {
-        return res.status(200).json({
-          status: false,
-          message:
-            "Invalid date_of_release format. Expected format is YYYY-MM-DD.",
-        });
+      if (!existingFundRelease.first_instalment && first_instalment) {
+        dataToUpdate.first_instalment = Number(first_instalment);
+      } else {
+        dataToUpdate.first_instalment =
+          existingFundRelease.first_instalment || 0;
       }
-      dataToUpdate.date_of_release = releaseDate; // Update date_of_release
-    }
 
-    // Update city_type if provided
-    if (city_type !== undefined) {
-      dataToUpdate.city_type = city_type; // Update city_type
-    }
-    // Calculate total_fund_released ensuring values are treated as numbers
-    const updatedFirstInstalment = Number(
-      dataToUpdate.fr_first_instalment ||
-        existingReport.fr_first_instalment ||
-        0
-    );
-    const updatedSecondInstalment = Number(
-      dataToUpdate.fr_second_instalment ||
-        existingReport.fr_second_instalment ||
-        0
-    );
-    const updatedThirdInstalment = Number(
-      dataToUpdate.fr_third_instalment ||
-        existingReport.fr_third_instalment ||
-        0
-    );
-    const updatedInterestAmount = Number(
-      dataToUpdate.fr_interest_amount || existingReport.fr_interest_amount || 0
-    );
-
-    const total_fund_released =
-      updatedFirstInstalment +
-      updatedSecondInstalment +
-      updatedThirdInstalment +
-      updatedInterestAmount;
-
-    dataToUpdate.total_fund_released = total_fund_released; // Ensure the total_fund_released is stored as a number
-    dataToUpdate.updated_at = new Date(); // Update the updated_at field
-
-    const updatedReport = await prisma.financialSummaryReport.update({
-      where: { ulb_id },
-      data: dataToUpdate, // Use prepared data for update
-    });
-
-    await createAuditLog(userId, "UPDATE", "FinancialSummaryReport", ulb_id, {
-      oldData: existingReport,
-      newData: updatedReport,
-    });
-
-    logger.info(
-      `Financial summary report updated successfully for ULB ID: ${ulb_id}`,
-      {
-        userId,
-        action: "UPDATE_FINANCIAL_SUMMARY",
-        ip: clientIp,
-        updatedReport,
+      if (!existingFundRelease.second_instalment && second_instalment) {
+        dataToUpdate.second_instalment = Number(second_instalment);
+      } else {
+        dataToUpdate.second_instalment =
+          existingFundRelease.second_instalment || 0;
       }
+
+      if (!existingFundRelease.third_instalment && third_instalment) {
+        dataToUpdate.third_instalment = Number(third_instalment);
+      } else {
+        dataToUpdate.third_instalment =
+          existingFundRelease.third_instalment || 0;
+      }
+
+      // Interest amount can be updated if provided, or remain unchanged
+      if (interest_amount !== undefined) {
+        dataToUpdate.interest_amount = Number(interest_amount);
+      } else {
+        dataToUpdate.interest_amount = existingFundRelease.interest_amount || 0;
+      }
+
+      // Calculate the total fund released
+      total_fund_released =
+        (Number(dataToUpdate.first_instalment) || 0) +
+        (Number(dataToUpdate.second_instalment) || 0) +
+        (Number(dataToUpdate.third_instalment) || 0) +
+        (Number(dataToUpdate.interest_amount) || 0);
+
+      dataToUpdate.total_fund_released = total_fund_released;
+    } else {
+      // If no existing record, create a new one
+      dataToUpdate.first_instalment = Number(first_instalment) || 0;
+      dataToUpdate.second_instalment = Number(second_instalment) || 0;
+      dataToUpdate.third_instalment = Number(third_instalment) || 0;
+      dataToUpdate.interest_amount = Number(interest_amount) || 0;
+
+      total_fund_released =
+        (Number(dataToUpdate.first_instalment) || 0) +
+        (Number(dataToUpdate.second_instalment) || 0) +
+        (Number(dataToUpdate.third_instalment) || 0) +
+        (Number(dataToUpdate.interest_amount) || 0);
+
+      dataToUpdate.total_fund_released = total_fund_released;
+    }
+
+    // Call DAO to insert or update the data
+    const upsertedFundRelease = await upsertFundReleaseDao(
+      ulb_id,
+      financial_year,
+      dataToUpdate
     );
 
-    res.status(200).json({
+    // Send response back with the updated/created fund release
+    return res.status(200).json({
       status: true,
-      message: "Financial summary updated successfully",
-      data: updatedReport,
+      message: "Fund release upserted successfully.",
+      data: upsertedFundRelease,
     });
   } catch (error) {
-    logger.error(
-      `Error updating financial summary report with ULB ID ${ulb_id}: ${error.message}`,
-      {
-        userId,
-        action: "UPDATE_FINANCIAL_SUMMARY",
-        ip: clientIp,
-        error: error.message,
-      }
-    );
-
-    if (error.message.includes("not found")) {
-      res.status(200).json({
-        status: false,
-        message: "Financial summary report not found",
-        error: error.message,
-      });
-    } else {
-      res.status(200).json({
-        status: false,
-        message: "Failed to update financial summary report",
-        error: error.message,
-      });
-    }
+    console.error("Error upserting fund release:", error);
+    return res.status(500).json({
+      status: false,
+      message: `Failed to upsert fund release: ${error.message}`,
+    });
   }
 };
 
@@ -675,31 +887,14 @@ const getFundReleaseReport = async (req, res) => {
       query: req.query,
     });
 
-    const { financial_year, city_type, grant_type } = req.query;
+    const { financial_year, city_type, fund_type } = req.query;
 
-    // Fetch data from Prisma
-    const report = await prisma.financialSummaryReport.findMany({
-      where: {
-        financial_year: financial_year
-          ? parseInt(financial_year, 10)
-          : undefined,
-        city_type: city_type || undefined,
-        fr_grant_type: grant_type || undefined,
-      },
-      select: {
-        ulb_id: true,
-        ulb_name: true,
-        financial_year: true,
-        fr_first_instalment: true,
-        fr_second_instalment: true,
-        fr_third_instalment: true,
-        fr_interest_amount: true,
-        fr_grant_type: true,
-        total_fund_released: true,
-        date_of_release: true,
-        city_type: true,
-      },
-    });
+    // Call DAO function to fetch fund release data with filters
+    const report = await getFundReleaseDataDao(
+      financial_year,
+      city_type,
+      fund_type
+    );
 
     if (!report.length) {
       return res.status(200).json({
@@ -711,10 +906,10 @@ const getFundReleaseReport = async (req, res) => {
     // Calculate totals for all rows
     const totals = report.reduce(
       (acc, row) => {
-        acc.totalFirstInstalment += parseFloat(row.fr_first_instalment || 0);
-        acc.totalSecondInstalment += parseFloat(row.fr_second_instalment || 0);
-        acc.totalThirdInstalment += parseFloat(row.fr_third_instalment || 0);
-        acc.totalInterestAmount += parseFloat(row.fr_interest_amount || 0);
+        acc.totalFirstInstalment += parseFloat(row.first_instalment || 0);
+        acc.totalSecondInstalment += parseFloat(row.second_instalment || 0);
+        acc.totalThirdInstalment += parseFloat(row.third_instalment || 0);
+        acc.totalInterestAmount += parseFloat(row.interest_amount || 0);
         acc.totalFundReleased += parseFloat(row.total_fund_released || 0);
         return acc;
       },
@@ -761,7 +956,8 @@ const getFundReleaseReport = async (req, res) => {
 };
 module.exports = {
   getFinancialSummaryReport,
-  updateFinancialSummaryReport,
+  // updateFinancialSummaryReport,
+  createFundReleaseController,
   getUpdatedFinancialSummaryReport,
   getFundReleaseReport,
 };
