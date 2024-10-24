@@ -51,41 +51,71 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
-    // Calculate totals for all rows
-    const totals = report.reduce(
-      (acc, row) => {
-        acc.totalApprovedSchemes += parseFloat(row.approved_schemes || 0);
-        acc.totalFundReleaseToULBs += parseFloat(row.fund_release_to_ulbs || 0);
-        acc.totalAmount += parseFloat(row.amount || 0);
-        acc.totalProjectCompleted += parseFloat(row.project_completed || 0);
-        acc.totalExpenditure += parseFloat(row.expenditure || 0);
-        acc.totalBalanceAmount += parseFloat(row.balance_amount || 0);
-        acc.totalFinancialProgress += parseFloat(
-          row.financial_progress_in_percentage || 0
-        );
-        acc.totalNumberOfTenderFloated += parseFloat(
-          row.number_of_tender_floated || 0
-        );
-        acc.totalTenderNotFloated += parseFloat(row.tender_not_floated || 0);
-        acc.totalWorkInProgress += parseFloat(row.work_in_progress || 0);
-        acc.totalProjectNotStarted += parseFloat(row.project_not_started || 0);
-
-        return acc;
-      },
-      {
-        totalApprovedSchemes: 0,
-        totalFundReleaseToULBs: 0,
-        totalAmount: 0,
-        totalProjectCompleted: 0,
-        totalExpenditure: 0,
-        totalBalanceAmount: 0,
-        totalFinancialProgress: 0,
-        totalNumberOfTenderFloated: 0,
-        totalTenderNotFloated: 0,
-        totalWorkInProgress: 0,
-        totalProjectNotStarted: 0,
-      }
+    // Fetch totals for tied, untied, and ambient grants separately
+    const tiedTotal = await fetchFinancialSummaryReport(
+      city_type,
+      "tied",
+      sector,
+      financial_year
     );
+    const untiedTotal = await fetchFinancialSummaryReport(
+      city_type,
+      "untied",
+      sector,
+      financial_year
+    );
+    const ambientTotal = await fetchFinancialSummaryReport(
+      city_type,
+      "ambient",
+      sector,
+      financial_year
+    );
+
+    // Calculate totals for each category
+    const calculateTotals = (reportData) =>
+      reportData.reduce(
+        (acc, row) => {
+          acc.totalApprovedSchemes += parseFloat(row.approved_schemes || 0);
+          acc.totalFundReleaseToULBs += parseFloat(
+            row.fund_release_to_ulbs || 0
+          );
+          acc.totalAmount += parseFloat(row.amount || 0);
+          acc.totalProjectCompleted += parseFloat(row.project_completed || 0);
+          acc.totalExpenditure += parseFloat(row.expenditure || 0);
+          acc.totalBalanceAmount += parseFloat(row.balance_amount || 0);
+          acc.totalFinancialProgress += parseFloat(
+            row.financial_progress_in_percentage || 0
+          );
+          acc.totalNumberOfTenderFloated += parseFloat(
+            row.number_of_tender_floated || 0
+          );
+          acc.totalTenderNotFloated += parseFloat(row.tender_not_floated || 0);
+          acc.totalWorkInProgress += parseFloat(row.work_in_progress || 0);
+          acc.totalProjectNotStarted += parseFloat(
+            row.project_not_started || 0
+          );
+
+          return acc;
+        },
+        {
+          totalApprovedSchemes: 0,
+          totalFundReleaseToULBs: 0,
+          totalAmount: 0,
+          totalProjectCompleted: 0,
+          totalExpenditure: 0,
+          totalBalanceAmount: 0,
+          totalFinancialProgress: 0,
+          totalNumberOfTenderFloated: 0,
+          totalTenderNotFloated: 0,
+          totalWorkInProgress: 0,
+          totalProjectNotStarted: 0,
+        }
+      );
+
+    const totals = calculateTotals(report);
+    const tiedTotals = calculateTotals(tiedTotal);
+    const untiedTotals = calculateTotals(untiedTotal);
+    const ambientTotals = calculateTotals(ambientTotal);
 
     // Handle BigInt serialization by converting to string
     const result = report.map((row) => {
@@ -158,18 +188,10 @@ const getFinancialSummaryReport = async (req, res) => {
       message: "Financial summary report fetched and saved successfully.",
       data: result,
       totals: {
-        totalApprovedSchemes: totals.totalApprovedSchemes,
-        totalFundReleaseToULBs: totals.totalFundReleaseToULBs,
-        totalAmount: totals.totalAmount,
-        totalProjectCompleted: totals.totalProjectCompleted,
-        totalExpenditure: totals.totalExpenditure,
-        totalBalanceAmount: totals.totalBalanceAmount,
-        totalFinancialProgress:
-          totals.totalFinancialProgress / report.length || 0, // Average
-        totalNumberOfTenderFloated: totals.totalNumberOfTenderFloated,
-        totalTenderNotFloated: totals.totalTenderNotFloated,
-        totalWorkInProgress: totals.totalWorkInProgress,
-        totalProjectNotStarted: totals.totalProjectNotStarted,
+        overall: totals,
+        tied: tiedTotals,
+        untied: untiedTotals,
+        ambient: ambientTotals,
       },
     });
   } catch (error) {

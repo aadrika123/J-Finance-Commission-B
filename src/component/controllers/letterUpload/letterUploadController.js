@@ -344,9 +344,12 @@ const getNotificationsController = async (req, res) => {
       letter_url: notification.LetterUpload.letter_url || null, // Access letter_url
     }));
 
+    const totalCount = notifications.length; // Calculate total number of notifications
+
     return res.status(200).json({
       status: true,
       message: "Notifications fetched successfully.",
+      totalCount, // Include total count of notifications in response
       data: responseData,
     });
   } catch (error) {
