@@ -9,44 +9,32 @@ const {
   getLettersForULBController,
   getNotificationsController,
 } = require("../../controllers/letterUpload/letterUploadController");
-// const roleMiddleware = require("../../../middlewares/roleMiddleware");
+const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
 // Route to upload a letter
 router.post(
   "/letter",
-  // roleMiddleware(["SUDA FC"]),
+  roleMiddleware(["SUDA FC"]),
   upload.single("letter"),
   uploadLetterController
 );
 
 // Route to get all active letters
-router.get(
-  "/letters",
-  // roleMiddleware(["SUDA FC"]),
-  getLettersController
-);
+router.get("/letters", roleMiddleware(["SUDA FC"]), getLettersController);
 
 // Route to soft delete a letter
-router.post(
-  "/letter/:id",
-  // roleMiddleware(["SUDA FC"]),
-  deleteLetterController
-);
+router.post("/letter/:id", roleMiddleware(["SUDA FC"]), deleteLetterController);
 
 // Route for sending a letter to a specific ULB or all ULBs
-router.post(
-  "/send-letter",
-  // roleMiddleware(["SUDA FC"]),
-  sendLetterController
-);
+router.post("/send-letter", roleMiddleware(["SUDA FC"]), sendLetterController);
 router.get(
   "/letters/ulb",
-  // roleMiddleware(["EO FC"]),
+  roleMiddleware(["EO FC"]),
   getLettersForULBController
 );
 router.get(
   "/letters/ulb/notifications",
-  // roleMiddleware(["EO FC"]),
+  roleMiddleware(["EO FC"]),
   getNotificationsController
 );
 

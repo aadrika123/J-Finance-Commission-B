@@ -3,7 +3,7 @@ const {
   getFilteredFinancialSummaryMillionPlus,
   getFilteredFinancialSummaryNonMillionPlus,
 } = require("../../controllers/financialSummaryReport/financialDashboardController");
-// const roleMiddleware = require("../../../middlewares/roleMiddleware");
+const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get(
 // This endpoint calls the controller function to handle the request
 router.get(
   "/financial-DB-NonMillionPlus",
-  // roleMiddleware(["SUDA FC"]),
+  roleMiddleware(["SUDA FC"]),
   getFilteredFinancialSummaryNonMillionPlus
 );
 
