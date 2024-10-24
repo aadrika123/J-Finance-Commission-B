@@ -41,6 +41,7 @@ const addSchemeInfo = async (req, res) => {
       project_cost,
       scheme_name,
       sector,
+      financial_year,
       grant_type,
       city_type,
       date_of_approval, // Date input that can be backdated
@@ -72,6 +73,7 @@ const addSchemeInfo = async (req, res) => {
       scheme_name,
       sector,
       grant_type,
+      financial_year,
       city_type,
       date_of_approval: dateOfApprovedUTC, // Pass the backdated date
       created_at: createdAtUTC,
@@ -83,7 +85,7 @@ const addSchemeInfo = async (req, res) => {
   } catch (error) {
     // Handle error response with status and message
     logger.error("Error adding scheme information:", error);
-    res.status(500).json({
+    res.status(200).json({
       status: false,
       message: `Error adding scheme information: ${error.message}`,
     });
@@ -122,7 +124,7 @@ const fetchSchemeInfo = async (req, res) => {
 
     // Validate pagination parameters
     if (page < 1 || take < 1) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: false,
         message: "Invalid pagination parameters",
       });
@@ -146,12 +148,7 @@ const fetchSchemeInfo = async (req, res) => {
       filterCondition.ulb = ulb; // Filter by ulb
     }
     if (financial_year) {
-      const startOfYear = new Date(financial_year, 0, 1); // January 1st of the year
-      const endOfYear = new Date(financial_year, 11, 31, 23, 59, 59); // December 31st of the year
-      filterCondition.created_at = {
-        gte: startOfYear,
-        lte: endOfYear,
-      }; // Filter by created_at range
+      filterCondition.financial_year = financial_year; // Filter directly by financial_year
     }
 
     // Fetch scheme information and total count of records
@@ -212,7 +209,7 @@ const fetchSchemeInfo = async (req, res) => {
       ip: clientIp,
       error: error.message,
     });
-    res.status(500).json({
+    res.status(200).json({
       status: false,
       message: "Failed to fetch scheme request list",
       error: error.message,
@@ -310,7 +307,7 @@ const getSchemeInfoById = async (req, res) => {
       ip: clientIp,
       error: error.message,
     });
-    res.status(500).json({
+    res.status(200).json({
       status: false,
       message: "Internal server error",
       error: error.message,
@@ -393,7 +390,7 @@ const getSchemesInfoByULBName = async (req, res) => {
     });
   } catch (error) {
     console.error(error); // Log the actual error for debugging
-    res.status(500).json({
+    res.status(200).json({
       status: false,
       message: "An error occurred while fetching schemes",
       error: error.message, // Provide error message for debugging

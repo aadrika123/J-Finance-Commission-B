@@ -22,23 +22,15 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
   const userId = req.body?.auth?.id || null; // Get user ID from request if authenticated
 
   try {
-    const { ulb_name, grant_type, financial_year, sector } = req.query; // Updated grant_type to fr_grant_type
+    const { ulb_name, grant_type, financial_year, sector } = req.query;
 
-    // Prepare filters from query parameters with proper sanitization and validation
+    // Prepare filters from query parameters without parsing financial_year as an integer
     const filters = {
       ulb_name: ulb_name || null,
-      grant_type: grant_type || null, // Updated field
-      financial_year: financial_year ? parseInt(financial_year, 10) : null,
+      grant_type: grant_type || null,
+      financial_year: financial_year || null, // Now expecting string
       sector: sector || null,
     };
-
-    // Check if the financial year is a valid number
-    if (filters.financial_year && isNaN(filters.financial_year)) {
-      return res.status(400).json({
-        status: false,
-        message: "Invalid financial year",
-      });
-    }
 
     // Log the action of fetching financial data for Million Plus Cities
     logger.info("Fetching financial summary for Million Plus Cities...", {
@@ -124,27 +116,19 @@ const getFilteredFinancialSummaryMillionPlus = async (req, res) => {
  * @param {Object} res - The response object used to send the result back to the client.
  */
 const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
-  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture client's IP address
-  const userId = req.body?.auth?.id || null; // Get user ID from request if authenticated
+  const clientIp = req.headers["x-forwarded-for"] || req.ip;
+  const userId = req.body?.auth?.id || null;
 
   try {
-    const { ulb_name, grant_type, financial_year, sector } = req.query; // Updated grant_type to fr_grant_type
+    const { ulb_name, grant_type, financial_year, sector } = req.query;
 
     // Prepare filters from query parameters with proper sanitization and validation
     const filters = {
       ulb_name: ulb_name || null,
-      grant_type: grant_type || null, // Updated field
-      financial_year: financial_year ? parseInt(financial_year, 10) : null,
+      grant_type: grant_type || null,
+      financial_year: financial_year || null, // Updated to treat financial year as a string
       sector: sector || null,
     };
-
-    // Check if the financial year is a valid number
-    if (filters.financial_year && isNaN(filters.financial_year)) {
-      return res.status(400).json({
-        status: false,
-        message: "Invalid financial year",
-      });
-    }
 
     // Log the action of fetching financial data for Non-Million Plus Cities
     logger.info("Fetching financial summary for Non-Million Plus Cities...", {
@@ -226,7 +210,6 @@ const getFilteredFinancialSummaryNonMillionPlus = async (req, res) => {
     });
   }
 };
-
 // Export the functions to be used in routes
 module.exports = {
   getFilteredFinancialSummaryMillionPlus,

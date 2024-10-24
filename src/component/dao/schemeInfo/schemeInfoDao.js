@@ -173,6 +173,7 @@ const createSchemeInfo = async (data) => {
         scheme_name: data.scheme_name,
         sector: data.sector,
         grant_type: data.grant_type,
+        financial_year: data.financial_year,
         city_type: data.city_type,
         date_of_approval: dateInUTC, // Store backdated date in UTC
         created_at: new Date(), // Automatically handled by Prisma in UTC
@@ -191,6 +192,7 @@ const createSchemeInfo = async (data) => {
         scheme_name: createdScheme.scheme_name,
         sector: createdScheme.sector,
         grant_type: createdScheme.grant_type,
+        financial_year: data.financial_year,
         city_type: createdScheme.city_type,
         date_of_approval: createdScheme.date_of_approval,
         created_at: createdScheme.created_at,
