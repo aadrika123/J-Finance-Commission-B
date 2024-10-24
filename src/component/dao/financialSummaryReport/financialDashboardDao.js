@@ -33,7 +33,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     FSR.expenditure,
     FSR.financial_progress_in_percentage AS financial_progress,
     FSR.project_completed,
-    SI.financial_year,
+    ARRAY_AGG(DISTINCT SI.financial_year) AS financial_years,  -- Aggregate financial years into an array
     ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate grant types into an array
     ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Combine all sectors into an array
     SI.city_type,
@@ -60,7 +60,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     paramIndex++;
   }
   if (financial_year) {
-    query += ` AND SI.financial_year = $${paramIndex}`;
+    query += ` AND SI.financial_year = $${paramIndex}`; // No need to parse financial_year, treat as string
     queryParams.push(financial_year);
     paramIndex++;
   }
@@ -74,7 +74,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
   query += `
   GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
            FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, 
-           FSR.project_completed, SI.financial_year, SI.city_type, 
+           FSR.project_completed, SI.city_type, 
            FSR.project_not_started
   ORDER BY FSR.ulb_id ASC
 `;
@@ -86,7 +86,6 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     throw new Error("Error fetching financial summary data");
   }
 };
-
 /**
  * Fetches financial summary report data for Non-Million Plus Cities based on optional filters.
  *
@@ -107,7 +106,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
 const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
-  // Updated SQL query to fetch unique ULBs with aggregated grant types and sectors
+  // Updated SQL query to fetch unique ULBs with aggregated financial years, grant types, and sectors
   let query = `
     SELECT DISTINCT ON (FSR.ulb_id)
       FSR.ulb_id,
@@ -118,11 +117,10 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
       FSR.expenditure,
       FSR.financial_progress_in_percentage AS financial_progress,
       FSR.project_completed,
-      SI.financial_year,
+      ARRAY_AGG(DISTINCT SI.financial_year) AS financial_years,  -- Aggregate distinct financial years into an array
       ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate distinct grant types into an array
       ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Aggregate distinct sectors into an array
       SI.city_type,
-      
       FSR.project_not_started
     FROM 
       "FinancialSummaryReport" FSR
@@ -164,7 +162,7 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
     GROUP BY 
       FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
       FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, FSR.project_completed, 
-      SI.financial_year, SI.city_type,  FSR.project_not_started
+      SI.city_type, FSR.project_not_started
     ORDER BY 
       FSR.ulb_id ASC, FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC 
     LIMIT 5`;
