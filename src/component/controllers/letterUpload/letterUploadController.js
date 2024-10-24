@@ -188,8 +188,8 @@ const sendLetterController = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: ulb_id
-        ? "Letter sent to specific ULB"
-        : "Letter sent to all ULBs",
+        ? "Letter sent to specific ULB and notification created."
+        : "Letter sent to all ULBs and notifications created.",
       data: result,
     });
   } catch (error) {
@@ -210,6 +210,7 @@ const getLettersForULBController = async (req, res) => {
   const skip = (pageNumber - 1) * pageSize; // Calculate offset
 
   const authenticatedUlbId = req.body?.auth?.ulb_id; // Get ulb_id from request body
+  // const authenticatedUlbId = 2; // Mock authenticatedUlbId for now
 
   if (String(authenticatedUlbId) !== ulb_id) {
     return res
@@ -218,41 +219,56 @@ const getLettersForULBController = async (req, res) => {
   }
 
   if (!ulb_id) {
-    return res
-      .status(200)
-      .json({ status: false, message: "Ulb id required !" });
+    return res.status(200).json({ status: false, message: "Ulb id required!" });
   }
 
   try {
     const result = await getLettersForULB(ulb_id); // Get all letters for the specific ULB
 
+    if (!result || result.length === 0) {
+      return res.status(200).json({
+        status: false,
+        message: "No letters found for this ULB.",
+        data: [],
+      });
+    }
+
     // Apply pagination in memory
     const paginatedLetters = result.slice(skip, skip + pageSize);
 
     // Prepare response data
-    const responseData = paginatedLetters.map((item) => ({
-      id: item.letter.id,
-      ulb_id: item.letter.ulb_id || null,
-      order_number: item.letter.order_number || "Unknown Order Number",
-      letter_url: item.letter.letter_url || null,
-      created_at: item.letter.created_at,
-      updated_at: item.letter.updated_at,
-      is_active: item.letter.is_active,
-      is_global: item.letter.is_global,
-      inbox: item.letter.inbox,
-      outbox: item.letter.outbox,
-      ULB: item.letter.ULB ? item.letter.ULB.ulb_name : "Unknown ULB",
+    const responseData = paginatedLetters.map((item) => {
+      const letter = item || {}; // Ensure letter exists
+      const notification = Array.isArray(item.notification)
+        ? item.notification[0]
+        : {}; // Access the first notification if it exists
 
-      notification: {
-        id: item.notification.id,
-        description:
-          item.notification.description ||
-          `You received a letter with order number ${item.letter.order_number}`,
-        ulb_id: item.notification.ulb_id,
-        letter_id: item.notification.letter_id,
-        created_at: item.notification.created_at,
-      },
-    }));
+      return {
+        id: letter.id || null, // Fetch letter id
+        ulb_id: letter.ulb_id || null, // Fetch ULB id
+        order_number: letter.order_number || "Unknown Order Number", // Provide fallback
+        letter_url: letter.letter_url || null,
+        created_at: letter.created_at,
+        updated_at: letter.updated_at,
+        is_active: letter.is_active,
+        is_global: letter.is_global,
+        inbox: letter.inbox,
+        outbox: letter.outbox,
+        ULB: letter.ULB ? letter.ULB.ulb_name : "Unknown ULB", // Handle null ULB
+
+        notification: {
+          id: notification?.id || null, // Handle null notification id
+          description:
+            notification?.description ||
+            `You received a letter with order number ${
+              letter.order_number || "Unknown"
+            }`, // Handle null description
+          ulb_id: notification?.ulb_id,
+          letter_id: notification?.letter_id,
+          created_at: notification?.created_at,
+        },
+      };
+    });
 
     // Total number of letters
     const totalLetters = result.length;
@@ -303,6 +319,7 @@ const getNotificationsController = async (req, res) => {
   const { ulb_id } = req.query; // Get ulb_id from query parameters
 
   const authenticatedUlbId = req.body?.auth?.ulb_id; // Get ulb_id from request body
+  // const authenticatedUlbId = 2;
 
   if (String(authenticatedUlbId) !== ulb_id) {
     return res.status(200).json({ message: "Unauthorized access." });
