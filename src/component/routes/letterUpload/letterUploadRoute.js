@@ -20,14 +20,34 @@ router.post(
 );
 
 // Route to get all active letters
-router.get("/letters", getLettersController);
+router.get(
+  "/letters",
+  // roleMiddleware(["SUDA FC"]),
+  getLettersController
+);
 
 // Route to soft delete a letter
-router.post("/letter/:id", deleteLetterController);
+router.post(
+  "/letter/:id",
+  // roleMiddleware(["SUDA FC"]),
+  deleteLetterController
+);
 
 // Route for sending a letter to a specific ULB or all ULBs
-router.post("/send-letter", sendLetterController);
-router.get("/letters/ulb", getLettersForULBController);
-router.get("/letters/ulb/notifications", getNotificationsController);
+router.post(
+  "/send-letter",
+  // roleMiddleware(["SUDA FC"]),
+  sendLetterController
+);
+router.get(
+  "/letters/ulb",
+  // roleMiddleware(["EO FC"]),
+  getLettersForULBController
+);
+router.get(
+  "/letters/ulb/notifications",
+  // roleMiddleware(["EO FC"]),
+  getNotificationsController
+);
 
 module.exports = router;

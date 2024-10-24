@@ -26,7 +26,7 @@ router.post(
 
 router.get(
   "/fund-released",
-  // roleMiddleware(["SUDA FC"]),
+  // roleMiddleware(["SUDA FC"] || ["EO FC"]),
   getFundReleaseReport
 );
 

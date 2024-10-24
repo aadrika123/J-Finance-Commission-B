@@ -74,7 +74,7 @@ const getLettersController = async (req, res) => {
       created_at: letter.created_at,
       updated_at: letter.updated_at,
       is_active: letter.is_active,
-      ULB: letter.ULB ? letter.ULB.ulb_name : "Unknown ULB", // Handle missing ULB
+      ULB: letter.ULB ? letter.ULB.ulb_name : "All ULBs", // Handle missing ULB
     }));
 
     // Total number of letters
@@ -254,7 +254,7 @@ const getLettersForULBController = async (req, res) => {
         is_global: letter.is_global,
         inbox: letter.inbox,
         outbox: letter.outbox,
-        ULB: letter.ULB ? letter.ULB.ulb_name : "Unknown ULB", // Handle null ULB
+        ULB: letter.ULB ? letter.ULB.ulb_name : "All ULBs", // Handle null ULB
 
         notification: {
           id: notification?.id || null, // Handle null notification id
@@ -344,12 +344,12 @@ const getNotificationsController = async (req, res) => {
       letter_url: notification.LetterUpload.letter_url || null, // Access letter_url
     }));
 
-    const totalCount = notifications.length; // Calculate total number of notifications
+    const totalNotificationCount = notifications.length; // Calculate total number of notifications
 
     return res.status(200).json({
       status: true,
       message: "Notifications fetched successfully.",
-      totalCount, // Include total count of notifications in response
+      totalNotificationCount, // Include total count of notifications in response
       data: responseData,
     });
   } catch (error) {

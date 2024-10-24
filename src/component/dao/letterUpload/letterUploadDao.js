@@ -166,7 +166,7 @@ const getLettersForULB = async (ulb_id) => {
       },
     });
 
-    console.log("Fetched Letters with Notification:", letters);
+    // console.log("Fetched Letters with Notification:", letters);
 
     return letters; // Return the letters array directly
   } catch (error) {
