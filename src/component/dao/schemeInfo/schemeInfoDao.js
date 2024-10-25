@@ -5,7 +5,7 @@ const moment = require("moment-timezone");
 
 const VALID_GRANT_TYPES = ["tied", "untied", "ambient"];
 const VALID_CITY_TYPES = ["million plus", "non million"];
-const VALID_SECTORS = ["water", "sanitation", "swm", "rejuvenation"];
+const VALID_SECTORS = ["water", "sanitation", "swm", "rejuvenation", "others"];
 
 /**
  * Generates a new scheme ID based on the latest scheme ID in the database.
