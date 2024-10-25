@@ -14,7 +14,7 @@ const roleMiddleware = require("../../../middlewares/roleMiddleware");
 // Route to upload a letter
 router.post(
   "/letter",
-  roleMiddleware(["SUDA FC"]),
+  // roleMiddleware(["SUDA FC"]),
   upload.single("letter"),
   uploadLetterController
 );
