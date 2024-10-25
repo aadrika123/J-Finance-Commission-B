@@ -10,25 +10,39 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Configure storage for uploaded files
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, uploadDir);
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, Date.now() + path.extname(file.originalname));
+//   },
+// });
 
-// File filter to allow specific file types and set limits
+// Configure storage to use memory storage for accessing buffer
+const storage = multer.memoryStorage();
+
+// // File filter to allow specific file types and set limits
+// const fileFilter = (req, file, cb) => {
+//   // Set size limit based on the file type
+//   const isPdf = file.mimetype === "application/pdf";
+//   const isImage = file.mimetype.startsWith("image/");
+
+//   if (isPdf) {
+//     cb(null, true); // Allow PDF files
+//   } else if (isImage) {
+//     cb(null, true); // Allow image files
+//   } else {
+//     cb(new Error("Only PDF and image files are allowed"), false);
+//   }
+// };
+
+// File filter to allow specific file types
 const fileFilter = (req, file, cb) => {
-  // Set size limit based on the file type
   const isPdf = file.mimetype === "application/pdf";
   const isImage = file.mimetype.startsWith("image/");
-
-  if (isPdf) {
-    cb(null, true); // Allow PDF files
-  } else if (isImage) {
-    cb(null, true); // Allow image files
+  if (isPdf || isImage) {
+    cb(null, true);
   } else {
     cb(new Error("Only PDF and image files are allowed"), false);
   }
@@ -48,11 +62,14 @@ const limits = (req, file, cb) => {
   }
 };
 
-// Set up multer with the defined storage, file filter, and limits
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: limits,
-});
+// // Set up multer with the defined storage, file filter, and limits
+// const upload = multer({
+//   storage: storage,
+//   fileFilter: fileFilter,
+//   limits: limits,
+// });
+
+// Set up multer with memory storage
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 
 module.exports = upload;

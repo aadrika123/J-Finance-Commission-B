@@ -8,6 +8,9 @@ const {
 } = require("../../dao/letterUpload/letterUploadDao");
 const logger = require("../../../utils/log/logger");
 const createAuditLog = require("../../../utils/auditLog/auditLogger");
+const {
+  imageUploaderV2,
+} = require("../../../utils/fileUpload/uploads/imageUploaderV2");
 
 const uploadLetterController = async (req, res) => {
   const { ulb_id, order_number } = req.body;
@@ -20,16 +23,24 @@ const uploadLetterController = async (req, res) => {
   }
 
   try {
-    const letter_url = `${process.env.SERVER_URL}/uploads/${file.filename}`;
+    // Use imageUploaderV2 to upload the file and get the URL
+    const letterUrlList = await imageUploaderV2([file]);
+    const letter_url = letterUrlList[0]; // Get the URL of the first file
+
+    if (!letter_url) {
+      throw new Error("File upload failed. No URL returned.");
+    }
+
+    // Save the letter info to the database
     const letter = await uploadLetter(ulb_id, order_number, letter_url);
 
     // Create an audit log entry
     await createAuditLog(
       req.body?.auth?.id, // userId, assuming auth data in req.body
-      "CREATE", // actionType, since a new letter is being uploaded
-      "LetterUpload", // tableName for letters
-      letter?.id || null, // recordId, using the letter ID
-      { ulb_id, order_number, letter_url } // changedData, containing uploaded letter details
+      "CREATE",
+      "LetterUpload",
+      letter?.id || null,
+      { ulb_id, order_number, letter_url }
     );
 
     return res.status(201).json({
@@ -41,9 +52,48 @@ const uploadLetterController = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res.status(200).json({ message: "Failed to upload letter." });
+    return res.status(500).json({ message: "Failed to upload letter.", error });
   }
 };
+
+// const uploadLetterController = async (req, res) => {
+//   const { ulb_id, order_number } = req.body;
+//   const file = req.file;
+
+//   if (!file || !order_number) {
+//     return res
+//       .status(200)
+//       .json({ status: false, message: "Missing required fields." });
+//   }
+
+//   try {
+//     // const letter_url = `${req.protocol}://${req.get("host")}/uploads/${
+//     //   file.filename
+//     // }`;
+//     const letter_url = `${process.env.SERVER_URL}/uploads/${file.filename}`;
+//     const letter = await uploadLetter(ulb_id, order_number, letter_url);
+
+//     // Create an audit log entry
+//     await createAuditLog(
+//       req.body?.auth?.id, // userId, assuming auth data in req.body
+//       "CREATE", // actionType, since a new letter is being uploaded
+//       "LetterUpload", // tableName for letters
+//       letter?.id || null, // recordId, using the letter ID
+//       { ulb_id, order_number, letter_url } // changedData, containing uploaded letter details
+//     );
+
+//     return res.status(201).json({
+//       status: true,
+//       message: ulb_id
+//         ? "Letter uploaded to specific ULB"
+//         : "Global letter uploaded to all ULBs",
+//       data: letter,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(200).json({ message: "Failed to upload letter." });
+//   }
+// };
 const getLettersController = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
