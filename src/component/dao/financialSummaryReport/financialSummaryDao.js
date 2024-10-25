@@ -125,56 +125,45 @@ const upsertFundReleaseDao = async (
       where: { ulb_id, financial_year },
     });
 
-    let total_fund_released = 0;
-
-    // If a record exists, add the new interest_amount to the existing one
     if (existingFundRelease) {
-      // Add current interest_amount to the previous interest_amount
-      if (fundReleaseData.interest_amount !== undefined) {
-        fundReleaseData.interest_amount =
-          (existingFundRelease.interest_amount || 0) +
-          fundReleaseData.interest_amount;
-      }
-
-      // Prevent overwriting installments if they already exist
-      if (
-        existingFundRelease.first_instalment &&
-        fundReleaseData.first_instalment
-      ) {
-        delete fundReleaseData.first_instalment;
-      }
-      if (
-        existingFundRelease.second_instalment &&
-        fundReleaseData.second_instalment
-      ) {
-        delete fundReleaseData.second_instalment;
-      }
-      if (
-        existingFundRelease.third_instalment &&
-        fundReleaseData.third_instalment
-      ) {
-        delete fundReleaseData.third_instalment;
-      }
-
-      // Calculate total fund released
-      total_fund_released =
-        (existingFundRelease.first_instalment || 0) +
-        (existingFundRelease.second_instalment || 0) +
-        (existingFundRelease.third_instalment || 0) +
-        (fundReleaseData.interest_amount ||
-          existingFundRelease.interest_amount ||
-          0);
-    } else {
-      // Calculate total_fund_released when creating a new record
-      total_fund_released =
-        (fundReleaseData.first_instalment || 0) +
-        (fundReleaseData.second_instalment || 0) +
-        (fundReleaseData.third_instalment || 0) +
+      // Accumulate interest_amount if a new interest amount is provided
+      fundReleaseData.interest_amount =
+        (existingFundRelease.interest_amount || 0) +
         (fundReleaseData.interest_amount || 0);
+
+      // Update installments only if they are 0 or null in the existing record
+      fundReleaseData.first_instalment =
+        existingFundRelease.first_instalment ||
+        fundReleaseData.first_instalment ||
+        0;
+
+      fundReleaseData.second_instalment =
+        existingFundRelease.second_instalment ||
+        fundReleaseData.second_instalment ||
+        0;
+
+      fundReleaseData.third_instalment =
+        existingFundRelease.third_instalment ||
+        fundReleaseData.third_instalment ||
+        0;
+    } else {
+      // If no existing record, set installments as provided or default to 0
+      fundReleaseData.first_instalment =
+        Number(fundReleaseData.first_instalment) || 0;
+      fundReleaseData.second_instalment =
+        Number(fundReleaseData.second_instalment) || 0;
+      fundReleaseData.third_instalment =
+        Number(fundReleaseData.third_instalment) || 0;
+      fundReleaseData.interest_amount =
+        Number(fundReleaseData.interest_amount) || 0;
     }
 
-    // Set the calculated total_fund_released in fundReleaseData
-    fundReleaseData.total_fund_released = total_fund_released;
+    // Calculate total_fund_released in the DAO
+    fundReleaseData.total_fund_released =
+      (fundReleaseData.first_instalment || 0) +
+      (fundReleaseData.second_instalment || 0) +
+      (fundReleaseData.third_instalment || 0) +
+      (fundReleaseData.interest_amount || 0);
 
     // Perform the upsert operation
     const upsertedFundRelease = await prisma.fundRelease.upsert({
@@ -195,18 +184,31 @@ const upsertFundReleaseDao = async (
   }
 };
 
-const getFundReleaseDataDao = async (financial_year, city_type, fund_type) => {
+const getFundReleaseDataDao = async (
+  financial_year,
+  city_type,
+  fund_type,
+  ulb_id
+) => {
   try {
+    // Convert ulb_id to a number if it's provided
+    const ulbIdAsNumber = ulb_id ? parseInt(ulb_id, 10) : undefined;
+
     // Fetch data from fundRelease table
     const report = await prisma.fundRelease.findMany({
       where: {
         ...(financial_year && { financial_year }), // Filter by financial_year if provided
         ...(city_type && { city_type }), // Filter by city_type if provided
         ...(fund_type && { fund_type }), // Filter by fund_type if provided
+        ...(ulbIdAsNumber && { ulb_id: ulbIdAsNumber }), // Filter by ulb_id if provided, ensuring it's a number
       },
       select: {
         ulb_id: true,
-        ULB: { select: { ulb_name: true } }, // Fetch ULB name if needed
+        ULB: {
+          select: {
+            ulb_name: true,
+          },
+        },
         financial_year: true,
         fund_type: true,
         city_type: true,
@@ -225,6 +227,7 @@ const getFundReleaseDataDao = async (financial_year, city_type, fund_type) => {
     throw new Error("Failed to fetch fund release data.");
   }
 };
+
 module.exports = {
   fetchFinancialSummaryReport,
   findFundReleaseByUlbIdAndYear,
