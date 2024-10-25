@@ -20,9 +20,7 @@ const uploadLetterController = async (req, res) => {
   }
 
   try {
-    const letter_url = `${req.protocol}://${req.get("host")}/uploads/${
-      file.filename
-    }`;
+    const letter_url = `${process.env.SERVER_URL}/uploads/${file.filename}`;
     const letter = await uploadLetter(ulb_id, order_number, letter_url);
 
     // Create an audit log entry
