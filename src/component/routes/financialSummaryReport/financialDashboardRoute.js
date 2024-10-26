@@ -11,7 +11,7 @@ const router = express.Router();
 // This endpoint calls the controller function to handle the request
 router.get(
   "/financial-DB-MillionPlus",
-  // roleMiddleware(["SUDA FC"]),
+  roleMiddleware(["SUDA FC"]),
   getFilteredFinancialSummaryMillionPlus
 );
 
