@@ -185,6 +185,9 @@ const getNotificationsByUlbId = async (ulb_id) => {
       include: {
         LetterUpload: true, // Include all fields of the related LetterUpload model
       },
+      orderBy: {
+        created_at: "desc", // Order by created_at in descending order
+      },
     });
 
     return notifications;

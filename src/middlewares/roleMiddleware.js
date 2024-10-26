@@ -16,13 +16,13 @@ const roleMiddleware = (allowedRoles) => {
 
   return async (req, res, next) => {
     // Log the entire request body and headers
-    console.log("Incoming Request Body:", req.body);
-    console.log("Incoming Request Headers:", req.headers);
+    // console.log("Incoming Request Body:", req.body);
+    // console.log("Incoming Request Headers:", req.headers);
 
     const userDetails = req.body?.auth;
     const userId = userDetails?.id;
 
-    console.log("Allowed Roles: ", allowedRoles);
+    // console.log("Allowed Roles: ", allowedRoles);
     console.log("User ID: ", userId);
 
     if (!userId) {
