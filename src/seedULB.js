@@ -223,8 +223,8 @@ const seedULBs = async () => {
     {
       id: 34,
       ulb_name: "Medininagar Nagar Parishad",
-      latitude: 28.8344,
-      longitude: 77.5699,
+      latitude: 84.0768,
+      longitude: 24.0465,
       city_type: "non million",
     },
     {
@@ -308,7 +308,7 @@ const seedULBs = async () => {
           ulb_name: ulb.ulb_name,
           latitude: ulb.latitude,
           longitude: ulb.longitude,
-          city_type: ulb.city_type, // Add city_type to the data
+          city_type: ulb.city_type,
         },
       });
     }

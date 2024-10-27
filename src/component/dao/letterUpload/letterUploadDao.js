@@ -79,7 +79,7 @@ const softDeleteLetter = async (id) => {
 const sendLetter = async (letterId, ulb_id) => {
   try {
     if (ulb_id) {
-      // If a specific ULB is provided, send letter only to that ULB
+      // Send letter to specific ULB
       const letterUpdate = await prisma.letterUpload.update({
         where: {
           id: letterId,
@@ -90,11 +90,22 @@ const sendLetter = async (letterId, ulb_id) => {
         },
       });
 
+      // Create a notification for the specific ULB
+      const description = `You received a letter with order number ${letterUpdate.order_number}`;
+      const notification = await prisma.notification.create({
+        data: {
+          description,
+          ulb_id: parseInt(ulb_id),
+          letter_id: letterId,
+        },
+      });
+
       return {
         letterUpdate,
+        notification,
       };
     } else {
-      // If no specific ULB, send to all ULBs
+      // Send letter to all ULBs
       const allULBs = await prisma.uLB.findMany(); // Fetch all ULBs
       const notifications = await Promise.all(
         allULBs.map(async (ulb) => {
@@ -103,9 +114,20 @@ const sendLetter = async (letterId, ulb_id) => {
             data: { inbox: false, outbox: true },
           });
 
-          return { letterUpdate }; // Return only letterUpdate, no notifications
+          // Create a notification for each ULB
+          const description = `You received a letter with order number ${letterUpdate.order_number}`;
+          const notification = await prisma.notification.create({
+            data: {
+              description,
+              ulb_id: ulb.id,
+              letter_id: letterId,
+            },
+          });
+
+          return { letterUpdate, notification };
         })
       );
+
       return notifications;
     }
   } catch (error) {
@@ -132,31 +154,21 @@ const getLettersForULB = async (ulb_id) => {
             ulb_name: true,
           },
         },
+        notification: {
+          select: {
+            id: true,
+            description: true,
+            ulb_id: true,
+            letter_id: true,
+            created_at: true,
+          },
+        },
       },
     });
 
-    // Create a notification for each letter
-    const notifications = await Promise.all(
-      letters.map(async (letter) => {
-        const description = `You received a letter with order number ${letter.order_number}`;
+    // console.log("Fetched Letters with Notification:", letters);
 
-        // Create a notification for this letter
-        const notification = await prisma.notification.create({
-          data: {
-            description,
-            ulb_id: parseInt(ulb_id),
-            letter_id: letter.id,
-          },
-        });
-
-        return {
-          notification,
-          letter,
-        };
-      })
-    );
-
-    return notifications;
+    return letters; // Return the letters array directly
   } catch (error) {
     console.error("Error in getLettersForULB:", error); // Log the full error
     throw new Error(`Failed to fetch letters: ${error.message}`);
@@ -172,6 +184,9 @@ const getNotificationsByUlbId = async (ulb_id) => {
       distinct: ["letter_id"], // Ensure distinct notifications by letter_id
       include: {
         LetterUpload: true, // Include all fields of the related LetterUpload model
+      },
+      orderBy: {
+        created_at: "desc", // Order by created_at in descending order
       },
     });
 

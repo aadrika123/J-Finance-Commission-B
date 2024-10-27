@@ -23,61 +23,80 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
   // SQL query ensuring only one entry per ULB with proper grouping
+  //   let query = `
+  //   SELECT
+  //     FSR.ulb_id,
+  //     FSR.ulb_name,
+  //     FSR.approved_schemes AS approved_project,
+  //     FSR.number_of_tender_floated AS tender_approved,
+  //     FSR.amount AS approved_amount,
+  //     FSR.expenditure,
+  //     FSR.financial_progress_in_percentage AS financial_progress,
+  //     FSR.project_completed,
+  //     ARRAY_AGG(DISTINCT SI.financial_year) AS financial_years,  -- Aggregate financial years into an array
+  //     ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate grant types into an array
+  //     ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Combine all sectors into an array
+  //     SI.city_type,
+  //     FSR.project_not_started
+  //   FROM
+  //     "FinancialSummaryReport" FSR
+  //   INNER JOIN
+  //     "Scheme_info" SI ON FSR.ulb_name = SI.ulb
+  //   WHERE
+  //     SI.city_type = 'million plus'
+  // `;
+
   let query = `
-  SELECT 
-    FSR.ulb_id,
-    FSR.ulb_name,
-    FSR.approved_schemes AS approved_project,
-    FSR.number_of_tender_floated AS tender_approved,
-    FSR.amount AS approved_amount,
-    FSR.expenditure,
-    FSR.financial_progress_in_percentage AS financial_progress,
-    FSR.project_completed,
-    SI.financial_year,
-    ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate grant types into an array
-    ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Combine all sectors into an array
-    SI.city_type,
-    FSR.project_not_started
-  FROM 
-    "FinancialSummaryReport" FSR
-  INNER JOIN 
-    "Scheme_info" SI ON FSR.ulb_name = SI.ulb
-  WHERE 
-    SI.city_type = 'million plus'
-`;
+    SELECT 
+      s.ulb_id AS ulb_id,
+      s.ulb AS ulb_name,
+      COUNT(s.scheme_name) AS approved_project,
+      SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS tender_approved,
+      SUM(s.approved_project_cost) AS approved_amount,
+      SUM(s.financial_progress) AS expenditure,
+      AVG(s.financial_progress_in_percentage) AS financial_progress,
+      SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
+      ARRAY_AGG(DISTINCT s.financial_year) AS financial_years,  -- Aggregate distinct financial years
+      ARRAY_AGG(DISTINCT s.grant_type) AS grant_types,          -- Aggregate distinct grant types
+      ARRAY_AGG(DISTINCT s.sector) AS sectors,                  -- Aggregate distinct sectors
+      s.city_type,
+      COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
+    FROM 
+      "Scheme_info" s
+    WHERE 
+      s.city_type = 'million plus'`;
 
   const queryParams = [];
   let paramIndex = 1;
 
+  // Optional filters
   if (ulb_name) {
-    query += ` AND FSR.ulb_name = $${paramIndex}`;
+    query += ` AND s.ulb = $${paramIndex}`;
     queryParams.push(ulb_name);
     paramIndex++;
   }
   if (grant_type) {
-    query += ` AND SI.grant_type = $${paramIndex}`;
+    query += ` AND s.grant_type = $${paramIndex}`;
     queryParams.push(grant_type);
     paramIndex++;
   }
   if (financial_year) {
-    query += ` AND SI.financial_year = $${paramIndex}`;
+    query += ` AND s.financial_year = $${paramIndex}`;
     queryParams.push(financial_year);
     paramIndex++;
   }
   if (sector) {
-    query += ` AND SI.sector = $${paramIndex}`;
+    query += ` AND s.sector = $${paramIndex}`;
     queryParams.push(sector);
     paramIndex++;
   }
 
-  // Group results by ULB ID to ensure uniqueness
+  // Group by and order as specified
   query += `
-  GROUP BY FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
-           FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, 
-           FSR.project_completed, SI.financial_year, SI.city_type, 
-           FSR.project_not_started
-  ORDER BY FSR.ulb_id ASC
-`;
+    GROUP BY 
+      s.ulb_id, s.ulb, s.city_type
+    ORDER BY 
+      s.ulb_id ASC`;
 
   try {
     return await prisma.$queryRawUnsafe(query, ...queryParams);
@@ -86,7 +105,6 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
     throw new Error("Error fetching financial summary data");
   }
 };
-
 /**
  * Fetches financial summary report data for Non-Million Plus Cities based on optional filters.
  *
@@ -107,69 +125,85 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
 const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
   const { ulb_name, grant_type, financial_year, sector } = filters;
 
-  // Updated SQL query to fetch unique ULBs with aggregated grant types and sectors
+  // Updated SQL query to fetch unique ULBs with aggregated financial years, grant types, and sectors
+  // let query = `
+  //   SELECT DISTINCT ON (FSR.ulb_id)
+  //     FSR.ulb_id,
+  //     FSR.ulb_name,
+  //     FSR.approved_schemes AS approved_project,
+  //     FSR.number_of_tender_floated AS tender_approved,
+  //     FSR.amount AS approved_amount,
+  //     FSR.expenditure,
+  //     FSR.financial_progress_in_percentage AS financial_progress,
+  //     FSR.project_completed,
+  //     ARRAY_AGG(DISTINCT SI.financial_year) AS financial_years,  -- Aggregate distinct financial years into an array
+  //     ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate distinct grant types into an array
+  //     ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Aggregate distinct sectors into an array
+  //     SI.city_type,
+  //     FSR.project_not_started
+  //   FROM
+  //     "FinancialSummaryReport" FSR
+  //   INNER JOIN
+  //     "Scheme_info" SI
+  //   ON
+  //     FSR.ulb_name = SI.ulb
+  //   WHERE
+  //     SI.city_type = 'non million'
+  // `;
   let query = `
-    SELECT DISTINCT ON (FSR.ulb_id)
-      FSR.ulb_id,
-      FSR.ulb_name,
-      FSR.approved_schemes AS approved_project,
-      FSR.number_of_tender_floated AS tender_approved,
-      FSR.amount AS approved_amount,
-      FSR.expenditure,
-      FSR.financial_progress_in_percentage AS financial_progress,
-      FSR.project_completed,
-      SI.financial_year,
-      ARRAY_AGG(DISTINCT SI.grant_type) AS grant_types,  -- Aggregate distinct grant types into an array
-      ARRAY_AGG(DISTINCT SI.sector) AS sectors,  -- Aggregate distinct sectors into an array
-      SI.city_type,
-      
-      FSR.project_not_started
-    FROM 
-      "FinancialSummaryReport" FSR
-    INNER JOIN 
-      "Scheme_info" SI
-    ON 
-      FSR.ulb_name = SI.ulb
-    WHERE 
-      SI.city_type = 'non million'
-  `;
+  SELECT 
+    s.ulb_id AS ulb_id,
+    s.ulb AS ulb_name,
+    COUNT(s.scheme_name) AS approved_project,
+    SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS tender_approved,
+    SUM(s.approved_project_cost) AS approved_amount,
+    SUM(s.financial_progress) AS expenditure,
+    AVG(s.financial_progress_in_percentage) AS financial_progress,
+    SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END) AS project_completed,
+    ARRAY_AGG(DISTINCT s.financial_year) AS financial_years,  -- Aggregate distinct financial years
+    ARRAY_AGG(DISTINCT s.grant_type) AS grant_types,          -- Aggregate distinct grant types
+    ARRAY_AGG(DISTINCT s.sector) AS sectors,                  -- Aggregate distinct sectors
+    s.city_type,
+    COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
+  FROM 
+    "Scheme_info" s
+  WHERE 
+    s.city_type = 'non million'`;
 
   const queryParams = [];
-  let paramIndex = 1; // Index for PostgreSQL numbered parameters
+  let paramIndex = 1;
 
   // Add optional filters to the query
   if (ulb_name) {
-    query += ` AND FSR.ulb_name = $${paramIndex}`;
+    query += ` AND s.ulb = $${paramIndex}`;
     queryParams.push(ulb_name);
     paramIndex++;
   }
   if (grant_type) {
-    query += ` AND SI.grant_type = $${paramIndex}`;
+    query += ` AND s.grant_type = $${paramIndex}`;
     queryParams.push(grant_type);
     paramIndex++;
   }
   if (financial_year) {
-    query += ` AND SI.financial_year = $${paramIndex}`;
+    query += ` AND s.financial_year = $${paramIndex}`;
     queryParams.push(financial_year);
     paramIndex++;
   }
   if (sector) {
-    query += ` AND SI.sector = $${paramIndex}`;
+    query += ` AND s.sector = $${paramIndex}`;
     queryParams.push(sector);
     paramIndex++;
   }
 
-  // Ensure the query ends properly before adding ORDER BY and LIMIT
-  query += ` 
-    GROUP BY 
-      FSR.ulb_id, FSR.ulb_name, FSR.approved_schemes, FSR.number_of_tender_floated, 
-      FSR.amount, FSR.expenditure, FSR.financial_progress_in_percentage, FSR.project_completed, 
-      SI.financial_year, SI.city_type,  FSR.project_not_started
-    ORDER BY 
-      FSR.ulb_id ASC, FSR.approved_schemes DESC, FSR.number_of_tender_floated DESC 
-    LIMIT 5`;
+  // Group by and order as specified
+  query += `
+  GROUP BY 
+    s.ulb_id, s.ulb, s.city_type
+  ORDER BY 
+    s.ulb_id ASC, approved_project DESC, tender_approved DESC
+  LIMIT 5`;
 
-  // Execute the raw query using prisma.$queryRawUnsafe
+  // Execute the query with prisma.$queryRawUnsafe
   try {
     return await prisma.$queryRawUnsafe(query, ...queryParams);
   } catch (error) {

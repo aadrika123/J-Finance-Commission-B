@@ -51,41 +51,71 @@ const getFinancialSummaryReport = async (req, res) => {
       financial_year
     );
 
-    // Calculate totals for all rows
-    const totals = report.reduce(
-      (acc, row) => {
-        acc.totalApprovedSchemes += parseFloat(row.approved_schemes || 0);
-        acc.totalFundReleaseToULBs += parseFloat(row.fund_release_to_ulbs || 0);
-        acc.totalAmount += parseFloat(row.amount || 0);
-        acc.totalProjectCompleted += parseFloat(row.project_completed || 0);
-        acc.totalExpenditure += parseFloat(row.expenditure || 0);
-        acc.totalBalanceAmount += parseFloat(row.balance_amount || 0);
-        acc.totalFinancialProgress += parseFloat(
-          row.financial_progress_in_percentage || 0
-        );
-        acc.totalNumberOfTenderFloated += parseFloat(
-          row.number_of_tender_floated || 0
-        );
-        acc.totalTenderNotFloated += parseFloat(row.tender_not_floated || 0);
-        acc.totalWorkInProgress += parseFloat(row.work_in_progress || 0);
-        acc.totalProjectNotStarted += parseFloat(row.project_not_started || 0);
-
-        return acc;
-      },
-      {
-        totalApprovedSchemes: 0,
-        totalFundReleaseToULBs: 0,
-        totalAmount: 0,
-        totalProjectCompleted: 0,
-        totalExpenditure: 0,
-        totalBalanceAmount: 0,
-        totalFinancialProgress: 0,
-        totalNumberOfTenderFloated: 0,
-        totalTenderNotFloated: 0,
-        totalWorkInProgress: 0,
-        totalProjectNotStarted: 0,
-      }
+    // Fetch totals for tied, untied, and ambient grants separately
+    const tiedTotal = await fetchFinancialSummaryReport(
+      city_type,
+      "tied",
+      sector,
+      financial_year
     );
+    const untiedTotal = await fetchFinancialSummaryReport(
+      city_type,
+      "untied",
+      sector,
+      financial_year
+    );
+    const ambientTotal = await fetchFinancialSummaryReport(
+      city_type,
+      "ambient",
+      sector,
+      financial_year
+    );
+
+    // Calculate totals for each category
+    const calculateTotals = (reportData) =>
+      reportData.reduce(
+        (acc, row) => {
+          acc.totalApprovedSchemes += parseFloat(row.approved_schemes || 0);
+          acc.totalFundReleaseToULBs += parseFloat(
+            row.fund_release_to_ulbs || 0
+          );
+          acc.totalAmount += parseFloat(row.amount || 0);
+          acc.totalProjectCompleted += parseFloat(row.project_completed || 0);
+          acc.totalExpenditure += parseFloat(row.expenditure || 0);
+          acc.totalBalanceAmount += parseFloat(row.balance_amount || 0);
+          acc.totalFinancialProgress += parseFloat(
+            row.financial_progress_in_percentage || 0
+          );
+          acc.totalNumberOfTenderFloated += parseFloat(
+            row.number_of_tender_floated || 0
+          );
+          acc.totalTenderNotFloated += parseFloat(row.tender_not_floated || 0);
+          acc.totalWorkInProgress += parseFloat(row.work_in_progress || 0);
+          acc.totalProjectNotStarted += parseFloat(
+            row.project_not_started || 0
+          );
+
+          return acc;
+        },
+        {
+          totalApprovedSchemes: 0,
+          totalFundReleaseToULBs: 0,
+          totalAmount: 0,
+          totalProjectCompleted: 0,
+          totalExpenditure: 0,
+          totalBalanceAmount: 0,
+          totalFinancialProgress: 0,
+          totalNumberOfTenderFloated: 0,
+          totalTenderNotFloated: 0,
+          totalWorkInProgress: 0,
+          totalProjectNotStarted: 0,
+        }
+      );
+
+    const totals = calculateTotals(report);
+    const tiedTotals = calculateTotals(tiedTotal);
+    const untiedTotals = calculateTotals(untiedTotal);
+    const ambientTotals = calculateTotals(ambientTotal);
 
     // Handle BigInt serialization by converting to string
     const result = report.map((row) => {
@@ -158,18 +188,10 @@ const getFinancialSummaryReport = async (req, res) => {
       message: "Financial summary report fetched and saved successfully.",
       data: result,
       totals: {
-        totalApprovedSchemes: totals.totalApprovedSchemes,
-        totalFundReleaseToULBs: totals.totalFundReleaseToULBs,
-        totalAmount: totals.totalAmount,
-        totalProjectCompleted: totals.totalProjectCompleted,
-        totalExpenditure: totals.totalExpenditure,
-        totalBalanceAmount: totals.totalBalanceAmount,
-        totalFinancialProgress:
-          totals.totalFinancialProgress / report.length || 0, // Average
-        totalNumberOfTenderFloated: totals.totalNumberOfTenderFloated,
-        totalTenderNotFloated: totals.totalTenderNotFloated,
-        totalWorkInProgress: totals.totalWorkInProgress,
-        totalProjectNotStarted: totals.totalProjectNotStarted,
+        overall: totals,
+        tied: tiedTotals,
+        untied: untiedTotals,
+        ambient: ambientTotals,
       },
     });
   } catch (error) {
@@ -213,75 +235,23 @@ const createFundReleaseController = async (req, res) => {
       });
     }
 
-    // Check if there's already a record for the ULB and financial year
+    // Fetch the existing fund release record if it exists
     const existingFundRelease = await findFundReleaseByUlbIdAndYear(
       ulb_id,
       financial_year
     );
 
-    let total_fund_released = 0;
     let dataToUpdate = {
       ulb_id,
       city_type,
       fund_type,
       financial_year,
       date_of_release: date_of_release ? new Date(date_of_release) : null,
+      first_instalment: Number(first_instalment) || undefined,
+      second_instalment: Number(second_instalment) || undefined,
+      third_instalment: Number(third_instalment) || undefined,
+      interest_amount: Number(interest_amount) || undefined,
     };
-
-    if (existingFundRelease) {
-      // If record exists, update only the fields that haven't been set before (are null)
-
-      if (!existingFundRelease.first_instalment && first_instalment) {
-        dataToUpdate.first_instalment = Number(first_instalment);
-      } else {
-        dataToUpdate.first_instalment =
-          existingFundRelease.first_instalment || 0;
-      }
-
-      if (!existingFundRelease.second_instalment && second_instalment) {
-        dataToUpdate.second_instalment = Number(second_instalment);
-      } else {
-        dataToUpdate.second_instalment =
-          existingFundRelease.second_instalment || 0;
-      }
-
-      if (!existingFundRelease.third_instalment && third_instalment) {
-        dataToUpdate.third_instalment = Number(third_instalment);
-      } else {
-        dataToUpdate.third_instalment =
-          existingFundRelease.third_instalment || 0;
-      }
-
-      // Interest amount can be updated if provided, or remain unchanged
-      if (interest_amount !== undefined) {
-        dataToUpdate.interest_amount = Number(interest_amount);
-      } else {
-        dataToUpdate.interest_amount = existingFundRelease.interest_amount || 0;
-      }
-
-      // Calculate the total fund released
-      total_fund_released =
-        (Number(dataToUpdate.first_instalment) || 0) +
-        (Number(dataToUpdate.second_instalment) || 0) +
-        (Number(dataToUpdate.third_instalment) || 0) +
-        (Number(dataToUpdate.interest_amount) || 0);
-
-      dataToUpdate.total_fund_released = total_fund_released;
-    } else {
-      // If no existing record, create a new one
-      dataToUpdate.first_instalment = Number(first_instalment) || 0;
-      dataToUpdate.second_instalment = Number(second_instalment) || 0;
-      dataToUpdate.third_instalment = Number(third_instalment) || 0;
-      dataToUpdate.interest_amount = Number(interest_amount) || 0;
-
-      total_fund_released =
-        (Number(dataToUpdate.first_instalment) || 0) +
-        (Number(dataToUpdate.second_instalment) || 0) +
-        (Number(dataToUpdate.third_instalment) || 0) +
-        (Number(dataToUpdate.interest_amount) || 0);
-
-      dataToUpdate.total_fund_released = total_fund_released;
-    }
 
     // Call DAO to insert or update the data
     const upsertedFundRelease = await upsertFundReleaseDao(
@@ -326,13 +296,14 @@ const getFundReleaseReport = async (req, res) => {
       query: req.query,
     });
 
-    const { financial_year, city_type, fund_type } = req.query;
+    const { financial_year, city_type, fund_type, ulb_id } = req.query;
 
     // Call DAO function to fetch fund release data with filters
     const report = await getFundReleaseDataDao(
       financial_year,
       city_type,
-      fund_type
+      fund_type,
+      ulb_id // Pass the ulb_id to the DAO
     );
 
     if (!report.length) {

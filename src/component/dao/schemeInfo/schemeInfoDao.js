@@ -5,7 +5,7 @@ const moment = require("moment-timezone");
 
 const VALID_GRANT_TYPES = ["tied", "untied", "ambient"];
 const VALID_CITY_TYPES = ["million plus", "non million"];
-const VALID_SECTORS = ["water", "sanitation", "swm", "rejuvenation"];
+const VALID_SECTORS = ["water", "sanitation", "swm", "rejuvenation", "others"];
 
 /**
  * Generates a new scheme ID based on the latest scheme ID in the database.
@@ -94,15 +94,14 @@ const createSchemeInfo = async (data) => {
       };
     }
 
-    if (!VALID_SECTORS.includes(data.sector)) {
+    if (data.sector !== null && !VALID_SECTORS.includes(data.sector)) {
       return {
         status: false,
         message: `Invalid sector. Valid sectors are: ${VALID_SECTORS.join(
           ", "
-        )}`,
+        )} or null.`,
       };
     }
-
     if (!VALID_GRANT_TYPES.includes(data.grant_type)) {
       return {
         status: false,
