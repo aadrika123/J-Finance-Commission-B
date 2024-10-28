@@ -131,7 +131,6 @@ const getLettersController = async (req, res) => {
     // Calculate pagination details
     const totalPage = Math.ceil(totalLetters / take);
     const nextPage = page < totalPage ? page + 1 : null;
-    const hasPrevPage = page > 1;
 
     // Log the successful fetch of letters
     logger.info("Letters fetched successfully", {
@@ -148,7 +147,7 @@ const getLettersController = async (req, res) => {
       message: "Letters fetched successfully",
       data: responseLetters,
       pagination: {
-        next: nextPage, // Provide next page number if available
+        next: nextPage, // Directly assign the next page number
         currentPage: page,
         currentTake: take,
         totalPage,

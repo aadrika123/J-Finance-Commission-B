@@ -194,7 +194,7 @@ const fetchSchemeInfo = async (req, res) => {
       message: "Scheme request list fetched successfully",
       data: schemeInfoList,
       pagination: {
-        next: nextPage ? { page: nextPage, take } : null,
+        next: nextPage, // Directly assign the next page number
         currentPage: page,
         currentTake: take,
         totalPage,
@@ -381,7 +381,7 @@ const getSchemesInfoByULBName = async (req, res) => {
       message: "Scheme information fetched successfully",
       data: schemes,
       pagination: {
-        next: nextPage ? { page: nextPage, take } : null, // Info for next page
+        next: nextPage, // Directly assign the next page number
         currentPage: page,
         currentTake: take,
         totalPage,
