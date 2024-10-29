@@ -117,13 +117,13 @@ const fetchSchemeInfo = async (req, res) => {
 
   try {
     const userId = req.body?.auth?.id || null;
-    const page = parseInt(req.query.page, 10) || 1; // Current page number
-    const take = parseInt(req.query.take, 10) || 10; // Number of records per page
-    const skip = (page - 1) * take; // Number of records to skip for pagination
+    const page = parseInt(req.query.page, 10) || 1; // Current page number, default to 1
+    const limit = parseInt(req.query.limit, 10) || 10; // Records per page, default to 10
+    const skip = (page - 1) * limit; // Calculate offset
     const { grant_type, ulb, financial_year } = req.query; // Optional filters
 
     // Validate pagination parameters
-    if (page < 1 || take < 1) {
+    if (page < 1 || limit < 1) {
       return res.status(200).json({
         status: false,
         message: "Invalid pagination parameters",
@@ -148,7 +148,7 @@ const fetchSchemeInfo = async (req, res) => {
     const [schemeInfoList, totalResult] = await Promise.all([
       prisma.scheme_info.findMany({
         skip,
-        take,
+        take: limit,
         where: filterCondition,
         orderBy: {
           created_at: "desc",
@@ -160,9 +160,9 @@ const fetchSchemeInfo = async (req, res) => {
     ]);
 
     // Calculate pagination details
-    const totalPage = Math.ceil(totalResult / take);
+    const totalPage = Math.ceil(totalResult / limit);
     const nextPage = page < totalPage ? page + 1 : null;
-    const prevPage = page > 1 ? page - 1 : null; // Calculate previous page
+    const prevPage = page > 1 ? page - 1 : null;
 
     // Log the successful fetch of scheme information
     logger.info("Scheme information list fetched successfully", {
@@ -170,14 +170,14 @@ const fetchSchemeInfo = async (req, res) => {
       action: "FETCH_SCHEME_INFO",
       ip: clientIp,
       page,
-      take,
+      limit,
       totalResult,
     });
 
     // Create an audit log entry for the fetch operation
     await createAuditLog(userId, "FETCH", "Scheme_info", null, {
       page,
-      take,
+      limit,
       totalResult,
       grant_type,
     });
@@ -189,9 +189,9 @@ const fetchSchemeInfo = async (req, res) => {
       data: schemeInfoList,
       pagination: {
         next: nextPage,
-        previous: prevPage, // Add previous page information
+        previous: prevPage,
         currentPage: page,
-        currentTake: take,
+        currentTake: limit,
         totalPage,
         totalResult,
       },
@@ -315,8 +315,8 @@ const getSchemesInfoByULBName = async (req, res) => {
   try {
     const { ulb_name } = req.query; // Use query parameter for ULB name
     const page = parseInt(req.query.page, 10) || 1; // Current page number, default to 1
-    const take = parseInt(req.query.take, 10) || 10; // Records per page, default to 10
-    const skip = (page - 1) * take; // Calculate records to skip for pagination
+    const limit = parseInt(req.query.limit, 10) || 10; // Records per page, default to 10
+    const skip = (page - 1) * limit; // Calculate records to skip for pagination
 
     // ULB name is required, return error if missing
     if (!ulb_name) {
@@ -353,9 +353,9 @@ const getSchemesInfoByULBName = async (req, res) => {
     });
 
     // Calculate total pages
-    const totalPage = Math.ceil(totalSchemes / take);
+    const totalPage = Math.ceil(totalSchemes / limit);
     const nextPage = page < totalPage ? page + 1 : null;
-    const prevPage = page > 1 ? page - 1 : null; // Calculate previous page
+    const prevPage = page > 1 ? page - 1 : null;
 
     // No schemes found
     if (schemes.length === 0) {
