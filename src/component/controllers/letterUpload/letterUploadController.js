@@ -253,13 +253,12 @@ const sendLetterController = async (req, res) => {
 const getLettersForULBController = async (req, res) => {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
-  const { page = 1, limit = 10, ulb_id } = req.query; // Get ulb_id from query
-  const pageNumber = parseInt(page);
-  const pageSize = parseInt(limit);
-  const skip = (pageNumber - 1) * pageSize; // Calculate offset
+  const { page = 1, limit = 10, ulb_id } = req.query; // Get ulb_id and pagination params from query
+  const pageNumber = parseInt(page, 10);
+  const pageLimit = parseInt(limit, 10);
+  const skip = (pageNumber - 1) * pageLimit; // Calculate offset for pagination
 
   const authenticatedUlbId = req.body?.auth?.ulb_id; // Get ulb_id from request body
-  // const authenticatedUlbId = 2; // Mock authenticatedUlbId for now
 
   if (String(authenticatedUlbId) !== ulb_id) {
     return res
@@ -268,7 +267,9 @@ const getLettersForULBController = async (req, res) => {
   }
 
   if (!ulb_id) {
-    return res.status(200).json({ status: false, message: "Ulb id required!" });
+    return res
+      .status(200)
+      .json({ status: false, message: "ULB ID is required!" });
   }
 
   try {
@@ -283,7 +284,7 @@ const getLettersForULBController = async (req, res) => {
     }
 
     // Apply pagination in memory
-    const paginatedLetters = result.slice(skip, skip + pageSize);
+    const paginatedLetters = result.slice(skip, skip + pageLimit);
 
     // Prepare response data
     const responseData = paginatedLetters.map((item) => {
@@ -293,9 +294,9 @@ const getLettersForULBController = async (req, res) => {
         : {}; // Access the first notification if it exists
 
       return {
-        id: letter.id || null, // Fetch letter id
-        ulb_id: letter.ulb_id || null, // Fetch ULB id
-        order_number: letter.order_number || "Unknown Order Number", // Provide fallback
+        id: letter.id || null,
+        ulb_id: letter.ulb_id || null,
+        order_number: letter.order_number || "Unknown Order Number",
         letter_url: letter.letter_url || null,
         created_at: letter.created_at,
         updated_at: letter.updated_at,
@@ -303,15 +304,15 @@ const getLettersForULBController = async (req, res) => {
         is_global: letter.is_global,
         inbox: letter.inbox,
         outbox: letter.outbox,
-        ULB: letter.ULB ? letter.ULB.ulb_name : "All ULBs", // Handle null ULB
+        ULB: letter.ULB ? letter.ULB.ulb_name : "All ULBs",
 
         notification: {
-          id: notification?.id || null, // Handle null notification id
+          id: notification?.id || null,
           description:
             notification?.description ||
             `You received a letter with order number ${
               letter.order_number || "Unknown"
-            }`, // Handle null description
+            }`,
           ulb_id: notification?.ulb_id,
           letter_id: notification?.letter_id,
           created_at: notification?.created_at,
@@ -323,9 +324,9 @@ const getLettersForULBController = async (req, res) => {
     const totalLetters = result.length;
 
     // Calculate pagination details
-    const totalPage = Math.ceil(totalLetters / pageSize);
+    const totalPage = Math.ceil(totalLetters / pageLimit);
     const nextPage = pageNumber < totalPage ? pageNumber + 1 : null;
-    const hasPrevPage = pageNumber > 1;
+    const prevPage = pageNumber > 1 ? pageNumber - 1 : null;
 
     // Log the successful fetch of letters
     logger.info("Letters for ULB fetched successfully", {
@@ -333,7 +334,7 @@ const getLettersForULBController = async (req, res) => {
       action: "FETCH_LETTERS_FOR_ULB",
       ip: clientIp,
       page: pageNumber,
-      limit: pageSize,
+      limit: pageLimit,
       totalLetters,
     });
 
@@ -343,10 +344,11 @@ const getLettersForULBController = async (req, res) => {
       data: responseData,
       pagination: {
         next: nextPage,
+        previous: prevPage,
         currentPage: pageNumber,
-        currentTake: pageSize,
+        currentTake: pageLimit,
         totalPage,
-        totalResult: totalLetters, // Total count of letters
+        totalResult: totalLetters,
       },
     });
   } catch (error) {
