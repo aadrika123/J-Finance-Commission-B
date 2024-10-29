@@ -20,11 +20,7 @@ router.post(
 );
 
 // Route to get all active letters
-router.get(
-  "/letters",
-  // roleMiddleware(["SUDA FC"]),
-  getLettersController
-);
+router.get("/letters", roleMiddleware(["SUDA FC"]), getLettersController);
 
 // Route to soft delete a letter
 router.post(
