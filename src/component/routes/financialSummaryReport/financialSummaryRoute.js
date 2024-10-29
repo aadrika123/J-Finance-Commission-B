@@ -4,6 +4,7 @@ const {
   getFinancialSummaryReport,
   createFundReleaseController,
   getFundReleaseReport,
+  getFinancialSummaryReportResponseOnly,
 } = require("../../controllers/financialSummaryReport/financialSummaryController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -13,6 +14,11 @@ router.get(
   "/financial-summary",
   roleMiddleware(["SUDA FC"]),
   getFinancialSummaryReport
+);
+router.get(
+  "/financial-summary-csv",
+  roleMiddleware(["SUDA FC"]),
+  getFinancialSummaryReportResponseOnly
 );
 
 // Route to update the financial summary report
