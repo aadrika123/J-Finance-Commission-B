@@ -318,7 +318,6 @@ const getSchemesInfoByULBName = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 10; // Records per page, default to 10
     const skip = (page - 1) * limit; // Calculate records to skip for pagination
 
-    // ULB name is required, return error if missing
     if (!ulb_name) {
       return res.status(200).json({
         status: false,
@@ -332,13 +331,13 @@ const getSchemesInfoByULBName = async (req, res) => {
       where: {
         ulb: {
           equals: ulb_name,
-          mode: "insensitive", // Optional: case-insensitive match for ULB name
+          mode: "insensitive",
         },
       },
-      skip, // Pagination: Skip the records
-      take, // Pagination: Take the required number of records
+      skip,
+      take: limit, // Updated to use `limit` consistently
       orderBy: {
-        created_at: "desc", // Order by created_at descending
+        created_at: "desc",
       },
     });
 
@@ -347,52 +346,36 @@ const getSchemesInfoByULBName = async (req, res) => {
       where: {
         ulb: {
           equals: ulb_name,
-          mode: "insensitive", // Optional: case-insensitive match for ULB name
+          mode: "insensitive",
         },
       },
     });
 
-    // Calculate total pages
     const totalPage = Math.ceil(totalSchemes / limit);
     const nextPage = page < totalPage ? page + 1 : null;
     const prevPage = page > 1 ? page - 1 : null;
 
-    // No schemes found
-    if (schemes.length === 0) {
-      return res.status(200).json({
-        data: [],
-        message: "No schemes found for this ULB name",
-        pagination: {
-          next: null,
-          previous: null,
-          currentPage: page,
-          currentTake: take,
-          totalPage,
-          totalResult: totalSchemes,
-        },
-      });
-    }
-
-    // Return schemes with pagination info and total scheme count
-    res.status(200).json({
+    return res.status(200).json({
       status: true,
-      message: "Scheme information fetched successfully",
+      message: schemes.length
+        ? "Scheme information fetched successfully"
+        : "No schemes found for this ULB name",
       data: schemes,
       pagination: {
-        next: nextPage, // Provide next page number if available
-        previous: prevPage, // Provide previous page number if available
+        next: nextPage,
+        previous: prevPage,
         currentPage: page,
-        currentTake: take,
+        currentTake: limit,
         totalPage,
-        totalResult: totalSchemes, // Total number of schemes
+        totalResult: totalSchemes,
       },
     });
   } catch (error) {
-    console.error(error); // Log the actual error for debugging
+    console.error(error);
     res.status(200).json({
       status: false,
       message: "An error occurred while fetching schemes",
-      error: error.message, // Provide error message for debugging
+      error: error.message,
     });
   }
 };
