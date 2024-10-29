@@ -120,7 +120,7 @@ const fetchSchemeInfo = async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // Current page number
     const take = parseInt(req.query.take, 10) || 10; // Number of records per page
     const skip = (page - 1) * take; // Number of records to skip for pagination
-    const { grant_type, ulb, financial_year } = req.query; // Optional filter for grant_type
+    const { grant_type, ulb, financial_year } = req.query; // Optional filters
 
     // Validate pagination parameters
     if (page < 1 || take < 1) {
@@ -134,21 +134,14 @@ const fetchSchemeInfo = async (req, res) => {
     const filterCondition = {};
     if (grant_type) {
       const grantTypes = grant_type.split(",").map((type) => type.trim());
-
-      // Check if the grant_type array contains specific values
-      if (grantTypes.length === 1) {
-        // Exact match for a single value
-        filterCondition.grant_type = grantTypes[0];
-      } else {
-        // Use the 'in' condition for multiple values
-        filterCondition.grant_type = { in: grantTypes };
-      }
+      filterCondition.grant_type =
+        grantTypes.length === 1 ? grantTypes[0] : { in: grantTypes };
     }
     if (ulb) {
-      filterCondition.ulb = ulb; // Filter by ulb
+      filterCondition.ulb = ulb;
     }
     if (financial_year) {
-      filterCondition.financial_year = financial_year; // Filter directly by financial_year
+      filterCondition.financial_year = financial_year;
     }
 
     // Fetch scheme information and total count of records
@@ -156,19 +149,20 @@ const fetchSchemeInfo = async (req, res) => {
       prisma.scheme_info.findMany({
         skip,
         take,
-        where: filterCondition, // Apply the filter if grant_type is provided
+        where: filterCondition,
         orderBy: {
-          created_at: "desc", // Order by creation date in descending order
+          created_at: "desc",
         },
       }),
       prisma.scheme_info.count({
-        where: filterCondition, // Count the total records considering the filter
+        where: filterCondition,
       }),
     ]);
 
     // Calculate pagination details
     const totalPage = Math.ceil(totalResult / take);
     const nextPage = page < totalPage ? page + 1 : null;
+    const prevPage = page > 1 ? page - 1 : null; // Calculate previous page
 
     // Log the successful fetch of scheme information
     logger.info("Scheme information list fetched successfully", {
@@ -194,7 +188,8 @@ const fetchSchemeInfo = async (req, res) => {
       message: "Scheme request list fetched successfully",
       data: schemeInfoList,
       pagination: {
-        next: nextPage ? { page: nextPage, take } : null,
+        next: nextPage,
+        previous: prevPage, // Add previous page information
         currentPage: page,
         currentTake: take,
         totalPage,
@@ -216,6 +211,7 @@ const fetchSchemeInfo = async (req, res) => {
     });
   }
 };
+
 /**
  * Retrieves scheme information by its unique ID.
  *
@@ -359,6 +355,7 @@ const getSchemesInfoByULBName = async (req, res) => {
     // Calculate total pages
     const totalPage = Math.ceil(totalSchemes / take);
     const nextPage = page < totalPage ? page + 1 : null;
+    const prevPage = page > 1 ? page - 1 : null; // Calculate previous page
 
     // No schemes found
     if (schemes.length === 0) {
@@ -367,6 +364,7 @@ const getSchemesInfoByULBName = async (req, res) => {
         message: "No schemes found for this ULB name",
         pagination: {
           next: null,
+          previous: null,
           currentPage: page,
           currentTake: take,
           totalPage,
@@ -381,7 +379,8 @@ const getSchemesInfoByULBName = async (req, res) => {
       message: "Scheme information fetched successfully",
       data: schemes,
       pagination: {
-        next: nextPage ? { page: nextPage, take } : null, // Info for next page
+        next: nextPage, // Provide next page number if available
+        previous: prevPage, // Provide previous page number if available
         currentPage: page,
         currentTake: take,
         totalPage,
