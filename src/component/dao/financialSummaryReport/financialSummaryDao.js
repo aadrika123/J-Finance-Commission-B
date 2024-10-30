@@ -95,59 +95,62 @@ const fetchFinancialSummaryReport = async (
 };
 
 // Find an existing fund release by ULB ID and financial year
-const findFundReleaseByUlbIdAndYear = async (ulb_id, financial_year) => {
+const findFundReleaseByUlbIdYearAndFundType = async (
+  ulb_id,
+  financial_year,
+  fund_type
+) => {
   try {
     const fundRelease = await prisma.fundRelease.findFirst({
       where: {
         ulb_id: ulb_id,
         financial_year: financial_year,
+        fund_type: fund_type,
       },
     });
     return fundRelease;
   } catch (error) {
     console.error(
-      "Error finding fund release by ULB ID and financial year:",
+      "Error finding fund release by ULB ID, financial year, and fund type:",
       error
     );
     throw new Error("Failed to find fund release.");
   }
 };
 
-// Upsert (insert or update) the fund release data
 const upsertFundReleaseDao = async (
   ulb_id,
   financial_year,
+  fund_type,
   fundReleaseData
 ) => {
   try {
-    // Fetch existing fund release data
-    const existingFundRelease = await prisma.fundRelease.findFirst({
-      where: { ulb_id, financial_year },
-    });
+    // Fetch existing fund release data with fund_type included
+    const existingFundRelease = await findFundReleaseByUlbIdYearAndFundType(
+      ulb_id,
+      financial_year,
+      fund_type
+    );
 
     if (existingFundRelease) {
-      // Accumulate interest_amount if a new interest amount is provided
+      // Modify only if existing fund release is found, else create a new record
       fundReleaseData.interest_amount =
         (existingFundRelease.interest_amount || 0) +
         (fundReleaseData.interest_amount || 0);
 
-      // Update installments only if they are 0 or null in the existing record
       fundReleaseData.first_instalment =
         existingFundRelease.first_instalment ||
         fundReleaseData.first_instalment ||
         0;
-
       fundReleaseData.second_instalment =
         existingFundRelease.second_instalment ||
         fundReleaseData.second_instalment ||
         0;
-
       fundReleaseData.third_instalment =
         existingFundRelease.third_instalment ||
         fundReleaseData.third_instalment ||
         0;
     } else {
-      // If no existing record, set installments as provided or default to 0
       fundReleaseData.first_instalment =
         Number(fundReleaseData.first_instalment) || 0;
       fundReleaseData.second_instalment =
@@ -158,19 +161,18 @@ const upsertFundReleaseDao = async (
         Number(fundReleaseData.interest_amount) || 0;
     }
 
-    // Calculate total_fund_released in the DAO
     fundReleaseData.total_fund_released =
       (fundReleaseData.first_instalment || 0) +
       (fundReleaseData.second_instalment || 0) +
       (fundReleaseData.third_instalment || 0) +
       (fundReleaseData.interest_amount || 0);
 
-    // Perform the upsert operation
     const upsertedFundRelease = await prisma.fundRelease.upsert({
       where: {
-        ulb_id_financial_year: {
+        ulb_id_financial_year_fund_type: {
           ulb_id,
           financial_year,
+          fund_type,
         },
       },
       update: fundReleaseData,
@@ -230,7 +232,7 @@ const getFundReleaseDataDao = async (
 
 module.exports = {
   fetchFinancialSummaryReport,
-  findFundReleaseByUlbIdAndYear,
+  findFundReleaseByUlbIdYearAndFundType,
   upsertFundReleaseDao,
   getFundReleaseDataDao,
 };

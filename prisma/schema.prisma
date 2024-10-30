@@ -122,5 +122,5 @@ model FundRelease {
   ulb_id              Int
   ULB                 ULB       @relation(fields: [ulb_id], references: [id])
 
-  @@unique([ulb_id, financial_year]) // Composite unique constraint
+  @@unique([ulb_id, financial_year, fund_type]) // Composite unique constraint
 }
