@@ -59,6 +59,7 @@ const getULBs = async (req, res) => {
       return res.status(200).json({
         status: true,
         message: "No ULBs found",
+        data: [],
       });
     }
 

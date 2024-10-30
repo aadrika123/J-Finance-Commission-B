@@ -324,6 +324,7 @@ const getFundReleaseReport = async (req, res) => {
       return res.status(200).json({
         status: "error",
         message: "No fund release report found for the given criteria.",
+        data: [],
       });
     }
 
