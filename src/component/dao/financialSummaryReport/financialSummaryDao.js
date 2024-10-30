@@ -105,7 +105,7 @@ const findFundReleaseByUlbIdYearAndFundType = async (
       where: {
         ulb_id: ulb_id,
         financial_year: financial_year,
-        fund_type: fund_type, // Include fund_type in the filter
+        fund_type: fund_type,
       },
     });
     return fundRelease;
@@ -172,7 +172,7 @@ const upsertFundReleaseDao = async (
         ulb_id_financial_year_fund_type: {
           ulb_id,
           financial_year,
-          fund_type, // Add fund_type to unique composite key
+          fund_type,
         },
       },
       update: fundReleaseData,
