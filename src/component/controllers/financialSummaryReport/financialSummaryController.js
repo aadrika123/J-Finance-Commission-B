@@ -1,6 +1,6 @@
 const {
   fetchFinancialSummaryReport,
-  findFundReleaseByUlbIdAndYear,
+  findFundReleaseByUlbIdYearAndFundType,
   upsertFundReleaseDao,
   getFundReleaseDataDao,
 } = require("../../dao/financialSummaryReport/financialSummaryDao");
@@ -243,7 +243,6 @@ const createFundReleaseController = async (req, res) => {
   } = req.body;
 
   try {
-    // Validation to ensure required fields are provided
     if (!ulb_id || !financial_year || !city_type || !fund_type) {
       return res.status(200).json({
         status: false,
@@ -252,10 +251,10 @@ const createFundReleaseController = async (req, res) => {
       });
     }
 
-    // Fetch the existing fund release record if it exists
-    const existingFundRelease = await findFundReleaseByUlbIdAndYear(
+    const existingFundRelease = await findFundReleaseByUlbIdYearAndFundType(
       ulb_id,
-      financial_year
+      financial_year,
+      fund_type
     );
 
     let dataToUpdate = {
@@ -270,23 +269,21 @@ const createFundReleaseController = async (req, res) => {
       interest_amount: Number(interest_amount) || undefined,
     };
 
-    // Call DAO to insert or update the data
     const upsertedFundRelease = await upsertFundReleaseDao(
       ulb_id,
       financial_year,
+      fund_type, // Pass fund_type to the DAO
       dataToUpdate
     );
 
-    // Create an audit log entry
     await createAuditLog(
-      req.body?.auth?.id, // userId, assuming auth data in req.body
-      existingFundRelease ? "UPDATE" : "CREATE", // actionType: "UPDATE" if existing record, else "CREATE"
-      "FundRelease", // tableName
-      ulb_id, // recordId (ulb_id as the identifier)
-      dataToUpdate // changedData: the updated or created data
+      req.body?.auth?.id,
+      existingFundRelease ? "UPDATE" : "CREATE",
+      "FundRelease",
+      ulb_id,
+      dataToUpdate
     );
 
-    // Send response back with the updated/created fund release
     return res.status(200).json({
       status: true,
       message: "Fund release upserted successfully.",
