@@ -76,8 +76,8 @@ const seedULBs = async () => {
     {
       id: 11,
       ulb_name: "BARHARWA NAGAR PANCHAYAT",
-      latitude: 87.777167,
-      longitude: 24.857778,
+      latitude: 24.857778,
+      longitude: 87.777167,
       city_type: "non million",
     },
     {
@@ -237,8 +237,8 @@ const seedULBs = async () => {
     {
       id: 34,
       ulb_name: "Medininagar Nagar Parishad",
-      latitude: 84.0768,
-      longitude: 24.0465,
+      latitude: 24.0392,
+      longitude: 84.0697,
       city_type: "non million",
     },
     {
@@ -293,8 +293,8 @@ const seedULBs = async () => {
     {
       id: 42,
       ulb_name: "DOMCANCH NAGAR PANCHAYAT",
-      latitude: 85.6803,
-      longitude: 24.4745,
+      latitude: 24.4745,
+      longitude: 85.6803,
       city_type: "non million",
     },
     {
