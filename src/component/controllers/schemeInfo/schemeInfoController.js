@@ -313,10 +313,10 @@ const getSchemeInfoById = async (req, res) => {
 
 const getSchemesInfoByULBName = async (req, res) => {
   try {
-    const { ulb_name } = req.query; // Use query parameter for ULB name
-    const page = parseInt(req.query.page, 10) || 1; // Current page number, default to 1
-    const limit = parseInt(req.query.limit, 10) || 10; // Records per page, default to 10
-    const skip = (page - 1) * limit; // Calculate records to skip for pagination
+    const { ulb_name } = req.query;
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const skip = (page - 1) * limit;
 
     if (!ulb_name) {
       return res.status(200).json({
@@ -335,7 +335,7 @@ const getSchemesInfoByULBName = async (req, res) => {
         },
       },
       skip,
-      take: limit, // Updated to use `limit` consistently
+      take: limit,
       orderBy: {
         created_at: "desc",
       },
@@ -355,12 +355,29 @@ const getSchemesInfoByULBName = async (req, res) => {
     const nextPage = page < totalPage ? page + 1 : null;
     const prevPage = page > 1 ? page - 1 : null;
 
+    // Add calculated fields to each scheme
+    const enhancedSchemes = schemes.map((scheme) => {
+      const projectCost = parseFloat(scheme.project_cost || 0);
+      const financialProgress = parseFloat(scheme.financial_progress || 0);
+
+      return {
+        ...scheme,
+        work_in_progress:
+          scheme.project_completion_status === "no" &&
+          scheme.tender_floated === "yes" &&
+          financialProgress >= 0
+            ? "yes"
+            : "no",
+        balance_amount: projectCost - financialProgress,
+      };
+    });
+
     return res.status(200).json({
       status: true,
-      message: schemes.length
+      message: enhancedSchemes.length
         ? "Scheme information fetched successfully"
         : "No schemes found for this ULB name",
-      data: schemes,
+      data: enhancedSchemes,
       pagination: {
         next: nextPage,
         previous: prevPage,

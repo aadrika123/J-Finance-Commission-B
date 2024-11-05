@@ -13,10 +13,10 @@ const {
 } = require("../../../utils/fileUpload/uploads/imageUploaderV2");
 
 const uploadLetterController = async (req, res) => {
-  const { ulb_id, order_number } = req.body;
+  const { ulb_id, order_number, subject } = req.body;
   const file = req.file;
 
-  if (!file || !order_number) {
+  if (!file || !order_number || !subject) {
     return res
       .status(200)
       .json({ status: false, message: "Missing required fields." });
@@ -32,7 +32,12 @@ const uploadLetterController = async (req, res) => {
     }
 
     // Save the letter info to the database
-    const letter = await uploadLetter(ulb_id, order_number, letter_url);
+    const letter = await uploadLetter(
+      ulb_id,
+      order_number,
+      letter_url,
+      subject
+    );
 
     // Create an audit log entry
     await createAuditLog(
@@ -40,7 +45,7 @@ const uploadLetterController = async (req, res) => {
       "CREATE",
       "LetterUpload",
       letter?.id || null,
-      { ulb_id, order_number, letter_url }
+      { ulb_id, order_number, letter_url, subject }
     );
 
     return res.status(201).json({
@@ -117,6 +122,7 @@ const getLettersController = async (req, res) => {
       ulb_id: letter.ulb_id || null, // Add null check for ulb_id
       order_number: letter.order_number,
       letter_url: letter.letter_url,
+      subject: letter.subject,
       inbox: letter.inbox,
       outbox: letter.outbox,
       created_at: letter.created_at,
@@ -183,6 +189,7 @@ const deleteLetterController = async (req, res) => {
       ulb_id: letter.ulb_id,
       order_number: letter.order_number,
       letter_url: letter.letter_url,
+      subject: letter.subject,
       updated_at: letter.updated_at, // Include updated_at after the soft delete
       is_active: letter.is_active,
     };
@@ -298,6 +305,7 @@ const getLettersForULBController = async (req, res) => {
         ulb_id: letter.ulb_id || null,
         order_number: letter.order_number || "Unknown Order Number",
         letter_url: letter.letter_url || null,
+        subject: letter.subject,
         created_at: letter.created_at,
         updated_at: letter.updated_at,
         is_active: letter.is_active,
