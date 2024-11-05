@@ -45,7 +45,7 @@ model Scheme_info {
   created_at                              DateTime  @default(now())
   updated_at                              DateTime?
   project_completion_status               String?
-  tender_floated                          String?
+  tender_floated                          String?   @default("no")
   financial_progress                      Decimal?
   financial_progress_in_percentage        Float?
   project_completion_status_in_percentage Float?
@@ -83,6 +83,7 @@ model LetterUpload {
   ulb_id       Int? // Foreign key referencing the ULB model
   order_number String // Order number for the letter
   letter_url   String // URL or path for the uploaded letter
+  subject      String?
   created_at   DateTime  @default(now()) // Timestamp for when the letter was uploaded
   updated_at   DateTime? @updatedAt // Timestamp for the last time this record was updated
   is_active    Boolean   @default(true) // Flag for soft deletion

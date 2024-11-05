@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const uploadLetter = async (ulb_id, order_number, letter_url) => {
+const uploadLetter = async (ulb_id, order_number, letter_url, subject) => {
   try {
     if (ulb_id) {
       // If a specific ULB is provided, upload only for that ULB
@@ -10,6 +10,7 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
           ulb_id: parseInt(ulb_id, 10),
           order_number,
           letter_url,
+          subject,
           is_global: false, // Specific letter, not global
         },
       });
@@ -19,6 +20,7 @@ const uploadLetter = async (ulb_id, order_number, letter_url) => {
         data: {
           order_number,
           letter_url,
+          subject,
           is_global: true, // Global letter
         },
       });

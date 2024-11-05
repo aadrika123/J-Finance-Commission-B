@@ -555,9 +555,202 @@ const getFinancialSummaryReportResponseOnly = async (req, res) => {
     });
   }
 };
+
+const getFinancialProgressSummary = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip;
+  const userId = req.body?.auth?.id || null;
+
+  try {
+    logger.info("Fetching financial progress summary...", {
+      userId,
+      action: "FETCH_FINANCIAL_PROGRESS_SUMMARY",
+      ip: clientIp,
+      query: req.query,
+    });
+
+    const { city_type, grant_type, sector, financial_year } = req.query;
+
+    // Fetch financial summary report data
+    const report = await fetchFinancialSummaryReport(
+      city_type,
+      grant_type,
+      sector,
+      financial_year
+    );
+
+    // Helper function to calculate totals
+    const totals = report.reduce(
+      (acc, row) => {
+        acc.totalFundAlloted += parseFloat(row.amount || 0);
+        acc.totalExpenditure += parseFloat(row.expenditure || 0);
+        acc.totalBalanceAmount += parseFloat(row.balance_amount || 0);
+        acc.totalFinancialProgressSum += parseFloat(
+          row.financial_progress_in_percentage || 0
+        );
+        acc.rowCount += 1;
+
+        return acc;
+      },
+      {
+        totalFundAlloted: 0,
+        totalExpenditure: 0,
+        totalBalanceAmount: 0,
+        totalFinancialProgressSum: 0,
+        rowCount: 0,
+      }
+    );
+
+    totals.averageFinancialProgress =
+      totals.rowCount > 0
+        ? parseFloat(
+            (totals.totalFinancialProgressSum / totals.rowCount).toFixed(2)
+          )
+        : 0;
+
+    // Format each row to include only financial progress data
+    const formattedData = report.map((row) => ({
+      ulb_id: row.ulb_id,
+      ulb_name: row.ulb_name,
+      fund_alloted: parseFloat(row.amount || 0),
+      "Financial Progress": {
+        expenditure: parseFloat(row.expenditure || 0),
+        balance_amount: parseFloat(row.balance_amount || 0),
+        financial_progress_in_percentage: parseFloat(
+          row.financial_progress_in_percentage || 0
+        ).toFixed(2),
+      },
+    }));
+
+    return res.status(200).json({
+      status: "success",
+      message: "Financial progress summary fetched successfully.",
+      data: formattedData,
+      totals: {
+        totalFundAlloted: totals.totalFundAlloted,
+        totalExpenditure: totals.totalExpenditure,
+        totalBalanceAmount: totals.totalBalanceAmount,
+        averageFinancialProgress: totals.averageFinancialProgress,
+      },
+    });
+  } catch (error) {
+    logger.error("Error fetching financial progress summary.", {
+      userId,
+      action: "FETCH_FINANCIAL_PROGRESS_SUMMARY",
+      ip: clientIp,
+      error: error.message,
+    });
+
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to fetch financial progress summary.",
+      error: error.message,
+    });
+  }
+};
+
+const getApprovedSchemesAndPhysicalProgressSummary = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip;
+  const userId = req.body?.auth?.id || null;
+
+  try {
+    logger.info("Fetching approved schemes and physical progress summary...", {
+      userId,
+      action: "FETCH_APPROVED_SCHEMES_AND_PHYSICAL_PROGRESS_SUMMARY",
+      ip: clientIp,
+      query: req.query,
+    });
+
+    const { city_type, grant_type, sector, financial_year } = req.query;
+
+    // Fetch main financial summary report
+    const report = await fetchFinancialSummaryReport(
+      city_type,
+      grant_type,
+      sector,
+      financial_year
+    );
+
+    // Helper function to calculate totals
+    const totals = report.reduce(
+      (acc, row) => {
+        acc.totalFundAlloted += parseFloat(row.amount || 0);
+        acc.totalApprovedSchemes += parseInt(row.approved_schemes || 0);
+        acc.totalProjectCompleted += parseInt(row.project_completed || 0);
+        acc.totalWorkInProgress += parseInt(row.work_in_progress || 0);
+        acc.totalTenderFloated += parseInt(row.number_of_tender_floated || 0);
+        acc.totalTenderNotFloated += parseInt(row.tender_not_floated || 0);
+        acc.totalProjectNotStarted += parseInt(row.project_not_started || 0);
+        return acc;
+      },
+      {
+        totalFundAlloted: 0,
+        totalApprovedSchemes: 0,
+        totalProjectCompleted: 0,
+        totalWorkInProgress: 0,
+        totalTenderFloated: 0,
+        totalTenderNotFloated: 0,
+        totalProjectNotStarted: 0,
+      }
+    );
+
+    // Format each row to include approved schemes and physical progress data
+    const formattedData = report.map((row) => ({
+      ulb_id: row.ulb_id,
+      ulb_name: row.ulb_name,
+      fund_alloted: parseFloat(row.amount || 0),
+      "Approved Schemes by HLMC": {
+        approved_schemes: parseInt(row.approved_schemes || 0),
+        amount: parseFloat(row.amount || 0),
+      },
+      "Physical Progress": {
+        project_completed: parseInt(row.project_completed || 0),
+        work_in_progress: parseInt(row.work_in_progress || 0),
+        tender_floated: parseInt(row.number_of_tender_floated || 0),
+        tender_not_floated: parseInt(row.tender_not_floated || 0),
+        project_not_started: parseInt(row.project_not_started || 0),
+      },
+    }));
+
+    return res.status(200).json({
+      status: "success",
+      message:
+        "Approved schemes and physical progress summary fetched successfully.",
+      data: formattedData,
+      totals: {
+        totalFundAlloted: totals.totalFundAlloted,
+        totalApprovedSchemes: totals.totalApprovedSchemes,
+        totalProjectCompleted: totals.totalProjectCompleted,
+        totalWorkInProgress: totals.totalWorkInProgress,
+        totalTenderFloated: totals.totalTenderFloated,
+        totalTenderNotFloated: totals.totalTenderNotFloated,
+        totalProjectNotStarted: totals.totalProjectNotStarted,
+      },
+    });
+  } catch (error) {
+    logger.error(
+      "Error fetching approved schemes and physical progress summary.",
+      {
+        userId,
+        action: "FETCH_APPROVED_SCHEMES_AND_PHYSICAL_PROGRESS_SUMMARY",
+        ip: clientIp,
+        error: error.message,
+      }
+    );
+
+    return res.status(500).json({
+      status: "error",
+      message:
+        "Failed to fetch approved schemes and physical progress summary.",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getFinancialSummaryReport,
   createFundReleaseController,
   getFundReleaseReport,
   getFinancialSummaryReportResponseOnly,
+  getFinancialProgressSummary,
+  getApprovedSchemesAndPhysicalProgressSummary,
 };

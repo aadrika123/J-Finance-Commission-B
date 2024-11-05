@@ -20,9 +20,21 @@ const fetchFinancialSummaryReport = async (
       SUM(s.financial_progress) AS expenditure,
       SUM(s.project_cost) - SUM(s.financial_progress) AS balance_amount,
       AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage,
-      SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
+      -- SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
+      -- Updated calculation for number_of_tender_floated to exclude completed projects
+      SUM(CASE WHEN s.tender_floated = 'yes' AND s.project_completion_status = 'no' THEN 1 ELSE 0 END) AS number_of_tender_floated,
       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
-      (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
+      -- (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
+      -- Updated calculation for work_in_progress based on the specified conditions
+      SUM(
+        CASE 
+          WHEN s.project_completion_status = 'no' 
+            AND s.tender_floated = 'yes' 
+            AND s.financial_progress >= 0 
+          THEN 1 
+          ELSE 0 
+        END
+      ) AS work_in_progress,
       COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
     FROM "Scheme_info" s
     JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
