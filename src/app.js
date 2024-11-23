@@ -10,7 +10,7 @@ const financialSummaryRoute = require("./component/routes/financialSummaryReport
 const financialRoutes = require("./component/routes/financialSummaryReport/financialDashboardRoute");
 const fileUpload = require("./component/routes/letterUpload/letterUploadRoute");
 const path = require("path");
-
+require("dotenv").config();
 const cors = require("cors");
 
 const app = express();
