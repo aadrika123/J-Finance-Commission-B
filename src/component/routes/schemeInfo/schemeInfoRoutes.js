@@ -4,6 +4,7 @@ const {
   fetchSchemeInfo,
   getSchemeInfoById,
   getSchemesInfoByULBName,
+  updateSchemeNameHandler,
 } = require("../../controllers/schemeInfo/schemeInfoController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -30,4 +31,5 @@ router.get(
   getSchemesInfoByULBName
 );
 
+router.post("/update-scheme-name", updateSchemeNameHandler);
 module.exports = router;

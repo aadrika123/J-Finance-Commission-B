@@ -250,8 +250,30 @@ const getSchemesByULBName = async (ulb_name) => {
   });
 };
 
+
+const updateSchemeName = async (scheme_id, scheme_name) => {
+  try {
+    return await prisma.scheme_info.update({
+      where: {
+        scheme_id: scheme_id,
+      },
+      data: {
+        scheme_name: scheme_name,
+        updated_at: new Date(), // Update the timestamp
+      },
+    });
+  } catch (error) {
+    console.error(
+      `Error updating scheme name for scheme_id ${scheme_id}:`,
+      error
+    );
+    throw error;
+  }
+};
+
 module.exports = {
   createSchemeInfo,
   getSchemeInfo,
   getSchemesByULBName,
+  updateSchemeName,
 };
