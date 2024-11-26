@@ -62,7 +62,7 @@ const fetchFinancialSummaryReportMillionPlus = async (filters) => {
       s.city_type,
       COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
     FROM 
-      "Scheme_info" s
+      "scheme_info" s
     WHERE 
       s.city_type = 'million plus'`;
 
@@ -166,7 +166,7 @@ const fetchFinancialSummaryReportNonMillionPlus = async (filters = {}) => {
     s.city_type,
     COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
   FROM 
-    "Scheme_info" s
+    "scheme_info" s
   WHERE 
     s.city_type = 'non million'`;
 

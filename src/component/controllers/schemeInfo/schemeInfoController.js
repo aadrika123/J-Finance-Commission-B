@@ -4,6 +4,7 @@ const {
   createSchemeInfo,
   getSchemeInfo,
   getSchemesByULBName,
+  updateSchemeName,
 } = require("../../dao/schemeInfo/schemeInfoDao");
 const moment = require("moment-timezone");
 const logger = require("../../../utils/log/logger");
@@ -397,9 +398,90 @@ const getSchemesInfoByULBName = async (req, res) => {
   }
 };
 
+const updateSchemeNameHandler = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture client IP
+  const userId = req.body?.auth?.id || null; // Extract userId from request body
+  const { scheme_id, scheme_name } = req.body; // Extract scheme_id and new scheme_name from body
+
+  // Validate input
+  if (!scheme_id || !scheme_name ) {
+    return res.status(400).json({
+      status: "error",
+      message: "scheme_id, scheme_name are required",
+      data: [],
+    });
+  }
+
+  try {
+    // Fetch the current scheme details before update (for audit log)
+    const existingScheme = await prisma.scheme_info.findUnique({
+      where: {
+        scheme_id: scheme_id,
+      },
+    });
+
+    if (!existingScheme) {
+      return res.status(404).json({
+        status: "error",
+        message: "Scheme not found",
+        data: [],
+      });
+    }
+
+    // Prepare the changed data for audit log
+    const changedData = {
+      old_scheme_name: existingScheme.scheme_name,
+      new_scheme_name: scheme_name,
+    };
+
+    // Update the scheme name in the database
+    const updatedScheme = await updateSchemeName(scheme_id, scheme_name);
+
+    // Log the successful update operation
+    logger.info("Scheme name updated successfully", {
+      userId,
+      action: "UPDATE_SCHEME_NAME",
+      ip: clientIp,
+      scheme_id,
+      old_scheme_name: existingScheme.scheme_name,
+      new_scheme_name: scheme_name,
+    });
+
+    // Create an audit log entry for the update operation
+    await createAuditLog(
+      userId,
+      "UPDATE",
+      "Scheme_info",
+      scheme_id,
+      changedData
+    );
+
+    // Send a success response with updated scheme details
+    return res.status(200).json({
+      status: "success",
+      message: "Scheme name updated successfully",
+      data: [updatedScheme],
+    });
+  } catch (error) {
+    // Log error details and send error response
+    logger.error("Error updating scheme name", {
+      userId,
+      action: "UPDATE_SCHEME_NAME",
+      ip: clientIp,
+      error: error.message,
+    });
+
+    return res.status(500).json({
+      status: "error",
+      message: "Internal Server Error",
+      data: [],
+    });
+  }
+};
 module.exports = {
   addSchemeInfo,
   fetchSchemeInfo,
   getSchemeInfoById,
   getSchemesInfoByULBName,
+  updateSchemeNameHandler,
 };

@@ -138,7 +138,7 @@ const createSchemeInfo = async (data) => {
     });
 
     // Fetch ulb_id from ULB table using ulb name
-    const ulbRecord = await prisma.uLB.findUnique({
+    const ulbRecord = await prisma.ulb.findUnique({
       where: {
         ulb_name: data.ulb, // Assuming the ulb_name field matches the ulb field in the request
       },
@@ -195,7 +195,6 @@ const createSchemeInfo = async (data) => {
         city_type: createdScheme.city_type,
         date_of_approval: createdScheme.date_of_approval,
         created_at: createdScheme.created_at,
-        ulb: createdScheme.ulb,
         ulb_id,
       },
       action: "createSchemeInfo",
@@ -250,8 +249,30 @@ const getSchemesByULBName = async (ulb_name) => {
   });
 };
 
+
+const updateSchemeName = async (scheme_id, scheme_name) => {
+  try {
+    return await prisma.scheme_info.update({
+      where: {
+        scheme_id: scheme_id,
+      },
+      data: {
+        scheme_name: scheme_name,
+        updated_at: new Date(), // Update the timestamp
+      },
+    });
+  } catch (error) {
+    console.error(
+      `Error updating scheme name for scheme_id ${scheme_id}:`,
+      error
+    );
+    throw error;
+  }
+};
+
 module.exports = {
   createSchemeInfo,
   getSchemeInfo,
   getSchemesByULBName,
+  updateSchemeName,
 };

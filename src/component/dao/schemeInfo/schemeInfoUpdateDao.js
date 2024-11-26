@@ -28,7 +28,7 @@ const updateSchemeInfo = async (scheme_id, data) => {
   try {
     // Fetch the existing scheme record to validate against
     const existingScheme = await prisma.scheme_info.findUnique({
-      where: { scheme_id },
+      where: { scheme_id }, // Using snake_case column names
     });
 
     if (!existingScheme) {
@@ -145,7 +145,7 @@ const updateSchemeInfo = async (scheme_id, data) => {
 
     // Perform the update operation
     const updatedScheme = await prisma.scheme_info.update({
-      where: { scheme_id },
+      where: { scheme_id }, // Using snake_case column names
       data: {
         ...updateData,
         updated_at: new Date(), // Set the updated_at field to the current date

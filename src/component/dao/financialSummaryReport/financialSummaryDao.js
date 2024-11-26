@@ -20,12 +20,8 @@ const fetchFinancialSummaryReport = async (
       SUM(s.financial_progress) AS expenditure,
       SUM(s.project_cost) - SUM(s.financial_progress) AS balance_amount,
       AVG(s.financial_progress_in_percentage) AS financial_progress_in_percentage,
-      -- SUM(CASE WHEN s.tender_floated = 'yes' THEN 1 ELSE 0 END) AS number_of_tender_floated,
-      -- Updated calculation for number_of_tender_floated to exclude completed projects
       SUM(CASE WHEN s.tender_floated = 'yes' AND s.project_completion_status = 'no' THEN 1 ELSE 0 END) AS number_of_tender_floated,
       SUM(CASE WHEN s.tender_floated = 'no' THEN 1 ELSE 0 END) AS tender_not_floated,
-      -- (COUNT(s.scheme_name) - SUM(CASE WHEN s.project_completion_status = 'yes' THEN 1 ELSE 0 END)) AS work_in_progress,
-      -- Updated calculation for work_in_progress based on the specified conditions
       SUM(
         CASE 
           WHEN s.project_completion_status = 'no' 
@@ -36,9 +32,9 @@ const fetchFinancialSummaryReport = async (
         END
       ) AS work_in_progress,
       COUNT(CASE WHEN s.financial_progress = 0 THEN 1 ELSE NULL END) AS project_not_started
-    FROM "Scheme_info" s
-    JOIN "ULB" ulb ON s.ulb = ulb.ulb_name
-    LEFT JOIN "FinancialSummaryReport" f ON ulb.id = f.ulb_id
+    FROM "scheme_info" s
+    JOIN "ulb" ulb ON s.ulb_id = ulb.id
+    LEFT JOIN "financial_summary_report" f ON ulb.id = f.ulb_id
     WHERE 1=1
   `;
 
@@ -53,7 +49,6 @@ const fetchFinancialSummaryReport = async (
     query += ` AND s.sector = '${sector}'`;
   }
   if (financial_year) {
-    // query += ` AND s.financial_year) = '${financial_year}'`;
     query += ` AND s.financial_year = '${financial_year}'`;
   }
 
@@ -68,20 +63,19 @@ const fetchFinancialSummaryReport = async (
   result.forEach((ulbData) => {
     logger.info(`Detailed Financial Summary for ULB: ${ulbData.ulb_name} (ID: ${ulbData.ulb_id})
 
-    - **Total Approved Schemes:** ${ulbData.approved_schemes} approved schemes under the ULB.
-    - **Fund Released to ULBs (Total Project Costs):** ₹${ulbData.fund_release_to_ulbs} worth of project costs released to ULBs.
-    - **Approved Project Costs (Budget):** ₹${ulbData.amount} total approved budget for schemes.
-    - **Completed Projects:** ${ulbData.project_completed} projects completed out of total approved.
-    - **Expenditure (Financial Progress):** ₹${ulbData.expenditure} total expenditure made so far across all schemes.
-    - **Remaining Balance (Unspent Budget):** ₹${ulbData.balance_amount} remaining balance, calculated as (project cost - expenditure).
-    - **Average Financial Progress:** ${ulbData.financial_progress_in_percentage}% financial progress across all projects.
-    - **Number of Tenders Floated:** ${ulbData.number_of_tender_floated} tenders floated for ongoing schemes.
-    - **Number of Tenders Not Floated:** ${ulbData.tender_not_floated} schemes have yet to float tenders.
-    - **Work in Progress:** ${ulbData.work_in_progress} projects are still under progress.
-    - **Projects Not Started:** ${ulbData.project_not_started} projects have not commenced yet.
+    - Total Approved Schemes: ${ulbData.approved_schemes} approved schemes under the ULB.
+    - Fund Released to ULBs (Total Project Costs): ₹${ulbData.fund_release_to_ulbs}.
+    - Approved Project Costs (Budget): ₹${ulbData.amount}.
+    - Completed Projects: ${ulbData.project_completed}.
+    - Expenditure (Financial Progress): ₹${ulbData.expenditure}.
+    - Remaining Balance (Unspent Budget): ₹${ulbData.balance_amount}.
+    - Average Financial Progress: ${ulbData.financial_progress_in_percentage}%.
+    - Number of Tenders Floated: ${ulbData.number_of_tender_floated}.
+    - Number of Tenders Not Floated: ${ulbData.tender_not_floated}.
+    - Work in Progress: ${ulbData.work_in_progress}.
+    - Projects Not Started: ${ulbData.project_not_started}.
     `);
 
-    // Immediately follow the detailed log with a debug log for the same ULB
     logger.debug(`Calculated values for ULB ${ulbData.ulb_id}:`, {
       approved_schemes: ulbData.approved_schemes,
       fund_release_to_ulbs: ulbData.fund_release_to_ulbs,
@@ -113,7 +107,7 @@ const findFundReleaseByUlbIdYearAndFundType = async (
   fund_type
 ) => {
   try {
-    const fundRelease = await prisma.fundRelease.findFirst({
+    const fundRelease = await prisma.fund_release.findFirst({
       where: {
         ulb_id: ulb_id,
         financial_year: financial_year,
@@ -179,7 +173,7 @@ const upsertFundReleaseDao = async (
       (fundReleaseData.third_instalment || 0) +
       (fundReleaseData.interest_amount || 0);
 
-    const upsertedFundRelease = await prisma.fundRelease.upsert({
+    const upsertedFundRelease = await prisma.fund_release.upsert({
       where: {
         ulb_id_financial_year_fund_type: {
           ulb_id,
@@ -209,7 +203,7 @@ const getFundReleaseDataDao = async (
     const ulbIdAsNumber = ulb_id ? parseInt(ulb_id, 10) : undefined;
 
     // Fetch data from fundRelease table
-    const report = await prisma.fundRelease.findMany({
+    const report = await prisma.fund_release.findMany({
       where: {
         ...(financial_year && { financial_year }), // Filter by financial_year if provided
         ...(city_type && { city_type }), // Filter by city_type if provided
@@ -218,7 +212,7 @@ const getFundReleaseDataDao = async (
       },
       select: {
         ulb_id: true,
-        ULB: {
+        ulb_relation: {
           select: {
             ulb_name: true,
           },

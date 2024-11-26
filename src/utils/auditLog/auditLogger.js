@@ -13,21 +13,21 @@ const prisma = new PrismaClient();
  * @returns {Promise<void>} - A promise that resolves when the audit log entry is created.
  */
 const createAuditLog = async (
-  userId,
-  actionType,
-  tableName,
-  recordId,
-  changedData
+  user_id,
+  action_type,
+  table_name,
+  record_id,
+  changed_data
 ) => {
   try {
     // Create a new audit log entry in the database
-    await prisma.auditLog.create({
+    await prisma.audit_log.create({
       data: {
-        userId: userId, // User ID performing the action
-        actionType: actionType, // Type of action performed
-        tableName: tableName, // Table where the action occurred
-        recordId: String(recordId), // Ensure recordId is a string for consistency
-        changedData: changedData, // Store the change data as JSON
+        user_id: user_id, // User ID performing the action
+        action_type: action_type, // Type of action performed
+        table_name: table_name, // Table where the action occurred
+        record_id: String(record_id), // Ensure record_id is a string for consistency
+        changed_data: changed_data, // Store the change data as JSON
       },
     });
     console.log("Audit log created successfully.");

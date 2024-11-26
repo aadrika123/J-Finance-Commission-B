@@ -5,7 +5,7 @@ const uploadLetter = async (ulb_id, order_number, letter_url, subject) => {
   try {
     if (ulb_id) {
       // If a specific ULB is provided, upload only for that ULB
-      return await prisma.letterUpload.create({
+      return await prisma.letter_upload.create({
         data: {
           ulb_id: parseInt(ulb_id, 10),
           order_number,
@@ -16,7 +16,7 @@ const uploadLetter = async (ulb_id, order_number, letter_url, subject) => {
       });
     } else {
       // If no specific ULB, create a global letter for all ULBs
-      return await prisma.letterUpload.create({
+      return await prisma.letter_upload.create({
         data: {
           order_number,
           letter_url,
@@ -36,14 +36,14 @@ const uploadLetter = async (ulb_id, order_number, letter_url, subject) => {
 const getLetters = async (inboxFilter, outboxFilter) => {
   try {
     // Fetch letters directly with filters on is_active, inbox, and outbox
-    const letters = await prisma.letterUpload.findMany({
+    const letters = await prisma.letter_upload.findMany({
       where: {
         is_active: true,
         ...(inboxFilter && { inbox: true }), // Apply inbox filter if passed
         ...(outboxFilter && { inbox: false }), // Apply outbox filter if passed
       },
       include: {
-        ULB: {
+        ulb_relation: {
           select: {
             ulb_name: true,
           },
@@ -60,7 +60,7 @@ const getLetters = async (inboxFilter, outboxFilter) => {
 
 const softDeleteLetter = async (id) => {
   try {
-    return await prisma.letterUpload.update({
+    return await prisma.letter_upload.update({
       where: {
         id: parseInt(id, 10),
       },
@@ -82,7 +82,7 @@ const sendLetter = async (letterId, ulb_id) => {
   try {
     if (ulb_id) {
       // Send letter to specific ULB
-      const letterUpdate = await prisma.letterUpload.update({
+      const letterUpdate = await prisma.letter_upload.update({
         where: {
           id: letterId,
         },
@@ -108,10 +108,10 @@ const sendLetter = async (letterId, ulb_id) => {
       };
     } else {
       // Send letter to all ULBs
-      const allULBs = await prisma.uLB.findMany(); // Fetch all ULBs
+      const allULBs = await prisma.ulb.findMany(); // Fetch all ULBs
       const notifications = await Promise.all(
         allULBs.map(async (ulb) => {
-          const letterUpdate = await prisma.letterUpload.update({
+          const letterUpdate = await prisma.letter_upload.update({
             where: { id: letterId },
             data: { inbox: false, outbox: true },
           });
@@ -141,7 +141,7 @@ const sendLetter = async (letterId, ulb_id) => {
 const getLettersForULB = async (ulb_id) => {
   try {
     // Fetch active letters for the specific ULB or global letters where outbox is true
-    const letters = await prisma.letterUpload.findMany({
+    const letters = await prisma.letter_upload.findMany({
       where: {
         OR: [
           { ulb_id: parseInt(ulb_id) }, // Fetch letters specific to the ULB
@@ -151,12 +151,12 @@ const getLettersForULB = async (ulb_id) => {
         outbox: true, // Ensure outbox is true
       },
       include: {
-        ULB: {
+        ulb_relation: {
           select: {
             ulb_name: true,
           },
         },
-        notification: {
+        notifications: {
           select: {
             id: true,
             description: true,
@@ -167,8 +167,6 @@ const getLettersForULB = async (ulb_id) => {
         },
       },
     });
-
-    // console.log("Fetched Letters with Notification:", letters);
 
     return letters; // Return the letters array directly
   } catch (error) {
@@ -185,7 +183,7 @@ const getNotificationsByUlbId = async (ulb_id) => {
       },
       distinct: ["letter_id"], // Ensure distinct notifications by letter_id
       include: {
-        LetterUpload: true, // Include all fields of the related LetterUpload model
+        letter_upload: true, // Adjusted to snake_case for letter_upload
       },
       orderBy: {
         created_at: "desc", // Order by created_at in descending order
