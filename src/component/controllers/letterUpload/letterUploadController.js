@@ -128,7 +128,7 @@ const getLettersController = async (req, res) => {
       created_at: letter.created_at,
       updated_at: letter.updated_at,
       is_active: letter.is_active,
-      ULB: letter.ULB ? letter.ULB.ulb_name : "All ULBs", // Handle missing ULB
+      ULB: letter.ulb ? letter.ulb.ulb_name : "All ULBs", // Handle missing ULB
     }));
 
     // Total number of letters
@@ -312,7 +312,7 @@ const getLettersForULBController = async (req, res) => {
         is_global: letter.is_global,
         inbox: letter.inbox,
         outbox: letter.outbox,
-        ULB: letter.ULB ? letter.ULB.ulb_name : "All ULBs",
+        ULB: letter.ulb ? letter.ulb.ulb_name : "All ULBs",
 
         notification: {
           id: notification?.id || null,

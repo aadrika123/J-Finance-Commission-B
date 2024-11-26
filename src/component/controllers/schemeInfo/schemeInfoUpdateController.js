@@ -61,7 +61,7 @@ const modifySchemeInfo = async (req, res) => {
     });
 
     // Create an audit log entry for the update operation
-    await createAuditLog(userId, "UPDATE", "Scheme_info", scheme_id, {
+    await createAuditLog(userId, "UPDATE", "scheme_info", scheme_id, {
       oldData: data, // Optionally log old data if available
       newData: updatedSchemeInfo.data, // Log only the new data
     });

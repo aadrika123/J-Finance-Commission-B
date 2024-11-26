@@ -323,7 +323,7 @@ const seedULBs = async () => {
   try {
     // Insert new data
     for (const ulb of ulbData) {
-      await prisma.ULB.create({
+      await prisma.ulb.create({
         data: {
           id: ulb.id,
           ulb_name: ulb.ulb_name,

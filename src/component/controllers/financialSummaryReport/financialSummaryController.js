@@ -150,7 +150,7 @@ const getFinancialSummaryReport = async (req, res) => {
 
     // Upsert into the database
     const upsertPromises = result.map(async (row) => {
-      return prisma.financialSummaryReport.upsert({
+      return prisma.financial_summary_report.upsert({
         where: {
           ulb_id: row.ulb_id, // Unique identifier
         },
@@ -350,8 +350,8 @@ const getFundReleaseReport = async (req, res) => {
     // Restructure the data to include a "fund_release" key
     const formattedData = report.map((row) => ({
       ulb_id: row.ulb_id,
-      ULB: {
-        ulb_name: row.ULB.ulb_name,
+      ulb: {
+        ulb_name: row.ulb_relation.ulb_name,
       },
       financial_year: row.financial_year,
       fund_type: row.fund_type,

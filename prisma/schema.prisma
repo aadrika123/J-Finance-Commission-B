@@ -7,32 +7,30 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model AuditLog {
+model audit_log {
   id          Int      @id @default(autoincrement())
-  userId      Int?
-  actionType  String
-  tableName   String
-  recordId    String
-  changedData Json?
+  user_id     Int?
+  action_type String
+  table_name  String
+  record_id   String
+  changed_data Json?
   timestamp   DateTime @default(now())
 }
 
-model ULB {
+model ulb {
   id                Int                      @id @default(autoincrement())
   ulb_name          String                   @unique
   longitude         Float
   latitude          Float
   city_type         String?
-  // relationship to Scheme_info
-  schemes           Scheme_info[]
-  // relationship to FinancialSummaryReport
-  financial_reports FinancialSummaryReport[]
-  letter            LetterUpload[]
-  notification      Notification[]
-  fund_release      FundRelease[]
+  schemes           scheme_info[]
+  financial_reports financial_summary_report[]
+  letters           letter_upload[]
+  notifications     notification[]
+  fund_releases     fund_release[]
 }
 
-model Scheme_info {
+model scheme_info {
   scheme_id                               String    @id @unique
   project_cost                            Decimal
   scheme_name                             String
@@ -51,63 +49,56 @@ model Scheme_info {
   project_completion_status_in_percentage Float?
   approved_project_cost                   Decimal?
   ulb_id                                  Int?
-  ULB                                     ULB?      @relation(fields: [ulb_id], references: [id])
+  ulb_relation                            ulb?      @relation(fields: [ulb_id], references: [id])
 }
 
-model FinancialSummaryReport {
-  id       Int    @id @default(autoincrement()) // Primary key, auto-incremented
-  ulb_id   Int    @unique // Foreign key referencing the ULB model, unique for each ULB
-  ulb_name String // Name of the ULB, useful for display purposes
-
-  approved_schemes                 Int // The count of schemes approved for this ULB
-  fund_release_to_ulbs             Decimal // Total funds released to the ULB across all schemes
-  amount                           Decimal // The total approved project cost for all schemes
-  project_completed                Int // The count of completed projects for this ULB
-  expenditure                      Decimal // The total expenditure for the ULB's projects
-  balance_amount                   Decimal // The remaining balance amount (funds - expenditure)
-  financial_progress_in_percentage Int // Average financial progress of all schemes, in percentage
-  number_of_tender_floated         Int // The count of tenders floated for this ULB's schemes
-  tender_not_floated               Int // The count of tenders not floated for this ULB's schemes
-  work_in_progress                 Int // The count of schemes that are still in progress
-  project_not_started              Int? // Count of projects that haven't started yet (financial progress = 0)
-
-  created_at DateTime  @default(now()) // Timestamp for when this record was created
-  updated_at DateTime? // Timestamp for the last time this record was updated
-
-  // Foreign key relation to the ULB model
-  ULB ULB @relation(fields: [ulb_id], references: [id]) // Relation to the ULB model based on ulb_id
+model financial_summary_report {
+  id                                  Int      @id @default(autoincrement())
+  ulb_id                              Int      @unique
+  ulb_name                            String
+  approved_schemes                    Int
+  fund_release_to_ulbs                Decimal
+  amount                              Decimal
+  project_completed                   Int
+  expenditure                         Decimal
+  balance_amount                      Decimal
+  financial_progress_in_percentage    Int
+  number_of_tender_floated            Int
+  tender_not_floated                  Int
+  work_in_progress                    Int
+  project_not_started                 Int?
+  created_at                          DateTime @default(now())
+  updated_at                          DateTime?
+  ulb_relation                        ulb      @relation(fields: [ulb_id], references: [id])
 }
 
-model LetterUpload {
+model letter_upload {
   id           Int       @id @default(autoincrement())
-  ulb_id       Int? // Foreign key referencing the ULB model
-  order_number String // Order number for the letter
-  letter_url   String // URL or path for the uploaded letter
+  ulb_id       Int?
+  order_number String
+  letter_url   String
   subject      String?
-  created_at   DateTime  @default(now()) // Timestamp for when the letter was uploaded
-  updated_at   DateTime? @updatedAt // Timestamp for the last time this record was updated
-  is_active    Boolean   @default(true) // Flag for soft deletion
-  is_global    Boolean   @default(false) // Add this field to indicate global letters
-  inbox        Boolean   @default(true) // True when the letter is uploaded (inbox)
-  outbox       Boolean   @default(false) // True when the letter is sent to ULB (outbox)
-
-  ULB          ULB?           @relation(fields: [ulb_id], references: [id])
-  notification Notification[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime? @updatedAt
+  is_active    Boolean   @default(true)
+  is_global    Boolean   @default(false)
+  inbox        Boolean   @default(true)
+  outbox       Boolean   @default(false)
+  ulb_relation ulb?      @relation(fields: [ulb_id], references: [id])
+  notifications notification[]
 }
 
-model Notification {
-  id          Int      @id @default(autoincrement())
-  description String // Description of the notification
-  ulb_id      Int? // Foreign key referencing the ULB model
-  letter_id   Int // Foreign key referencing the LetterUpload model
-  created_at  DateTime @default(now()) // Timestamp for when the notification was created
-
-  // Relations
-  ULB          ULB?         @relation(fields: [ulb_id], references: [id])
-  LetterUpload LetterUpload @relation(fields: [letter_id], references: [id])
+model notification {
+  id           Int           @id @default(autoincrement())
+  description  String
+  ulb_id       Int?
+  letter_id    Int
+  created_at   DateTime       @default(now())
+  ulb_relation ulb?           @relation(fields: [ulb_id], references: [id])
+  letter       letter_upload  @relation(fields: [letter_id], references: [id])
 }
 
-model FundRelease {
+model fund_release {
   id                  Int       @id @default(autoincrement())
   city_type           String
   fund_type           String
@@ -121,7 +112,7 @@ model FundRelease {
   created_at          DateTime  @default(now())
   updated_at          DateTime  @updatedAt
   ulb_id              Int
-  ULB                 ULB       @relation(fields: [ulb_id], references: [id])
+  ulb_relation        ulb       @relation(fields: [ulb_id], references: [id])
 
-  @@unique([ulb_id, financial_year, fund_type]) // Composite unique constraint
+  @@unique([ulb_id, financial_year, fund_type])
 }

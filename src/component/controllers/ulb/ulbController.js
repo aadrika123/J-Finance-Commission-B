@@ -67,7 +67,7 @@ const getULBs = async (req, res) => {
     await createAuditLog(
       userId, // User ID (if available)
       "FETCH",
-      "ULB",
+      "ulb", // Updated table name to snake_case
       null, // No specific record ID for fetch operation
       {
         total_ULBs: formattedULBs.length,

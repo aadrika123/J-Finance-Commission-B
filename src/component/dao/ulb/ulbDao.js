@@ -18,28 +18,28 @@ const getULBs = async () => {
   try {
     const ulbs = await prisma.$queryRaw`
       SELECT 
-        "ULB".id AS id,
-        "ULB".ulb_name AS ulb_name,
-        "ULB".longitude,
-        "ULB".latitude,
-        FSR.approved_schemes,
-        FSR.fund_release_to_ulbs,
-        FSR.amount,
-        FSR.project_completed,
-        FSR.expenditure,
-        FSR.balance_amount,
-        FSR.financial_progress_in_percentage,
-        FSR.number_of_tender_floated,
-        FSR.tender_not_floated,
-        FSR.work_in_progress
+        ulb.id AS id,
+        ulb.ulb_name AS ulb_name,
+        ulb.longitude,
+        ulb.latitude,
+        fsr.approved_schemes,
+        fsr.fund_release_to_ulbs,
+        fsr.amount,
+        fsr.project_completed,
+        fsr.expenditure,
+        fsr.balance_amount,
+        fsr.financial_progress_in_percentage,
+        fsr.number_of_tender_floated,
+        fsr.tender_not_floated,
+        fsr.work_in_progress
       FROM 
-        "ULB" 
+        ulb 
       LEFT JOIN 
-        "FinancialSummaryReport" AS FSR
+        financial_summary_report AS fsr
       ON 
-        "ULB".id = FSR.ulb_id
+        ulb.id = fsr.ulb_id
       ORDER BY 
-        "ULB".id ASC;
+        ulb.id ASC;
     `;
 
     // Log the fetched ULB data with financial summary
@@ -72,33 +72,31 @@ const getULBsAndSchemes = async () => {
   try {
     const result = await prisma.$queryRaw`
       SELECT 
-        "ULB".id AS ulb_id,
-        "ULB".ulb_name,
-        FSR.approved_schemes AS total_schemes_fsr,
-        FSR.financial_progress_in_percentage AS financial_progress_percentage_fsr,
-        COUNT("Scheme_info".scheme_name) AS total_schemes_schemeinfo,  -- Count total schemes from Scheme_info
-        ROUND(AVG("Scheme_info".financial_progress_in_percentage)::numeric, 3) AS financial_progress_in_percentage_schemeinfo,  -- Average financial progress from Scheme_info, cast to numeric
-        SUM("Scheme_info".financial_progress) AS total_financial_progress_schemeinfo -- Sum of financial progress from Scheme_info
+        ulb.id AS ulb_id,
+        ulb.ulb_name,
+        fsr.approved_schemes AS total_schemes_fsr,
+        fsr.financial_progress_in_percentage AS financial_progress_percentage_fsr,
+        COUNT(scheme_info.scheme_name) AS total_schemes_schemeinfo,  -- Count total schemes from scheme_info
+        ROUND(AVG(scheme_info.financial_progress_in_percentage)::numeric, 3) AS financial_progress_in_percentage_schemeinfo,  -- Average financial progress from scheme_info, cast to numeric
+        SUM(scheme_info.financial_progress) AS total_financial_progress_schemeinfo -- Sum of financial progress from scheme_info
       FROM 
-        "ULB"
+        ulb
       LEFT JOIN 
-        "FinancialSummaryReport" AS FSR
+        financial_summary_report AS fsr
       ON 
-        "ULB".id = FSR.ulb_id
+        ulb.id = fsr.ulb_id
       LEFT JOIN 
-        "Scheme_info"
+        scheme_info
       ON 
-        "ULB".id = "Scheme_info".ulb_id  -- Now using ulb_id for the relationship
+        ulb.id = scheme_info.ulb_id  -- Using ulb_id for the relationship
       WHERE
-        "Scheme_info".financial_progress IS NOT NULL
+        scheme_info.financial_progress IS NOT NULL
       GROUP BY 
-        "ULB".id, "ULB".ulb_name, FSR.approved_schemes, FSR.financial_progress_in_percentage -- Group by ULB and FinancialSummaryReport fields
+        ulb.id, ulb.ulb_name, fsr.approved_schemes, fsr.financial_progress_in_percentage -- Group by ULB and financial_summary_report fields
       ORDER BY 
         total_financial_progress_schemeinfo DESC;
-        -- total_financial_progress_schemeinfo DESC;
     `;
 
-    // Log the ULBs and their financial progress
     // Log the ULBs and their financial progress
     result.forEach((ulb) => {
       logger.info({
@@ -123,13 +121,13 @@ const getULBInfoByCityType = async (city_type) => {
   try {
     const result = await prisma.$queryRaw`
       SELECT 
-        "ULB".id AS ulb_id,
-        "ULB".ulb_name,
-        "ULB".city_type
+        ulb.id AS ulb_id,
+        ulb.ulb_name,
+        ulb.city_type
       FROM 
-        "ULB"
+        ulb
       WHERE 
-        "ULB".city_type = ${city_type};
+        ulb.city_type = ${city_type};
     `;
 
     return result;
