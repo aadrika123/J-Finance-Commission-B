@@ -183,7 +183,8 @@ const getNotificationsByUlbId = async (ulb_id) => {
       },
       distinct: ["letter_id"], // Ensure distinct notifications by letter_id
       include: {
-        letter_upload: true, // Adjusted to snake_case for letter_upload
+        letter: true, // Correct relation name
+        ulb_relation: true, // Include ulb relation if needed
       },
       orderBy: {
         created_at: "desc", // Order by created_at in descending order

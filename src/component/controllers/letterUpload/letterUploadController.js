@@ -400,7 +400,7 @@ const getNotificationsController = async (req, res) => {
       ulb_id: notification.ulb_id,
       letter_id: notification.letter_id,
       created_at: notification.created_at,
-      letter_url: notification.LetterUpload.letter_url || null, // Access letter_url
+      letter_url: notification.letter?.letter_url || null, // Access letter_url
     }));
 
     const totalNotificationCount = notifications.length; // Calculate total number of notifications
