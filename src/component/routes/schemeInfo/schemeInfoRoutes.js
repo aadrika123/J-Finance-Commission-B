@@ -16,7 +16,11 @@ router.post("/scheme-info", roleMiddleware(["SUDA FC"]), addSchemeInfo);
 
 // GET route to fetch paginated scheme information
 // This endpoint triggers the controller function to retrieve scheme information
-router.get("/scheme-info", roleMiddleware(["EO FC"]), fetchSchemeInfo);
+router.get(
+  "/scheme-info",
+  roleMiddleware(["EO FC", "SUDA FC"]),
+  fetchSchemeInfo
+);
 
 // GET route to fetch scheme information by scheme_id
 // This endpoint triggers the controller function to retrieve information of a specific scheme by its ID
