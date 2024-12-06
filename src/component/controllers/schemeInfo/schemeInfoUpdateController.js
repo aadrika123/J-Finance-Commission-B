@@ -1,8 +1,12 @@
+const { PrismaClient } = require("@prisma/client");
 const {
   updateSchemeInfo,
+  updateSchemeById
 } = require("../../dao/schemeInfo/schemeInfoUpdateDao");
 const logger = require("../../../utils/log/logger");
-const createAuditLog = require("../../../utils/auditLog/auditLogger"); // Adjust the path if needed
+const createAuditLog = require("../../../utils/auditLog/auditLogger");
+const moment = require('moment');
+const prisma = new PrismaClient();
 
 /**
  *
@@ -86,6 +90,85 @@ const modifySchemeInfo = async (req, res) => {
     });
   }
 };
+
+async function updateScheme(req, res) {
+  const { scheme_id } = req.params;
+  const {
+    project_cost,
+    scheme_name,
+    sector,
+    grant_type,
+    date_of_approval,
+    financial_year,
+  } = req.body;
+
+  const userId = req.body?.auth?.id || null; // Get user ID from request
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+
+
+  // Prepare the data for updating
+  let updatedDateOfApproval = date_of_approval;
+
+  // If date_of_approval is in 'YYYY-MM-DD' format (without time), convert it to a Date object
+  if (updatedDateOfApproval && typeof updatedDateOfApproval === 'string') {
+    updatedDateOfApproval = moment(updatedDateOfApproval, 'YYYY-MM-DD').utc().toDate();
+  }
+
+  // Prepare the data for updating
+  const updatedData = {
+    project_cost,
+    scheme_name,
+    sector,
+    grant_type,
+    date_of_approval:updatedDateOfApproval,
+    financial_year,
+    approved_project_cost:project_cost,
+    updated_at: new Date(), // Ensure to update the timestamp
+  };
+
+  try {
+    // Log the attempt to update scheme
+    logger.info("Attempting to update scheme information...", {
+      userId,
+      action: "UPDATE_SCHEME_INFO",
+      ip: clientIp,
+      scheme_id,
+      updatedData,
+    });
+
+    // First, retrieve the old data (current scheme info)
+    const oldScheme = await prisma.scheme_info.findUnique({
+      where: { scheme_id: scheme_id },
+    });
+
+    if (!oldScheme) {
+      throw new Error(`Scheme with ID ${scheme_id} not found`);
+    }
+
+    // Call the DAO function to update the scheme
+    const updatedScheme = await updateSchemeById(scheme_id, updatedData, userId, clientIp);
+
+    // Log the audit information: old data vs new data
+    await createAuditLog(userId, "UPDATE", "scheme_info", scheme_id, {
+      oldData: oldScheme,  // Log old data (before the update)
+      newData: updatedScheme, // Log new data (after the update)
+    });
+
+    // Return the success response
+    return res.status(200).json({
+      message: 'Scheme updated successfully',
+      updatedScheme,
+    });
+  } catch (error) {
+    // Log and return the error
+    logger.error("Error updating scheme information:", error);
+    return res.status(400).json({
+      status: false,
+      message: `Error updating scheme information: ${error.message}`,
+    });
+  }
+}
 module.exports = {
   modifySchemeInfo,
+  updateScheme
 };
