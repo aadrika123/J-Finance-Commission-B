@@ -121,7 +121,7 @@ const fetchSchemeInfo = async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // Current page number, default to 1
     const limit = parseInt(req.query.limit, 10) || 10; // Records per page, default to 10
     const skip = (page - 1) * limit; // Calculate offset
-    const { grant_type, ulb, financial_year } = req.query; // Optional filters
+    const { grant_type, ulb, financial_year, scheme_name, scheme_id } = req.query; 
 
     // Validate pagination parameters
     if (page < 1 || limit < 1) {
@@ -133,16 +133,35 @@ const fetchSchemeInfo = async (req, res) => {
 
     // Prepare the filter condition for query
     const filterCondition = {};
+    
+    // Handle grant_type filter
     if (grant_type) {
       const grantTypes = grant_type.split(",").map((type) => type.trim());
       filterCondition.grant_type =
         grantTypes.length === 1 ? grantTypes[0] : { in: grantTypes };
     }
+
+    // Handle ulb filter
     if (ulb) {
       filterCondition.ulb = ulb;
     }
+
+    // Handle financial_year filter
     if (financial_year) {
       filterCondition.financial_year = financial_year;
+    }
+
+    // Handle scheme_name filter
+    if (scheme_name) {
+      filterCondition.scheme_name = {
+        contains: scheme_name, // This will allow partial matching
+        mode: "insensitive", // Case insensitive search
+      };
+    }
+
+    // Handle scheme_id filter
+    if (scheme_id) {
+      filterCondition.scheme_id = scheme_id; // Exact match
     }
 
     // Fetch scheme information and total count of records
@@ -181,6 +200,8 @@ const fetchSchemeInfo = async (req, res) => {
       limit,
       totalResult,
       grant_type,
+      scheme_name,
+      scheme_id,
     });
 
     // Send a success response with paginated data and pagination details
