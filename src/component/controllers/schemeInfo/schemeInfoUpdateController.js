@@ -106,13 +106,12 @@ async function updateScheme(req, res) {
   const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
 
 
-  // Prepare the data for updating
-  let updatedDateOfApproval = date_of_approval;
-
-  // If date_of_approval is in 'YYYY-MM-DD' format (without time), convert it to a Date object
-  if (updatedDateOfApproval && typeof updatedDateOfApproval === 'string') {
-    updatedDateOfApproval = moment(updatedDateOfApproval, 'YYYY-MM-DD').utc().toDate();
-  }
+ // If date_of_approval is provided, ensure it's converted to ISO-8601 format
+// Convert date_of_approval to UTC ISO-8601
+let updatedDateOfApproval = date_of_approval;
+if (updatedDateOfApproval && typeof updatedDateOfApproval === 'string') {
+  updatedDateOfApproval = new Date(`${date_of_approval}T00:00:00Z`).toISOString(); // Add UTC timezone
+}
 
   // Prepare the data for updating
   const updatedData = {
