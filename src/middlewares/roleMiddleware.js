@@ -58,7 +58,7 @@ const roleMiddleware = (allowedRoles) => {
       next();
     } catch (error) {
       console.error("Error fetching user roles: ", error);
-      res.status(500).json({
+      res.status(200).json({
         status: "error",
         message: "An error occurred while checking permissions.",
       });
