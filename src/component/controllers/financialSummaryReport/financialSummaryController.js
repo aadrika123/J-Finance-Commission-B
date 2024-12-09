@@ -237,9 +237,14 @@ const createFundReleaseController = async (req, res) => {
     first_instalment,
     second_instalment,
     third_instalment,
+    incentive,
     interest_amount,
     financial_year,
-    date_of_release,
+    date_of_release_first,
+    date_of_release_second,
+    date_of_release_third,
+    date_of_release_incentive,
+    date_of_release_interest,
   } = req.body;
 
   try {
@@ -262,17 +267,32 @@ const createFundReleaseController = async (req, res) => {
       city_type,
       fund_type,
       financial_year,
-      date_of_release: date_of_release ? new Date(date_of_release) : null,
       first_instalment: Number(first_instalment) || undefined,
       second_instalment: Number(second_instalment) || undefined,
       third_instalment: Number(third_instalment) || undefined,
+      incentive: Number(incentive) || undefined,
       interest_amount: Number(interest_amount) || undefined,
+      date_of_release_first: date_of_release_first
+        ? new Date(date_of_release_first)
+        : null,
+      date_of_release_second: date_of_release_second
+        ? new Date(date_of_release_second)
+        : null,
+      date_of_release_third: date_of_release_third
+        ? new Date(date_of_release_third)
+        : null,
+      date_of_release_incentive: date_of_release_incentive
+        ? new Date(date_of_release_incentive)
+        : null,
+      date_of_release_interest: date_of_release_interest
+        ? new Date(date_of_release_interest)
+        : null,
     };
 
     const upsertedFundRelease = await upsertFundReleaseDao(
       ulb_id,
       financial_year,
-      fund_type, // Pass fund_type to the DAO
+      fund_type,
       dataToUpdate
     );
 
@@ -335,6 +355,7 @@ const getFundReleaseReport = async (req, res) => {
         acc.totalSecondInstalment += parseFloat(row.second_instalment || 0);
         acc.totalThirdInstalment += parseFloat(row.third_instalment || 0);
         acc.totalInterestAmount += parseFloat(row.interest_amount || 0);
+        acc.totalIncentive += parseFloat(row.incentive || 0);
         acc.totalFundReleased += parseFloat(row.total_fund_released || 0);
         return acc;
       },
@@ -343,6 +364,7 @@ const getFundReleaseReport = async (req, res) => {
         totalSecondInstalment: 0,
         totalThirdInstalment: 0,
         totalInterestAmount: 0,
+        totalIncentive:0,
         totalFundReleased: 0,
       }
     );
@@ -361,8 +383,13 @@ const getFundReleaseReport = async (req, res) => {
         second_instalment: row.second_instalment,
         third_instalment: row.third_instalment,
         interest_amount: row.interest_amount,
+        incentive : row.incentive,
         total_fund_released: row.total_fund_released,
-        date_of_release: row.date_of_release,
+        date_of_release_first: row.date_of_release_first,
+        date_of_release_second: row.date_of_release_second,
+        date_of_release_third: row.date_of_release_third,
+        date_of_release_interest: row.date_of_release_interest,
+        date_of_release_incentive: row.date_of_release_incentive,
       },
     }));
 
@@ -382,6 +409,7 @@ const getFundReleaseReport = async (req, res) => {
         totalSecondInstalment: totals.totalSecondInstalment.toFixed(2),
         totalThirdInstalment: totals.totalThirdInstalment.toFixed(2),
         totalInterestAmount: totals.totalInterestAmount.toFixed(2),
+        totalIncentive: totals.totalIncentive.toFixed(2),
         totalFundReleased: totals.totalFundReleased.toFixed(2),
       },
     });

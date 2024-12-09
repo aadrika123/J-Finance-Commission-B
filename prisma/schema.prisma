@@ -99,20 +99,25 @@ model notification {
 }
 
 model fund_release {
-  id                  Int       @id @default(autoincrement())
-  city_type           String
-  fund_type           String
-  first_instalment    Float?
-  second_instalment   Float?
-  third_instalment    Float?
-  interest_amount     Float?
-  total_fund_released Float?
-  financial_year      String
-  date_of_release     DateTime?
-  created_at          DateTime  @default(now())
-  updated_at          DateTime  @updatedAt
-  ulb_id              Int
-  ulb_relation        ulb       @relation(fields: [ulb_id], references: [id])
+  id                         Int       @id @default(autoincrement())
+  city_type                  String
+  fund_type                  String
+  first_instalment           Float?
+  second_instalment          Float?
+  third_instalment           Float?
+  incentive                  Float?
+  interest_amount            Float?
+  total_fund_released        Float?
+  financial_year             String
+  date_of_release_first      DateTime?  // New field for first installment
+  date_of_release_second     DateTime?  // New field for second installment
+  date_of_release_third      DateTime?  // New field for third installment
+  date_of_release_incentive  DateTime?  // New field for incentive
+  date_of_release_interest   DateTime?  // New field for interest
+  created_at                 DateTime  @default(now())
+  updated_at                 DateTime  @updatedAt
+  ulb_id                     Int
+  ulb_relation               ulb       @relation(fields: [ulb_id], references: [id])
 
   @@unique([ulb_id, financial_year, fund_type])
 }
