@@ -131,7 +131,6 @@ const upsertFundReleaseDao = async (
   fundReleaseData
 ) => {
   try {
-    // Fetch existing fund release data with fund_type included
     const existingFundRelease = await findFundReleaseByUlbIdYearAndFundType(
       ulb_id,
       financial_year,
@@ -139,11 +138,9 @@ const upsertFundReleaseDao = async (
     );
 
     if (existingFundRelease) {
-      // Modify only if existing fund release is found, else create a new record
       fundReleaseData.interest_amount =
         (existingFundRelease.interest_amount || 0) +
         (fundReleaseData.interest_amount || 0);
-
       fundReleaseData.first_instalment =
         existingFundRelease.first_instalment ||
         fundReleaseData.first_instalment ||
@@ -156,22 +153,34 @@ const upsertFundReleaseDao = async (
         existingFundRelease.third_instalment ||
         fundReleaseData.third_instalment ||
         0;
-    } else {
-      fundReleaseData.first_instalment =
-        Number(fundReleaseData.first_instalment) || 0;
-      fundReleaseData.second_instalment =
-        Number(fundReleaseData.second_instalment) || 0;
-      fundReleaseData.third_instalment =
-        Number(fundReleaseData.third_instalment) || 0;
-      fundReleaseData.interest_amount =
-        Number(fundReleaseData.interest_amount) || 0;
+      fundReleaseData.incentive =
+        (existingFundRelease.incentive || 0) +
+        (fundReleaseData.incentive || 0);
+
+      // Preserve existing dates if not provided
+      fundReleaseData.date_of_release_first =
+        fundReleaseData.date_of_release_first ||
+        existingFundRelease.date_of_release_first;
+      fundReleaseData.date_of_release_second =
+        fundReleaseData.date_of_release_second ||
+        existingFundRelease.date_of_release_second;
+      fundReleaseData.date_of_release_third =
+        fundReleaseData.date_of_release_third ||
+        existingFundRelease.date_of_release_third;
+      fundReleaseData.date_of_release_incentive =
+        fundReleaseData.date_of_release_incentive ||
+        existingFundRelease.date_of_release_incentive;
+      fundReleaseData.date_of_release_interest =
+        fundReleaseData.date_of_release_interest ||
+        existingFundRelease.date_of_release_interest;
     }
 
     fundReleaseData.total_fund_released =
       (fundReleaseData.first_instalment || 0) +
       (fundReleaseData.second_instalment || 0) +
       (fundReleaseData.third_instalment || 0) +
-      (fundReleaseData.interest_amount || 0);
+      (fundReleaseData.interest_amount || 0) +
+      (fundReleaseData.incentive || 0);
 
     const upsertedFundRelease = await prisma.fund_release.upsert({
       where: {
@@ -223,9 +232,14 @@ const getFundReleaseDataDao = async (
         first_instalment: true,
         second_instalment: true,
         third_instalment: true,
+        incentive:true,
         interest_amount: true,
         total_fund_released: true,
-        date_of_release: true,
+        date_of_release_first: true,
+        date_of_release_second: true,
+        date_of_release_third: true,
+        date_of_release_interest: true,
+        date_of_release_incentive: true,
       },
     });
 
