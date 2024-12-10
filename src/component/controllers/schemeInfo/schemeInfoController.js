@@ -133,7 +133,7 @@ const fetchSchemeInfo = async (req, res) => {
 
     // Prepare the filter condition for query
     const filterCondition = {};
-    
+
     // Handle grant_type filter
     if (grant_type) {
       const grantTypes = grant_type.split(",").map((type) => type.trim());
@@ -171,13 +171,25 @@ const fetchSchemeInfo = async (req, res) => {
         take: limit,
         where: filterCondition,
         orderBy: {
-          created_at: "desc",
+          // Sort based on numeric values in scheme_id
+          scheme_id: "asc",  // Sorting by scheme_id (ascending)
         },
       }),
       prisma.scheme_info.count({
         where: filterCondition,
       }),
     ]);
+
+    // Formatting the scheme_id to match the desired output format (e.g., sch-1-001, sch-2-001)
+    const formattedSchemes = schemeInfoList.map((scheme) => {
+      const schemeIdParts = scheme.scheme_id.split('-'); // Split scheme_id into parts
+      const category = schemeIdParts[1]; // The second part (e.g., '1', '2', '30')
+      const number = schemeIdParts[2]; // The third part (e.g., '001', '002')
+      return {
+        ...scheme,
+        scheme_id: `sch-${category}-${number.padStart(3, '0')}`, // Ensure number is always 3 digits
+      };
+    });
 
     // Calculate pagination details
     const totalPage = Math.ceil(totalResult / limit);
@@ -193,6 +205,7 @@ const fetchSchemeInfo = async (req, res) => {
       limit,
       totalResult,
     });
+
 
     // Create an audit log entry for the fetch operation
     await createAuditLog(userId, "FETCH", "Scheme_info", null, {
