@@ -349,9 +349,6 @@ const getSchemeInfoById = async (req, res) => {
 const getSchemesInfoByULBName = async (req, res) => {
   try {
     const { ulb_name } = req.query;
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-    const skip = (page - 1) * limit;
 
     if (!ulb_name) {
       return res.status(200).json({
@@ -361,7 +358,7 @@ const getSchemesInfoByULBName = async (req, res) => {
       });
     }
 
-    // Fetch the schemes with pagination
+    // Fetch the schemes without pagination
     const schemes = await prisma.scheme_info.findMany({
       where: {
         ulb: {
@@ -369,26 +366,10 @@ const getSchemesInfoByULBName = async (req, res) => {
           mode: "insensitive",
         },
       },
-      skip,
-      take: limit,
       orderBy: {
         created_at: "desc",
       },
     });
-
-    // Fetch the total count for pagination
-    const totalSchemes = await prisma.scheme_info.count({
-      where: {
-        ulb: {
-          equals: ulb_name,
-          mode: "insensitive",
-        },
-      },
-    });
-
-    const totalPage = Math.ceil(totalSchemes / limit);
-    const nextPage = page < totalPage ? page + 1 : null;
-    const prevPage = page > 1 ? page - 1 : null;
 
     // Add calculated fields to each scheme
     const enhancedSchemes = schemes.map((scheme) => {
@@ -413,14 +394,6 @@ const getSchemesInfoByULBName = async (req, res) => {
         ? "Scheme information fetched successfully"
         : "No schemes found for this ULB name",
       data: enhancedSchemes,
-      pagination: {
-        next: nextPage,
-        previous: prevPage,
-        currentPage: page,
-        currentTake: limit,
-        totalPage,
-        totalResult: totalSchemes,
-      },
     });
   } catch (error) {
     console.error(error);
