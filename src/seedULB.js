@@ -318,6 +318,55 @@ const seedULBs = async () => {
       longitude: 85.4376,
       city_type: "non million",
     },
+    {
+      id: 46,
+      ulb_name: "Hariharganj Nagar Panchayat",
+      latitude: 24.542199,
+      longitude: 84.279232,
+      city_type: "non million",
+    },
+    {
+      id: 47,
+      ulb_name: "Ramgarh Cantt",
+      latitude: 23.620000,
+      longitude: 85.480000,
+      city_type: "non million",
+    },
+    {
+      id: 48,
+      ulb_name: "Sri Bansidhar Nagar Panchayat",
+      latitude: 24.200000,
+      longitude: 83.800000,
+      city_type: "non million",
+    },
+    {
+      id: 49,
+      ulb_name: "Chhattarpur Nagar Panchayat",
+      latitude: 24.300000,
+      longitude: 85.300000,
+      city_type: "non million",
+    },
+    {
+      id: 50,
+      ulb_name: "Badki Saraiya Nagar Panchayat",
+      latitude: 24.500000,
+      longitude: 84.000000,
+      city_type: "non million",
+    },
+    {
+      id: 51,
+      ulb_name: "Dhanwar Nagar Panchayat",
+      latitude: 24.400000,
+      longitude: 85.000000,
+      city_type: "non million",
+    },
+    {
+      id: 52,
+      ulb_name: "Mahagama Nagar Panchayat",
+      latitude: 25.000000,
+      longitude: 87.300000,
+      city_type: "non million",
+    },
   ];
 
   try {
