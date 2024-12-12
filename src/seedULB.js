@@ -370,8 +370,20 @@ const seedULBs = async () => {
   ];
 
   try {
-    // Insert new data
     for (const ulb of ulbData) {
+      // Check if the ULB already exists by ID
+      const existingUlb = await prisma.ulb.findUnique({
+        where: {
+          id: ulb.id,
+        },
+      });
+  
+      if (existingUlb) {
+        console.log(`ULB with ID ${ulb.id} already exists. Skipping...`);
+        continue; // Skip this ULB
+      }
+  
+      // Insert new data if the ID doesn't exist
       await prisma.ulb.create({
         data: {
           id: ulb.id,
@@ -381,14 +393,16 @@ const seedULBs = async () => {
           city_type: ulb.city_type,
         },
       });
+  
+      console.log(`ULB with ID ${ulb.id} created successfully.`);
     }
-
+  
     console.log("ULBs seeded successfully.");
   } catch (error) {
     console.error("Error seeding ULBs:", error);
   } finally {
     await prisma.$disconnect();
   }
-};
+}
 
 seedULBs();
