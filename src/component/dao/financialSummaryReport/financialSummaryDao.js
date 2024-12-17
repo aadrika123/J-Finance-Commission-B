@@ -138,40 +138,40 @@ const upsertFundReleaseDao = async (
     );
 
     if (existingFundRelease) {
-      fundReleaseData.interest_amount =
-        (existingFundRelease.interest_amount || 0) +
-        (fundReleaseData.interest_amount || 0);
       fundReleaseData.first_instalment =
-        existingFundRelease.first_instalment ||
-        fundReleaseData.first_instalment ||
-        0;
+        fundReleaseData.first_instalment ?? existingFundRelease.first_instalment;
+
       fundReleaseData.second_instalment =
-        existingFundRelease.second_instalment ||
-        fundReleaseData.second_instalment ||
-        0;
+        fundReleaseData.second_instalment ?? existingFundRelease.second_instalment;
+
       fundReleaseData.third_instalment =
-        existingFundRelease.third_instalment ||
-        fundReleaseData.third_instalment ||
-        0;
+        fundReleaseData.third_instalment ?? existingFundRelease.third_instalment;
+
       fundReleaseData.incentive =
-        (existingFundRelease.incentive || 0) +
-        (fundReleaseData.incentive || 0);
+        fundReleaseData.incentive ?? existingFundRelease.incentive;
+
+      fundReleaseData.interest_amount =
+        fundReleaseData.interest_amount ?? existingFundRelease.interest_amount;
 
       // Preserve existing dates if not provided
       fundReleaseData.date_of_release_first =
-        fundReleaseData.date_of_release_first ||
+        fundReleaseData.date_of_release_first ??
         existingFundRelease.date_of_release_first;
+
       fundReleaseData.date_of_release_second =
-        fundReleaseData.date_of_release_second ||
+        fundReleaseData.date_of_release_second ??
         existingFundRelease.date_of_release_second;
+
       fundReleaseData.date_of_release_third =
-        fundReleaseData.date_of_release_third ||
+        fundReleaseData.date_of_release_third ??
         existingFundRelease.date_of_release_third;
+
       fundReleaseData.date_of_release_incentive =
-        fundReleaseData.date_of_release_incentive ||
+        fundReleaseData.date_of_release_incentive ??
         existingFundRelease.date_of_release_incentive;
+
       fundReleaseData.date_of_release_interest =
-        fundReleaseData.date_of_release_interest ||
+        fundReleaseData.date_of_release_interest ??
         existingFundRelease.date_of_release_interest;
     }
 
@@ -190,8 +190,8 @@ const upsertFundReleaseDao = async (
           fund_type,
         },
       },
-      update: fundReleaseData,
-      create: fundReleaseData,
+      update: fundReleaseData, // Update with new data
+      create: fundReleaseData, // Insert if not exists
     });
 
     return upsertedFundRelease;
