@@ -208,17 +208,20 @@ const getFundReleaseDataDao = async (
   ulb_id
 ) => {
   try {
-    // Convert ulb_id to a number if it's provided
     const ulbIdAsNumber = ulb_id ? parseInt(ulb_id, 10) : undefined;
-
-    // Fetch data from fundRelease table
     const report = await prisma.fund_release.findMany({
       where: {
-        ...(financial_year && { financial_year }), // Filter by financial_year if provided
-        ...(city_type && { city_type }), // Filter by city_type if provided
-        ...(fund_type && { fund_type }), // Filter by fund_type if provided
-        ...(ulbIdAsNumber && { ulb_id: ulbIdAsNumber }), // Filter by ulb_id if provided, ensuring it's a number
+        ...(financial_year && { financial_year }), 
+        ...(city_type && { city_type }), 
+        ...(fund_type && { fund_type }), 
+        ...(ulbIdAsNumber && { ulb_id: ulbIdAsNumber }), 
       },
+      orderBy: [
+        { ulb_id: 'asc' },          
+        { city_type: 'asc' },       
+        { fund_type: 'asc' },       
+        { financial_year: 'asc' }, 
+      ],
       select: {
         ulb_id: true,
         ulb_relation: {
@@ -232,7 +235,7 @@ const getFundReleaseDataDao = async (
         first_instalment: true,
         second_instalment: true,
         third_instalment: true,
-        incentive:true,
+        incentive: true,
         interest_amount: true,
         total_fund_released: true,
         date_of_release_first: true,
