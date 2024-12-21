@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../../../utils/log/logger");
 const moment = require("moment-timezone");
+const VALID_GRANT_TYPES = ["tied", "untied", "ambient"];
+const VALID_SECTORS = ["water", "sanitation", "swm", "rejuvenation", "others"];
 
 const prisma = new PrismaClient();
 
@@ -175,6 +177,65 @@ const updateSchemeInfo = async (scheme_id, data) => {
   }
 };
 
+async function updateSchemeById(schemeId, updatedData, userId, clientIp) {
+  try {
+    // Log the update attempt
+    logger.info("Attempting to update scheme information...", {
+      userId,
+      action: "UPDATE_SCHEME_INFO",
+      ip: clientIp,
+      scheme_id: schemeId,
+      updatedData,
+    });
+
+    // Validate the incoming data
+    if (
+      updatedData.sector &&
+      !VALID_SECTORS.includes(updatedData.sector)
+    ) {
+      throw new Error(`Invalid sector. Valid sectors are: ${VALID_SECTORS.join(", ")}`);
+    }
+
+    if (!VALID_GRANT_TYPES.includes(updatedData.grant_type)) {
+      throw new Error(`Invalid grant type. Valid types are: ${VALID_GRANT_TYPES.join(", ")}`);
+    }
+
+    // No validation for date_of_approval here, so we removed it
+    // if (!updatedData.date_of_approval || !moment(updatedData.date_of_approval, moment.ISO_8601).isValid()) {
+    //   throw new Error("Invalid date of approval. It must be a valid date.");
+    // }
+
+    // Check if the record exists
+    const existingScheme = await prisma.scheme_info.findUnique({
+      where: { scheme_id: schemeId },
+    });
+
+    if (!existingScheme) {
+      throw new Error(`Scheme with ID ${schemeId} not found`);
+    }
+
+    // Proceed with the update
+    const updatedScheme = await prisma.scheme_info.update({
+      where: { scheme_id: schemeId },
+      data: updatedData,
+    });
+
+    // Log the successful update
+    logger.info("Scheme updated successfully", {
+      userId,
+      action: "UPDATE_SCHEME_INFO",
+      ip: clientIp,
+      scheme_id: schemeId,
+      updatedScheme,
+    });
+
+    return updatedScheme;
+  } catch (error) {
+    logger.error("Error updating scheme information:", error);
+    throw new Error(`Unable to update scheme with ID ${schemeId}: ${error.message}`);
+  }
+}
+
 module.exports = {
-  updateSchemeInfo,
+  updateSchemeInfo,updateSchemeById
 };

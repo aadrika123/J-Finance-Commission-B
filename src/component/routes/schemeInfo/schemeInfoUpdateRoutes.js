@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   modifySchemeInfo,
+  updateScheme
 } = require("../../controllers/schemeInfo/schemeInfoUpdateController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -13,6 +14,10 @@ router.post(
   roleMiddleware(["EO FC"]),
   modifySchemeInfo
 );
+// Route to update scheme info
+router.post('/scheme/:scheme_id',
+  // roleMiddleware(["SUDA FC"]),
+   updateScheme);
 
 module.exports = router;
 //

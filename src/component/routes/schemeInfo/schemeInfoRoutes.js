@@ -12,7 +12,9 @@ const router = express.Router();
 
 // POST route to add new scheme information
 // This endpoint triggers the controller function to handle adding new scheme information
-router.post("/scheme-info", roleMiddleware(["SUDA FC"]), addSchemeInfo);
+router.post("/scheme-info",
+   roleMiddleware(["SUDA FC"]),
+    addSchemeInfo);
 
 // GET route to fetch paginated scheme information
 // This endpoint triggers the controller function to retrieve scheme information
@@ -26,7 +28,7 @@ router.get(
 // This endpoint triggers the controller function to retrieve information of a specific scheme by its ID
 router.get(
   "/scheme-info/view/:scheme_id",
-  roleMiddleware(["EO FC"]),
+  roleMiddleware(["EO FC","SUDA FC"]),
   getSchemeInfoById
 );
 router.get(

@@ -131,7 +131,6 @@ const upsertFundReleaseDao = async (
   fundReleaseData
 ) => {
   try {
-    // Fetch existing fund release data with fund_type included
     const existingFundRelease = await findFundReleaseByUlbIdYearAndFundType(
       ulb_id,
       financial_year,
@@ -139,39 +138,49 @@ const upsertFundReleaseDao = async (
     );
 
     if (existingFundRelease) {
-      // Modify only if existing fund release is found, else create a new record
-      fundReleaseData.interest_amount =
-        (existingFundRelease.interest_amount || 0) +
-        (fundReleaseData.interest_amount || 0);
+      fundReleaseData.first_instalment =
+        fundReleaseData.first_instalment ?? existingFundRelease.first_instalment;
 
-      fundReleaseData.first_instalment =
-        existingFundRelease.first_instalment ||
-        fundReleaseData.first_instalment ||
-        0;
       fundReleaseData.second_instalment =
-        existingFundRelease.second_instalment ||
-        fundReleaseData.second_instalment ||
-        0;
+        fundReleaseData.second_instalment ?? existingFundRelease.second_instalment;
+
       fundReleaseData.third_instalment =
-        existingFundRelease.third_instalment ||
-        fundReleaseData.third_instalment ||
-        0;
-    } else {
-      fundReleaseData.first_instalment =
-        Number(fundReleaseData.first_instalment) || 0;
-      fundReleaseData.second_instalment =
-        Number(fundReleaseData.second_instalment) || 0;
-      fundReleaseData.third_instalment =
-        Number(fundReleaseData.third_instalment) || 0;
+        fundReleaseData.third_instalment ?? existingFundRelease.third_instalment;
+
+      fundReleaseData.incentive =
+        fundReleaseData.incentive ?? existingFundRelease.incentive;
+
       fundReleaseData.interest_amount =
-        Number(fundReleaseData.interest_amount) || 0;
+        fundReleaseData.interest_amount ?? existingFundRelease.interest_amount;
+
+      // Preserve existing dates if not provided
+      fundReleaseData.date_of_release_first =
+        fundReleaseData.date_of_release_first ??
+        existingFundRelease.date_of_release_first;
+
+      fundReleaseData.date_of_release_second =
+        fundReleaseData.date_of_release_second ??
+        existingFundRelease.date_of_release_second;
+
+      fundReleaseData.date_of_release_third =
+        fundReleaseData.date_of_release_third ??
+        existingFundRelease.date_of_release_third;
+
+      fundReleaseData.date_of_release_incentive =
+        fundReleaseData.date_of_release_incentive ??
+        existingFundRelease.date_of_release_incentive;
+
+      fundReleaseData.date_of_release_interest =
+        fundReleaseData.date_of_release_interest ??
+        existingFundRelease.date_of_release_interest;
     }
 
     fundReleaseData.total_fund_released =
       (fundReleaseData.first_instalment || 0) +
       (fundReleaseData.second_instalment || 0) +
       (fundReleaseData.third_instalment || 0) +
-      (fundReleaseData.interest_amount || 0);
+      (fundReleaseData.interest_amount || 0) +
+      (fundReleaseData.incentive || 0);
 
     const upsertedFundRelease = await prisma.fund_release.upsert({
       where: {
@@ -181,8 +190,8 @@ const upsertFundReleaseDao = async (
           fund_type,
         },
       },
-      update: fundReleaseData,
-      create: fundReleaseData,
+      update: fundReleaseData, // Update with new data
+      create: fundReleaseData, // Insert if not exists
     });
 
     return upsertedFundRelease;
@@ -199,17 +208,20 @@ const getFundReleaseDataDao = async (
   ulb_id
 ) => {
   try {
-    // Convert ulb_id to a number if it's provided
     const ulbIdAsNumber = ulb_id ? parseInt(ulb_id, 10) : undefined;
-
-    // Fetch data from fundRelease table
     const report = await prisma.fund_release.findMany({
       where: {
-        ...(financial_year && { financial_year }), // Filter by financial_year if provided
-        ...(city_type && { city_type }), // Filter by city_type if provided
-        ...(fund_type && { fund_type }), // Filter by fund_type if provided
-        ...(ulbIdAsNumber && { ulb_id: ulbIdAsNumber }), // Filter by ulb_id if provided, ensuring it's a number
+        ...(financial_year && { financial_year }), 
+        ...(city_type && { city_type }), 
+        ...(fund_type && { fund_type }), 
+        ...(ulbIdAsNumber && { ulb_id: ulbIdAsNumber }), 
       },
+      orderBy: [
+        { ulb_id: 'asc' },          
+        { city_type: 'asc' },       
+        { fund_type: 'asc' },       
+        { financial_year: 'asc' }, 
+      ],
       select: {
         ulb_id: true,
         ulb_relation: {
@@ -223,9 +235,14 @@ const getFundReleaseDataDao = async (
         first_instalment: true,
         second_instalment: true,
         third_instalment: true,
+        incentive: true,
         interest_amount: true,
         total_fund_released: true,
-        date_of_release: true,
+        date_of_release_first: true,
+        date_of_release_second: true,
+        date_of_release_third: true,
+        date_of_release_interest: true,
+        date_of_release_incentive: true,
       },
     });
 

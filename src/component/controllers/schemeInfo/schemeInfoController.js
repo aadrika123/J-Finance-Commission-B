@@ -121,7 +121,7 @@ const fetchSchemeInfo = async (req, res) => {
     const page = parseInt(req.query.page, 10) || 1; // Current page number, default to 1
     const limit = parseInt(req.query.limit, 10) || 10; // Records per page, default to 10
     const skip = (page - 1) * limit; // Calculate offset
-    const { grant_type, ulb, financial_year } = req.query; // Optional filters
+    const { grant_type, ulb, financial_year, scheme_name, scheme_id } = req.query; 
 
     // Validate pagination parameters
     if (page < 1 || limit < 1) {
@@ -133,16 +133,35 @@ const fetchSchemeInfo = async (req, res) => {
 
     // Prepare the filter condition for query
     const filterCondition = {};
+
+    // Handle grant_type filter
     if (grant_type) {
       const grantTypes = grant_type.split(",").map((type) => type.trim());
       filterCondition.grant_type =
         grantTypes.length === 1 ? grantTypes[0] : { in: grantTypes };
     }
+
+    // Handle ulb filter
     if (ulb) {
       filterCondition.ulb = ulb;
     }
+
+    // Handle financial_year filter
     if (financial_year) {
       filterCondition.financial_year = financial_year;
+    }
+
+    // Handle scheme_name filter
+    if (scheme_name) {
+      filterCondition.scheme_name = {
+        contains: scheme_name, // This will allow partial matching
+        mode: "insensitive", // Case insensitive search
+      };
+    }
+
+    // Handle scheme_id filter
+    if (scheme_id) {
+      filterCondition.scheme_id = scheme_id; // Exact match
     }
 
     // Fetch scheme information and total count of records
@@ -152,13 +171,25 @@ const fetchSchemeInfo = async (req, res) => {
         take: limit,
         where: filterCondition,
         orderBy: {
-          created_at: "desc",
+          // Sort based on numeric values in scheme_id
+          scheme_id: "asc",  // Sorting by scheme_id (ascending)
         },
       }),
       prisma.scheme_info.count({
         where: filterCondition,
       }),
     ]);
+
+    // Formatting the scheme_id to match the desired output format (e.g., sch-1-001, sch-2-001)
+    const formattedSchemes = schemeInfoList.map((scheme) => {
+      const schemeIdParts = scheme.scheme_id.split('-'); // Split scheme_id into parts
+      const category = schemeIdParts[1]; // The second part (e.g., '1', '2', '30')
+      const number = schemeIdParts[2]; // The third part (e.g., '001', '002')
+      return {
+        ...scheme,
+        scheme_id: `sch-${category}-${number.padStart(3, '0')}`, // Ensure number is always 3 digits
+      };
+    });
 
     // Calculate pagination details
     const totalPage = Math.ceil(totalResult / limit);
@@ -175,12 +206,15 @@ const fetchSchemeInfo = async (req, res) => {
       totalResult,
     });
 
+
     // Create an audit log entry for the fetch operation
     await createAuditLog(userId, "FETCH", "Scheme_info", null, {
       page,
       limit,
       totalResult,
       grant_type,
+      scheme_name,
+      scheme_id,
     });
 
     // Send a success response with paginated data and pagination details
@@ -315,9 +349,6 @@ const getSchemeInfoById = async (req, res) => {
 const getSchemesInfoByULBName = async (req, res) => {
   try {
     const { ulb_name } = req.query;
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 10;
-    const skip = (page - 1) * limit;
 
     if (!ulb_name) {
       return res.status(200).json({
@@ -327,7 +358,7 @@ const getSchemesInfoByULBName = async (req, res) => {
       });
     }
 
-    // Fetch the schemes with pagination
+    // Fetch the schemes without pagination
     const schemes = await prisma.scheme_info.findMany({
       where: {
         ulb: {
@@ -335,26 +366,10 @@ const getSchemesInfoByULBName = async (req, res) => {
           mode: "insensitive",
         },
       },
-      skip,
-      take: limit,
       orderBy: {
         created_at: "desc",
       },
     });
-
-    // Fetch the total count for pagination
-    const totalSchemes = await prisma.scheme_info.count({
-      where: {
-        ulb: {
-          equals: ulb_name,
-          mode: "insensitive",
-        },
-      },
-    });
-
-    const totalPage = Math.ceil(totalSchemes / limit);
-    const nextPage = page < totalPage ? page + 1 : null;
-    const prevPage = page > 1 ? page - 1 : null;
 
     // Add calculated fields to each scheme
     const enhancedSchemes = schemes.map((scheme) => {
@@ -379,14 +394,6 @@ const getSchemesInfoByULBName = async (req, res) => {
         ? "Scheme information fetched successfully"
         : "No schemes found for this ULB name",
       data: enhancedSchemes,
-      pagination: {
-        next: nextPage,
-        previous: prevPage,
-        currentPage: page,
-        currentTake: limit,
-        totalPage,
-        totalResult: totalSchemes,
-      },
     });
   } catch (error) {
     console.error(error);
