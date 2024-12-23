@@ -247,6 +247,103 @@ const fetchSchemeInfo = async (req, res) => {
   }
 };
 
+const fetchAllSchemeInfo = async (req, res) => {
+  const clientIp = req.headers["x-forwarded-for"] || req.ip; // Capture IP
+
+  try {
+    const userId = req.body?.auth?.id || null;
+    const { grant_type, ulb, financial_year, scheme_name, scheme_id } = req.query; 
+
+    // Prepare the filter condition for query
+    const filterCondition = {};
+
+    // Handle grant_type filter
+    if (grant_type) {
+      const grantTypes = grant_type.split(",").map((type) => type.trim());
+      filterCondition.grant_type =
+        grantTypes.length === 1 ? grantTypes[0] : { in: grantTypes };
+    }
+
+    // Handle ulb filter
+    if (ulb) {
+      filterCondition.ulb = ulb;
+    }
+
+    // Handle financial_year filter
+    if (financial_year) {
+      filterCondition.financial_year = financial_year;
+    }
+
+    // Handle scheme_name filter
+    if (scheme_name) {
+      filterCondition.scheme_name = {
+        contains: scheme_name, // This will allow partial matching
+        mode: "insensitive", // Case insensitive search
+      };
+    }
+
+    // Handle scheme_id filter
+    if (scheme_id) {
+      filterCondition.scheme_id = scheme_id; // Exact match
+    }
+
+    // Fetch scheme information
+    const schemeInfoList = await prisma.scheme_info.findMany({
+      where: filterCondition,
+      orderBy: {
+        // Sort based on numeric values in scheme_id
+        scheme_id: "asc",  // Sorting by scheme_id (ascending)
+      },
+    });
+
+    // Formatting the scheme_id to match the desired output format (e.g., sch-1-001, sch-2-001)
+    const formattedSchemes = schemeInfoList.map((scheme) => {
+      const schemeIdParts = scheme.scheme_id.split('-'); // Split scheme_id into parts
+      const category = schemeIdParts[1]; // The second part (e.g., '1', '2', '30')
+      const number = schemeIdParts[2]; // The third part (e.g., '001', '002')
+      return {
+        ...scheme,
+        scheme_id: `sch-${category}-${number.padStart(3, '0')}`, // Ensure number is always 3 digits
+      };
+    });
+
+    // Log the successful fetch of scheme information
+    logger.info("Scheme information list fetched successfully", {
+      userId,
+      action: "FETCH_SCHEME_INFO",
+      ip: clientIp,
+    });
+
+    // Create an audit log entry for the fetch operation
+    await createAuditLog(userId, "FETCH", "Scheme_info", null, {
+      grant_type,
+      scheme_name,
+      scheme_id,
+    });
+
+    // Send a success response
+    res.status(200).json({
+      status: true,
+      message: "Scheme request list fetched successfully",
+      data: formattedSchemes,
+    });
+  } catch (error) {
+    // Log error details and send error response
+    logger.error("Error fetching scheme info list", {
+      userId,
+      action: "FETCH_SCHEME_INFO",
+      ip: clientIp,
+      error: error.message,
+    });
+    res.status(200).json({
+      status: false,
+      message: "Failed to fetch scheme request list",
+      error: error.message,
+    });
+  }
+};
+
+
 /**
  * Retrieves scheme information by its unique ID.
  *
@@ -491,4 +588,5 @@ module.exports = {
   getSchemeInfoById,
   getSchemesInfoByULBName,
   updateSchemeNameHandler,
+  fetchAllSchemeInfo
 };

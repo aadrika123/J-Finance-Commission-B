@@ -5,6 +5,7 @@ const {
   getSchemeInfoById,
   getSchemesInfoByULBName,
   updateSchemeNameHandler,
+  fetchAllSchemeInfo
 } = require("../../controllers/schemeInfo/schemeInfoController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -22,6 +23,11 @@ router.get(
   "/scheme-info",
   roleMiddleware(["EO FC", "SUDA FC"]),
   fetchSchemeInfo
+);
+router.get(
+  "/all-scheme-info",
+  roleMiddleware(["EO FC", "SUDA FC"]),
+  fetchAllSchemeInfo
 );
 
 // GET route to fetch scheme information by scheme_id
