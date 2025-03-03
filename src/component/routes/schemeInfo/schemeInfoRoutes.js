@@ -5,7 +5,8 @@ const {
   getSchemeInfoById,
   getSchemesInfoByULBName,
   updateSchemeNameHandler,
-  fetchAllSchemeInfo
+  fetchAllSchemeInfo,
+  getAllSchemeInfo
 } = require("../../controllers/schemeInfo/schemeInfoController");
 const roleMiddleware = require("../../../middlewares/roleMiddleware");
 
@@ -26,7 +27,7 @@ router.get(
 );
 router.get(
   "/schemes",
-  fetchSchemeInfo
+  getAllSchemeInfo
 );
 router.get(
   "/all-scheme-info",
