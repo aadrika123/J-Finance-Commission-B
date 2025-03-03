@@ -582,11 +582,40 @@ const updateSchemeNameHandler = async (req, res) => {
     });
   }
 };
+
+const getAllSchemeInfo = async(req, res)  => {
+  try {
+    const schemes = await getSchemeInfo();
+    // Extract only the required fields
+    const filteredSchemes = schemes.map((scheme) => ({
+      scheme_id: scheme.scheme_id,
+      scheme_name: scheme.scheme_name,
+      sector: scheme.sector,
+      grant_type: scheme.grant_type,
+      city_type: scheme.city_type,
+      financial_year: scheme.financial_year,
+      ulb_id: scheme.ulb_id,
+    }));
+
+    res.status(200).json({
+      status: true,
+      message: "Scheme information retrieved successfully",
+      data: filteredSchemes,
+    });
+  } catch {
+    res.status(500).json({
+      status: "error",
+      message: "Failed to retrieve scheme information",
+      details: error.message,
+    });
+  }
+};
 module.exports = {
   addSchemeInfo,
   fetchSchemeInfo,
   getSchemeInfoById,
   getSchemesInfoByULBName,
   updateSchemeNameHandler,
-  fetchAllSchemeInfo
+  fetchAllSchemeInfo,
+  getAllSchemeInfo
 };
