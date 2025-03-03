@@ -25,6 +25,10 @@ router.get(
   fetchSchemeInfo
 );
 router.get(
+  "/schemes",
+  fetchSchemeInfo
+);
+router.get(
   "/all-scheme-info",
   roleMiddleware(["EO FC", "SUDA FC"]),
   fetchAllSchemeInfo
