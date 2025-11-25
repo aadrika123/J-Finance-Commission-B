@@ -33,12 +33,12 @@ router.post(
 router.post("/send-letter", roleMiddleware(["SUDA FC"]), sendLetterController);
 router.get(
   "/letters/ulb",
-  roleMiddleware(["EO FC"]),
+  // roleMiddleware(["EO FC"]),
   getLettersForULBController
 );
 router.get(
   "/letters/ulb/notifications",
-  roleMiddleware(["EO FC"]),
+  // roleMiddleware(["EO FC"]),
   getNotificationsController
 );
 
