@@ -379,36 +379,29 @@ const seedULBs = async () => {
   ];
 
   try {
-    for (const ulb of ulbData) {
-      // Check if the ULB already exists by ID
-      const existingUlb = await prisma.ulb.findUnique({
-        where: {
-          id: ulb.id,
-        },
-      });
+    console.log("🧹 Deleting existing ULB data...");
 
-      if (existingUlb) {
-        console.log(`ULB with ID ${ulb.id} already exists. Skipping...`);
-        continue; // Skip this ULB
-      }
+    // 1️⃣ Delete all existing data
+    await prisma.ulb.deleteMany();
 
-      // Insert new data if the ID doesn't exist
-      await prisma.ulb.create({
-        data: {
-          id: ulb.id,
-          ulb_name: ulb.ulb_name,
-          latitude: ulb.latitude,
-          longitude: ulb.longitude,
-          city_type: ulb.city_type,
-        },
-      });
+    console.log("🔁 Resetting ID sequence...");
 
-      console.log(`ULB with ID ${ulb.id} created successfully.`);
-    }
+    // 2️⃣ Reset auto-increment sequence (PostgreSQL)
+    await prisma.$executeRawUnsafe(`
+      ALTER SEQUENCE "ulb_id_seq" RESTART WITH 1;
+    `);
 
-    console.log("ULBs seeded successfully.");
+    console.log("📥 Seeding fresh ULB data...");
+
+    // 3️⃣ Insert fresh data
+    await prisma.ulb.createMany({
+      data: ulbData,
+      skipDuplicates: false, // force insert
+    });
+
+    console.log("✅ ULBs seeded successfully.");
   } catch (error) {
-    console.error("Error seeding ULBs:", error);
+    console.error("❌ Error seeding ULBs:", error);
   } finally {
     await prisma.$disconnect();
   }
