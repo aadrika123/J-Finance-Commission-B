@@ -54,7 +54,7 @@ const seedULBs = async () => {
     },
     {
       id: 8,
-      ulb_name: "Chakulia Nagar Panchayat",
+      ulb_name: "Chakulia Nagar panchayat",
       latitude: 22.4736,
       longitude: 86.7146,
       city_type: "non million",
@@ -74,24 +74,10 @@ const seedULBs = async () => {
       city_type: "non million",
     },
     {
-      id: 11,
-      ulb_name: "BARHARWA NAGAR PANCHAYAT",
-      latitude: 24.857778,
-      longitude: 87.777167,
-      city_type: "non million",
-    },
-    {
       id: 12,
       ulb_name: "Chirkunda Nagar Panchayat",
       latitude: 23.7479,
       longitude: 86.7869,
-      city_type: "non million",
-    },
-    {
-      id: 13,
-      ulb_name: "KAPALI NAGAR PARISHAD",
-      latitude: 22.68,
-      longitude: 85.9311,
       city_type: "non million",
     },
     {
@@ -284,17 +270,10 @@ const seedULBs = async () => {
       city_type: "non million",
     },
     {
-      id: 41,
+      id: 42,
       ulb_name: "Sahibganj Nagar Parishad",
       latitude: 25.2425,
       longitude: 87.6322,
-      city_type: "non million",
-    },
-    {
-      id: 42,
-      ulb_name: "DOMCANCH NAGAR PANCHAYAT",
-      latitude: 24.4745,
-      longitude: 85.6803,
       city_type: "non million",
     },
     {
@@ -320,51 +299,81 @@ const seedULBs = async () => {
     },
     {
       id: 46,
+      ulb_name: "Bachra Nagar Panchayat",
+      latitude: 23.62,
+      longitude: 85.48,
+      city_type: "non million",
+    },
+    {
+      id: 47,
+      ulb_name: "Badakisarai Nagar Panchayat",
+      latitude: 24.5,
+      longitude: 84.0,
+      city_type: "non million",
+    },
+    {
+      id: 48,
+      ulb_name: "Dhanwar Nagar Panchayat",
+      latitude: 24.4,
+      longitude: 85.0,
+      city_type: "non million",
+    },
+    {
+      id: 49,
+      ulb_name: "Mahagama Nagar Panchayat",
+      latitude: 25.0,
+      longitude: 87.3,
+      city_type: "non million",
+    },
+    {
+      id: 50,
+      ulb_name: "Domchach Nagar Panchayat",
+      latitude: 24.4745,
+      longitude: 85.6803,
+      city_type: "non million",
+    },
+    {
+      id: 51,
+      ulb_name: "Chattarpur Nagar Panchayat",
+      latitude: 24.3,
+      longitude: 85.3,
+      city_type: "non million",
+    },
+    {
+      id: 52,
       ulb_name: "Hariharganj Nagar Panchayat",
       latitude: 24.542199,
       longitude: 84.279232,
       city_type: "non million",
     },
     {
-      id: 47,
+      id: 53,
+      ulb_name: "Barharwa Nagar Panchayat",
+      latitude: 24.857778,
+      longitude: 87.777167,
+      city_type: "non million",
+    },
+    {
+      id: 54,
+      ulb_name: "Kapali Nagar Parishad",
+      latitude: 22.68,
+      longitude: 85.9311,
+      city_type: "non million",
+    },
+
+    /* ---- NOT IN AUTHORITATIVE LIST ---- */
+    {
+      id: 55,
       ulb_name: "Ramgarh Cantt",
-      latitude: 23.620000,
-      longitude: 85.480000,
+      latitude: 23.62,
+      longitude: 85.48,
       city_type: "non million",
     },
     {
-      id: 48,
+      id: 56,
       ulb_name: "Sri Bansidhar Nagar Panchayat",
-      latitude: 24.200000,
-      longitude: 83.800000,
-      city_type: "non million",
-    },
-    {
-      id: 49,
-      ulb_name: "Chhattarpur Nagar Panchayat",
-      latitude: 24.300000,
-      longitude: 85.300000,
-      city_type: "non million",
-    },
-    {
-      id: 50,
-      ulb_name: "Badki Saraiya Nagar Panchayat",
-      latitude: 24.500000,
-      longitude: 84.000000,
-      city_type: "non million",
-    },
-    {
-      id: 51,
-      ulb_name: "Dhanwar Nagar Panchayat",
-      latitude: 24.400000,
-      longitude: 85.000000,
-      city_type: "non million",
-    },
-    {
-      id: 52,
-      ulb_name: "Mahagama Nagar Panchayat",
-      latitude: 25.000000,
-      longitude: 87.300000,
+      latitude: 24.2,
+      longitude: 83.8,
       city_type: "non million",
     },
   ];
@@ -377,12 +386,12 @@ const seedULBs = async () => {
           id: ulb.id,
         },
       });
-  
+
       if (existingUlb) {
         console.log(`ULB with ID ${ulb.id} already exists. Skipping...`);
         continue; // Skip this ULB
       }
-  
+
       // Insert new data if the ID doesn't exist
       await prisma.ulb.create({
         data: {
@@ -393,16 +402,16 @@ const seedULBs = async () => {
           city_type: ulb.city_type,
         },
       });
-  
+
       console.log(`ULB with ID ${ulb.id} created successfully.`);
     }
-  
+
     console.log("ULBs seeded successfully.");
   } catch (error) {
     console.error("Error seeding ULBs:", error);
   } finally {
     await prisma.$disconnect();
   }
-}
+};
 
 seedULBs();
