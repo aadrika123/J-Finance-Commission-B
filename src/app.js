@@ -16,20 +16,34 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 9000;
 
-app.use(cors());
+/* ===================== CORS (ALLOW ALL *) ===================== */
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+app.options("*", cors());
+
+/* ===================== CORE MIDDLEWARE ===================== */
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
+
+/* ===================== STATIC ===================== */
 app.use(
   "/uploads",
   express.static(path.join(__dirname, "middlewares/utils/fileUpload/uploads"))
 );
 
+/* ===================== ROUTES ===================== */
 app.get("/", (req, res) => {
   logger.info("Home route accessed");
   res.send("Hello World !!! this is a finance project");
 });
 
-app.use(express.json());
 app.use("/api/sudafc", testRoute);
 app.use("/api/sudafc", ulbRoutes);
 app.use("/api/sudafc", schemeInfoRoutes);
@@ -38,10 +52,11 @@ app.use("/api/sudafc", financialSummaryRoute);
 app.use("/api/sudafc", financialRoutes);
 app.use("/api/sudafc", fileUpload);
 
+/* ===================== SERVER ===================== */
 app.listen(PORT, () => {
   console.log(`Server is running on port: http://localhost:${PORT}`);
   logger.info(`Server started on port: http://localhost:${PORT}`);
 });
 
-// db connection
+/* ===================== DB ===================== */
 connectToDatabase();
