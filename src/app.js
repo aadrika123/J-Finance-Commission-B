@@ -19,9 +19,10 @@ const PORT = process.env.PORT || 9000;
 /* ===================== CORS (ALLOW ALL *) ===================== */
 app.use(
   cors({
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
+    credentials: true
   })
 );
 app.options("*", cors());
