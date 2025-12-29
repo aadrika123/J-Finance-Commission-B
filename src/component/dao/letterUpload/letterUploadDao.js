@@ -35,12 +35,11 @@ const uploadLetter = async (ulb_id, order_number, letter_url, subject) => {
 };
 const getLetters = async (inboxFilter, outboxFilter) => {
   try {
-    // Fetch letters directly with filters on is_active, inbox, and outbox
     const letters = await prisma.letter_upload.findMany({
       where: {
         is_active: true,
-        ...(inboxFilter && { inbox: true }), // Apply inbox filter if passed
-        ...(outboxFilter && { inbox: false }), // Apply outbox filter if passed
+        ...(inboxFilter !== undefined && { inbox: inboxFilter }),
+        ...(outboxFilter !== undefined && { outbox: outboxFilter }),
       },
       include: {
         ulb_relation: {
@@ -49,11 +48,14 @@ const getLetters = async (inboxFilter, outboxFilter) => {
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     return letters;
   } catch (error) {
-    console.error("Error fetching letters:", error); // Log the full error for debugging
+    console.error("Error fetching letters:", error);
     throw new Error("An unexpected error occurred while fetching letters.");
   }
 };
