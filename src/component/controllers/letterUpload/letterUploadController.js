@@ -316,7 +316,11 @@ const getLettersForULBController = async (req, res) => {
         is_global: letter.is_global,
         inbox: letter.inbox,
         outbox: letter.outbox,
-        ULB: letter.ulb ? letter.ulb.ulb_name : "All ULBs",
+        // ULB: letter.ulb ? letter.ulb.ulb_name : "All ULBs",
+        ULB:
+        letter.ulb_id === null
+          ? "All ULBs"
+          : letter.ulb_relation?.ulb_name || "Unknown ULB",
 
         notification: {
           id: notification?.id || null,
