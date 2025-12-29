@@ -128,7 +128,11 @@ const getLettersController = async (req, res) => {
       created_at: letter.created_at,
       updated_at: letter.updated_at,
       is_active: letter.is_active,
-      ULB: letter.ulb ? letter.ulb.ulb_name : "All ULBs", // Handle missing ULB
+      // ULB: letter.ulb ? letter.ulb.ulb_name : "All ULBs", // Handle missing ULB
+      ULB:
+        letter.ulb_id === null
+          ? "All ULBs"
+          : letter.ulb_relation?.ulb_name || "Unknown ULB",
     }));
 
     // Total number of letters
