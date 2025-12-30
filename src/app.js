@@ -17,15 +17,8 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
 /* ===================== CORS (ALLOW ALL *) ===================== */
-app.use(
-  cors({
-    origin: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
-    credentials: true
-  })
-);
-app.options("*", cors());
+app.use(cors())
+// app.options("*", cors());
 
 /* ===================== CORE MIDDLEWARE ===================== */
 app.use(express.json());
