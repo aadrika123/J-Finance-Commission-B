@@ -33,7 +33,7 @@ app.use(
 );
 
 /* ===================== ROUTES ===================== */
-app.get("/", (req, res) => {
+app.get("/api/sudafc/health-check", (req, res) => {
   logger.info("Home route accessed");
   res.send("Hello World !!! this is a finance project");
 });
