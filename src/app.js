@@ -17,7 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
 /* ===================== CORS (ALLOW ALL *) ===================== */
-app.use(cors())
+app.use(cors());
 // app.options("*", cors());
 
 /* ===================== CORE MIDDLEWARE ===================== */
@@ -29,13 +29,15 @@ app.use(requestLogger);
 /* ===================== STATIC ===================== */
 app.use(
   "/uploads",
-  express.static(path.join(__dirname, "middlewares/utils/fileUpload/uploads"))
+  express.static(path.join(__dirname, "middlewares/utils/fileUpload/uploads")),
 );
 
 /* ===================== ROUTES ===================== */
 app.get("/api/sudafc/health-check", (req, res) => {
   logger.info("Home route accessed");
-  res.send("Hello World !!! this is a finance project");
+  res.status(200).json({
+    status: "ok",
+  });
 });
 
 app.use("/api/sudafc", testRoute);
