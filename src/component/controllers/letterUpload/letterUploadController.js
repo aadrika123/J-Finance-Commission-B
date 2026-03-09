@@ -13,25 +13,30 @@ const {
 } = require("../../../utils/fileUpload/uploads/imageUploaderV2");
 
 const uploadLetterController = async (req, res) => {
-  const { ulb_id, order_number, subject } = req.body;
+  const { ulb_id, order_number, subject, module_id } = req.body;
   const file = req.file;
 
   if (!file || !order_number || !subject) {
-    return res
-      .status(200)
-      .json({ status: false, message: "Missing required fields." });
+    return res.status(200).json({
+      status: false,
+      message: "Missing required fields.",
+    });
   }
 
   try {
-    // Use imageUploaderV2 to upload the file and get the URL
+    // attach metadata to file object
+    file.ulb_id = ulb_id;
+    file.module_id = module_id;
+
+    // Upload file to DMS
     const letterUrlList = await imageUploaderV2([file]);
-    const letter_url = letterUrlList[0]; // Get the URL of the first file
+    const letter_url = letterUrlList[0];
 
     if (!letter_url) {
       throw new Error("File upload failed. No URL returned.");
     }
 
-    // Save the letter info to the database
+    // Save in DB
     const letter = await uploadLetter(
       ulb_id,
       order_number,
@@ -39,9 +44,9 @@ const uploadLetterController = async (req, res) => {
       subject
     );
 
-    // Create an audit log entry
+    // Audit log
     await createAuditLog(
-      req.body?.auth?.id, // userId, assuming auth data in req.body
+      req.body?.auth?.id,
       "CREATE",
       "LetterUpload",
       letter?.id || null,
@@ -55,9 +60,14 @@ const uploadLetterController = async (req, res) => {
         : "Global letter uploaded to all ULBs",
       data: letter,
     });
+
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Failed to upload letter.", error });
+    console.error("Upload Error:", error);
+    return res.status(500).json({
+      status: false,
+      message: "Failed to upload letter.",
+      error: error.message,
+    });
   }
 };
 

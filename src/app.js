@@ -17,7 +17,6 @@ const app = express();
 const PORT = process.env.PORT || 9000;
 
 /* ===================== CORS (ALLOW ALL *) ===================== */
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
