@@ -1,16 +1,16 @@
-FROM node:20-alpine AS deps
-RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
+FROM node:20-slim AS deps
+RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY prisma ./prisma/
 RUN npm ci --omit=dev && npx prisma generate
 
-FROM node:20-alpine AS runtime
-RUN apk update && apk upgrade && apk add --no-cache tini && rm -rf /var/cache/apk/*
+FROM node:20-slim AS runtime
+RUN apt-get update && apt-get install -y --no-install-recommends tini curl openssl && rm -rf /var/lib/apt/lists/*
 ENV NODE_ENV=production
 LABEL org.opencontainers.image.title="j-finance-commission-backend" \
   org.opencontainers.image.vendor="Aadrika Enterprises"
-RUN addgroup -g 1001 -S dockeruser && adduser -S dockeruser -u 1001 -G dockeruser
+RUN groupadd -g 1001 dockeruser && useradd -u 1001 -g dockeruser -s /bin/sh dockeruser
 WORKDIR /app
 COPY --chown=dockeruser:dockeruser --from=deps /app/node_modules ./node_modules
 COPY --chown=dockeruser:dockeruser . .
